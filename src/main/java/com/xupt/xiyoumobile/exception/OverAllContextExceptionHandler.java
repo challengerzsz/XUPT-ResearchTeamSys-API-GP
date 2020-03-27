@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @ControllerAdvice
 @Slf4j
-public class WholeContextExceptionHandler {
+public class OverAllContextExceptionHandler {
 
     @ExceptionHandler(UserInfoException.class)
     public void handleUserInfoException(UserInfoException e) {
