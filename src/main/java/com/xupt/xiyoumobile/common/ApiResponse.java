@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @author : zengshuaizhi
  * @date : 2020-03-26 20:31
  */
-@JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class ApiResponse<T> {
 
     private int status;
@@ -57,27 +57,33 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> createBySuccessMsg(String msg) {
-        return new ApiResponse<T>(ApiRspCode.SUCCESS.getCode(), msg);
+        return new ApiResponse<>(ApiRspCode.SUCCESS.getCode(), msg);
     }
 
     public static <T> ApiResponse<T> createBySuccess(T data) {
-        return new ApiResponse<T>(ApiRspCode.SUCCESS.getCode(), data);
+        return new ApiResponse<>(ApiRspCode.SUCCESS.getCode(), data);
     }
 
     public static <T> ApiResponse<T> createBySuccess(String msg, T data) {
-        return new ApiResponse<T>(ApiRspCode.SUCCESS.getCode(), msg, data);
+        return new ApiResponse<>(ApiRspCode.SUCCESS.getCode(), msg, data);
     }
 
 
     public static <T> ApiResponse<T> createByError() {
-        return new ApiResponse<T>(ApiRspCode.ERROR.getCode(), ApiRspCode.ERROR.getDesc());
+        return new ApiResponse<>(ApiRspCode.ERROR.getCode(), ApiRspCode.ERROR.getDesc());
     }
 
     public static <T> ApiResponse<T> createByErrorMsg(String errorMsg) {
-        return new ApiResponse<T>(ApiRspCode.ERROR.getCode(), errorMsg);
+        return new ApiResponse<>(ApiRspCode.ERROR.getCode(), errorMsg);
     }
 
     public static <T> ApiResponse<T> createByErrorCodeMsg(int errorCode, String errorMsg) {
-        return new ApiResponse<T>(errorCode, errorMsg);
+        return new ApiResponse<>(errorCode, errorMsg);
+    }
+
+    @Override
+    public String toString() {
+//        return "{status: " +
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package com.xupt.xiyoumobile.web.dao;
 
+import com.xupt.xiyoumobile.web.pojo.Role;
 import com.xupt.xiyoumobile.web.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,5 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface IUserMapper {
 
-    User getUserAccountPassword(String username);
+    User findByUsername(String name);
+
+    Role findRoleByUserId(int id);
 }

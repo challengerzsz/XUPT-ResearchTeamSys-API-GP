@@ -1,9 +1,9 @@
 package com.xupt.xiyoumobile.security.user;
 
 import com.xupt.xiyoumobile.web.dao.IUserMapper;
-import org.apache.commons.lang3.StringUtils;
+import com.xupt.xiyoumobile.web.pojo.Role;
+import com.xupt.xiyoumobile.web.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -15,15 +15,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppUserDetailsService implements UserDetailsService {
 
-    @Autowired
     private IUserMapper userMapper;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (!StringUtils.isBlank(username)) {
-            throw new UsernameNotFoundException("UserAccount check failed, UserAccount can not be null or empty");
-        }
+    @Autowired
+    public AppUserDetailsService(IUserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
-        return userMapper.getUserAccountPassword(username);
+    @Override
+    public User loadUserByUsername(String name) throws UsernameNotFoundException {
+
+        User user = userMapper.findByUsername(name);
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", name));
+        }
+        Role role = userMapper.findRoleByUserId(user.getId());
+        user.setRole(role);
+        return user;
     }
 }
