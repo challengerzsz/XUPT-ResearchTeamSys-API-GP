@@ -3,6 +3,7 @@ package com.xupt.xiyoumobile.security.jwt;
 import com.alibaba.fastjson.JSONObject;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import java.io.Serializable;
  * @author : zengshuaizhi
  * @date : 2020-05-05 20:25
  */
+@Slf4j
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
 
@@ -27,7 +29,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
 
-        System.out.println("Authentication failed：" + authException.getMessage());
+        log.warn("Authentication failed：" + authException.getMessage());
         response.setStatus(401);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");

@@ -2,6 +2,7 @@ package com.xupt.xiyoumobile.security;
 
 import com.xupt.xiyoumobile.security.jwt.JwtAuthenticationEntryPoint;
 import com.xupt.xiyoumobile.security.jwt.JwtAuthenticationTokenFilter;
+import com.xupt.xiyoumobile.security.provider.UserAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
  * @author : zengshuaizhi
@@ -30,34 +33,43 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
     private final AccessDeniedHandler accessDeniedHandler;
 
-    private final UserDetailsService appUserDetailsService;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
-    private final JwtAuthenticationTokenFilter authenticationTokenFilter;
+    private final AuthenticationFailureHandler authenticationFailureHandler;
+
+    private final LogoutSuccessHandler logoutSuccessHandler;
+
+    private final UserAuthenticationProvider userAuthenticationProvider;
 
     @Autowired
-    public SecurityConfiguration(JwtAuthenticationEntryPoint unauthorizedHandler,
-                                 @Qualifier("ApiAuthenticationAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler,
-                                 @Qualifier("appUserDetailsService") UserDetailsService CustomUserDetailsService,
-                                 JwtAuthenticationTokenFilter authenticationTokenFilter) {
+    public AppSecurityConfiguration(JwtAuthenticationEntryPoint unauthorizedHandler,
+                                    @Qualifier("apiAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler,
+                                    @Qualifier("userLoginSuccessHandler") AuthenticationSuccessHandler authenticationSuccessHandler,
+                                    @Qualifier("userLoginFailureHandler") AuthenticationFailureHandler authenticationFailureHandler,
+                                    @Qualifier("userLogoutSuccessHandler") LogoutSuccessHandler logoutSuccessHandler,
+                                    @Qualifier("userAuthenticationProvider") UserAuthenticationProvider userAuthenticationProvider) {
         this.unauthorizedHandler = unauthorizedHandler;
         this.accessDeniedHandler = accessDeniedHandler;
-        this.appUserDetailsService = CustomUserDetailsService;
-        this.authenticationTokenFilter = authenticationTokenFilter;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
+        this.authenticationFailureHandler = authenticationFailureHandler;
+        this.logoutSuccessHandler = logoutSuccessHandler;
+        this.userAuthenticationProvider = userAuthenticationProvider;
     }
 
-    @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-                // 设置UserDetailsService
-                .userDetailsService(this.appUserDetailsService)
-                // 使用BCrypt进行密码的hash
-                .passwordEncoder(passwordEncoder());
+
+    /**
+     * 配置登录验证逻辑
+     */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth){
+        // 启用我们自定义登陆验证逻辑
+        auth.authenticationProvider(userAuthenticationProvider);
     }
 
     @Bean
@@ -68,24 +80,34 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler).and()
+                .httpBasic().authenticationEntryPoint(unauthorizedHandler)
+                .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/login")
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .and()
+                .cors()
+                .and()
                 // JWT不需要考虑csrf
                 .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 // 基于jwt的会话管理 不需要session管理
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/teacher/**").hasRole("TEACHER")
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .anyRequest().authenticated();
 
 
         // 禁用缓存
         http.headers().cacheControl();
         // 添加JWT filter
-        http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(new JwtAuthenticationTokenFilter(authenticationManager()));
     }
 
     @Override

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @ControllerAdvice
 @Slf4j
-public class OverAllContextExceptionHandler {
+public class OverAllApiExceptionHandler {
 
     /**
      * 处理所有自定义异常
@@ -21,7 +21,7 @@ public class OverAllContextExceptionHandler {
      * @return api rsp
      */
     @ExceptionHandler(UserException.class)
-    public ApiResponse handleCustomException(UserException e) {
+    public ApiResponse handleUserException(UserException e) {
         log.error(e.getApiResponse().getMsg());
         return e.getApiResponse();
     }

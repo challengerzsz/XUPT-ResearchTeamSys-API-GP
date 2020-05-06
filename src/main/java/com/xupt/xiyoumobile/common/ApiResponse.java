@@ -80,10 +80,4 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> createByErrorCodeMsg(int errorCode, String errorMsg) {
         return new ApiResponse<>(errorCode, errorMsg);
     }
-
-    @Override
-    public String toString() {
-//        return "{status: " +
-        return null;
-    }
 }

@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper>
+<mapper namespace="com.xupt.xiyoumobile.web.dao.IUserMapper">
+    
+    <select id="findByUsername" resultType="com.xupt.xiyoumobile.web.entity.User">
+        SELECT * FROM xupt_research_team_user_table WHERE user_account = #{userAccount}
+    </select>
+
+    <select id="selectRoleByUserId" resultType="com.xupt.xiyoumobile.web.entity.Role" parameterType="Long">
+        SELECT role.id, role.role_name FROM xupt_research_team_role_table role
+        LEFT JOIN xupt_research_team_user_role userRole
+        ON role.id = userRole.role_id
+        WHERE userRole.user_id = #{id};
+    </select>
 
 </mapper>
