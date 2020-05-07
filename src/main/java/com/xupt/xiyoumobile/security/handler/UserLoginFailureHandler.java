@@ -33,19 +33,19 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
         String errBody;
 
         if (exception instanceof UsernameNotFoundException) {
-            log.info("[登陆失败] " + exception.getMessage());
+            log.info("[login failed] " + exception.getMessage());
             response.setStatus(200);
             errBody = JSONObject.toJSONString(
                     ApiResponse.createByErrorCodeMsg(ApiRspCode.USER_NOTFOUND.getCode(), exception.getMessage()));
         } else if (exception instanceof BadCredentialsException) {
-            log.info("[登陆失败] " + exception.getMessage());
+            log.info("[login failed] " + exception.getMessage());
             response.setStatus(200);
             errBody = JSONObject.toJSONString(
                     ApiResponse.createByErrorCodeMsg(ApiRspCode.WRONG_PWD.getCode(), exception.getMessage()));
         } else {
-            log.error("[权限校验异常] " + exception.getMessage());
+            log.error("[authentication exception] " + exception.getMessage());
             response.setStatus(500);
-            errBody = JSONObject.toJSONString(ApiResponse.createByErrorMsg("服务端API内部异常"));
+            errBody = JSONObject.toJSONString(ApiResponse.createByErrorMsg("internal server error"));
         }
 
         printWriter.write(errBody);

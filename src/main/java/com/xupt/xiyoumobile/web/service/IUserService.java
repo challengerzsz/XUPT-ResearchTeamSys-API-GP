@@ -1,5 +1,6 @@
 package com.xupt.xiyoumobile.web.service;
 
+import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.entity.User;
 
@@ -15,4 +16,6 @@ public interface IUserService {
     User selectUserByUserAccount(String username);
 
     List<Role> selectRoleByUserId(Long id);
+
+    ApiResponse<String> register(User user);
 }

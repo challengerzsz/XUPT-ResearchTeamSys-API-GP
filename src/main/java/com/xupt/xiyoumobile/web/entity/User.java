@@ -23,11 +23,12 @@ public class User implements Serializable {
     private String img;
     private String userName;
     private String major;
+    private Integer grade;
     private String classify;
     private int team;
     private int guideTeacherId;
     private String personalSignature;
-    private String researchDirection;
+    private Integer researchDirection;
     private int sex;
 
 }

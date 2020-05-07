@@ -2,7 +2,6 @@ package com.xupt.xiyoumobile.config;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,7 +27,7 @@ public class JwtConfig {
 
     @Value("${jwt.expiration}")
     public void setEXPIRATION(Integer expiration) {
-        EXPIRATION = expiration;
+        EXPIRATION = expiration * 1000;
     }
 
     @Value("${jwt.tokenHeader}")

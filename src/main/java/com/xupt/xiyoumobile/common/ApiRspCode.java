@@ -12,7 +12,8 @@ public enum ApiRspCode {
     USER_NOTFOUND(3, "USER_NOTFOUND"),
     WRONG_PWD(4, "WRONG_PWD"),
     UNAUTHORIZED(10, "UNAUTHORIZED"),
-    FORBIDDEN(11, "FORBIDDEN");
+    FORBIDDEN(11, "FORBIDDEN"),
+    DB_ERROR(12, "DB_ERROR");
 
     private final int code;
     private final String desc;

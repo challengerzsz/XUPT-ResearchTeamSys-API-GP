@@ -27,9 +27,6 @@ public class AppUserDetailsService implements UserDetailsService {
 
         if (user != null) {
             SecurityUser securityUser = new SecurityUser();
-//        securityUser.setId(user.getId());
-//        securityUser.setUserAccount(user.getUserAccount());
-//        securityUser.setUserPassword(user.getUserPassword());
             BeanUtils.copyProperties(user, securityUser);
             return securityUser;
         }

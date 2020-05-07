@@ -6,9 +6,7 @@ import com.xupt.xiyoumobile.config.JwtConfig;
 import com.xupt.xiyoumobile.security.entity.SecurityUser;
 import com.xupt.xiyoumobile.security.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 

@@ -31,7 +31,7 @@ public class UserLogoutSuccessHandler implements LogoutSuccessHandler {
         SecurityContextHolder.clearContext();
 
         PrintWriter printWriter = response.getWriter();
-        String body = JSON.toJSONString(ApiResponse.createBySuccessMsg("退出成功"));
+        String body = JSON.toJSONString(ApiResponse.createBySuccessMsg("logout success!"));
         printWriter.write(body);
         printWriter.flush();
         printWriter.close();

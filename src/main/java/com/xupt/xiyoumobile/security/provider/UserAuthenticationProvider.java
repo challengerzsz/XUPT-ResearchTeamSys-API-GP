@@ -48,11 +48,11 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         // 查询用户是否存在
         SecurityUser securityUserInfo = appUserDetailsService.loadUserByUsername(userName);
         if (securityUserInfo == null) {
-            throw new UsernameNotFoundException("用户名不存在");
+            throw new UsernameNotFoundException("UserName not found!");
         }
         // 校验密码
         if (!new BCryptPasswordEncoder().matches(password, securityUserInfo.getPassword())) {
-            throw new BadCredentialsException("密码不正确");
+            throw new BadCredentialsException("Password wrong!");
         }
 
         // 角色集合

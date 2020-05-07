@@ -17,4 +17,6 @@ public interface IUserMapper {
     User findByUsername(String userAccount);
 
     List<Role> selectRoleByUserId(Long id);
+
+    int register(User user);
 }

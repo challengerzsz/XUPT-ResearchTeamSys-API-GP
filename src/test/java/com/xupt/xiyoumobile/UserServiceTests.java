@@ -1,36 +1,30 @@
 package com.xupt.xiyoumobile;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
-import com.xupt.xiyoumobile.config.JwtConfig;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * @author : zengshuaizhi
+ * @date : 2020-05-06 17:52
+ */
 @SpringBootTest
-class ResearchTeamManagementSysApiApplicationTests {
+public class UserServiceTests {
+
+    @Autowired
+    private IUserService userService;
 
     @Test
-    void contextLoads() {
+    void testUserService() {
+        User user = userService.selectUserByUserAccount("04163209");
+        if (user == null) System.out.println("null");
+        System.out.println(user.getUserName());
     }
 
-//    @Autowired
-//    private IUserService userService;
-
-//    @Test
-//    void testPasswordEncoder() {
-//        System.out.println(passwordEncoder.encode("123456"));
-//    }
-//
-//    @Test
-//    void testJwtConfig() {
-//        System.out.println(JwtConfig.TOKEN_PREFIX);
-//        System.out.println(JwtConfig.EXPIRATION);
-//    }
-
-    //    user_account, user_password, user_name, major, grade, classify, research_direction, sex
+//    user_account, user_password, user_name, major, grade, classify, research_direction, sex
     @Test
     void testUserRegister() {
         User user = new User();
@@ -43,7 +37,6 @@ class ResearchTeamManagementSysApiApplicationTests {
         user.setResearchDirection(1);
         user.setSex(1);
 
-//        userService.register(user);
+        userService.register(user);
     }
-
 }

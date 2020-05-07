@@ -68,7 +68,7 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth){
-        // 启用我们自定义登陆验证逻辑
+        // 启用自定义登陆验证逻辑
         auth.authenticationProvider(userAuthenticationProvider);
     }
 
