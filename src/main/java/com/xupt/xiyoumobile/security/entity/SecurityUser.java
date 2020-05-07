@@ -1,6 +1,5 @@
 package com.xupt.xiyoumobile.security.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +21,7 @@ public class SecurityUser implements UserDetails, Serializable {
     private String userAccount;
     private String userName;
     private String userPassword;
+    private Integer ban;
 
 
     /**
@@ -43,7 +43,7 @@ public class SecurityUser implements UserDetails, Serializable {
     /**
      * 账户是否有效
      */
-    private boolean isEnabled = true;
+    private boolean isEnabled = (ban == 0);
 
 
     @Override

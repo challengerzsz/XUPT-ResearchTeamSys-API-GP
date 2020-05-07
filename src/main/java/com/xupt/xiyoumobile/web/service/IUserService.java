@@ -18,4 +18,10 @@ public interface IUserService {
     List<Role> selectRoleByUserId(Long id);
 
     ApiResponse<String> register(User user);
+
+    ApiResponse<String> modifyInfo(User user);
+
+    ApiResponse<User> getUserInfoByUserAccount(String userAccount);
+
+    ApiResponse<String> modifyBanUserStatus(String userAccount, Integer banStatus);
 }

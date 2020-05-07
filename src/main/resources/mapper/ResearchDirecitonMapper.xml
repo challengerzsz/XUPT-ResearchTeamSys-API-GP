@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xupt.xiyoumobile.web.dao.IResearchDirectionMapper">
+    <select id="getAll" resultType="com.xupt.xiyoumobile.web.entity.ResearchDirection">
+        SELECT * FROM xupt_research_team_research_direction_table
+    </select>
+
+    <insert id="addResearchDirection" parameterType="com.xupt.xiyoumobile.web.entity.ResearchDirection">
+        INSERT INTO xupt_research_team_research_direction_table
+        (direction_name, create_time, update_time)
+        VALUES (#{directionName}, now(), now())
+    </insert>
+</mapper>

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
@@ -19,16 +20,18 @@ public class User implements Serializable {
     private Long id;
     private String userAccount;
     @JsonIgnore
+    @NotEmpty(message = "password can not be null")
     private String userPassword;
     private String img;
     private String userName;
     private String major;
     private Integer grade;
     private String classify;
-    private int team;
-    private int guideTeacherId;
+    private Integer team;
+    private Integer guideTeacherId;
     private String personalSignature;
     private Integer researchDirection;
-    private int sex;
+    private Integer sex;
+    private Integer ban;
 
 }

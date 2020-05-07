@@ -7,11 +7,8 @@ import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +56,40 @@ public class UserService implements IUserService {
         }
 
         return ApiResponse.createBySuccessMsg("register user success");
+    }
+
+    @Override
+    public ApiResponse<String> modifyInfo(User user) {
+
+        int updateRes = userMapper.updateUserBySelective(user);
+        if (updateRes == 0) {
+            log.error("userMapper modify user failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "更新用户信息失败");
+        }
+        return null;
+    }
+
+    @Override
+    public ApiResponse<User> getUserInfoByUserAccount(String userAccount) {
+
+        User user = userMapper.findByUsername(userAccount);
+        if (user == null) {
+            return ApiResponse.createByErrorMsg("无该用户账号信息");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", user);
+    }
+
+    @Override
+    public ApiResponse<String> modifyBanUserStatus(String userAccount, Integer banStatus) {
+
+        int banRes = userMapper.banUserByUserAccount(userAccount, banStatus);
+        if (banRes == 0) {
+            log.error("userMapper insert user failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "修改用户禁用状态失败");
+        }
+
+        return ApiResponse.createBySuccessMsg("修改用户禁用状态成功");
     }
 
 

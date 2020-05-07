@@ -113,9 +113,10 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
-                "/swagger-resources/configuration/ui",
-                "/swagger-resources",
-                "/swagger-resources/configuration/security",
+                "/user/register",
+                "/webjars/**",
+                "/swagger-resources/**",
+                "/v2/**",
                 "/swagger-ui.html"
         );
     }

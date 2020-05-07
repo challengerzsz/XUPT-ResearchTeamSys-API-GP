@@ -4,6 +4,7 @@ package com.xupt.xiyoumobile.web.dao;
 import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,4 +20,9 @@ public interface IUserMapper {
     List<Role> selectRoleByUserId(Long id);
 
     int register(User user);
+
+    int updateUserBySelective(User user);
+
+    int banUserByUserAccount(@Param("userAccount") String userAccount, @Param("banStatus") Integer banStatus);
+
 }

@@ -1,6 +1,5 @@
 package com.xupt.xiyoumobile;
 
-import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IUserService;
 import org.junit.jupiter.api.Test;
@@ -38,5 +37,12 @@ public class UserServiceTests {
         user.setSex(1);
 
         userService.register(user);
+    }
+
+    @Test
+    void testModifyUserInfo() {
+        User user = userService.selectUserByUserAccount("04163209");
+        user.setPersonalSignature("还是越努力越幸运！");
+        userService.modifyInfo(user);
     }
 }

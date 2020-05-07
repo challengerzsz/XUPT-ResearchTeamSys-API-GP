@@ -43,7 +43,7 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
             errBody = JSONObject.toJSONString(
                     ApiResponse.createByErrorCodeMsg(ApiRspCode.WRONG_PWD.getCode(), exception.getMessage()));
         } else {
-            log.error("[authentication exception] " + exception.getMessage());
+            log.error("[authentication exception internal server error] " + exception.getMessage());
             response.setStatus(500);
             errBody = JSONObject.toJSONString(ApiResponse.createByErrorMsg("internal server error"));
         }
