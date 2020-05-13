@@ -28,7 +28,8 @@ public class User implements Serializable {
     private Integer grade;
     private String classify;
     private Integer team;
-    private Integer guideTeacherId;
+    private String guideTeacherAccount;
+    private String guideTeacherName;
     private String personalSignature;
     private Integer researchDirection;
     private Integer sex;

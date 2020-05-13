@@ -4,6 +4,7 @@ import com.xupt.xiyoumobile.security.entity.SecurityUser;
 import com.xupt.xiyoumobile.security.user.AppUserDetailsService;
 import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,6 +27,7 @@ import java.util.Set;
  * @author : zengshuaizhi
  * @date : 2020-05-06 16:38
  */
+@Slf4j
 @Component
 public class UserAuthenticationProvider implements AuthenticationProvider {
 

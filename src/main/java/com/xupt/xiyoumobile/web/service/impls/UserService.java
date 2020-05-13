@@ -6,6 +6,7 @@ import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IUserService;
+import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -90,6 +91,22 @@ public class UserService implements IUserService {
         }
 
         return ApiResponse.createBySuccessMsg("修改用户禁用状态成功");
+    }
+
+    @Override
+    public ApiResponse<List<User>> getAllUsersByRoleId(Integer roleId) {
+
+        List<User> allUsers = userMapper.getAllUsersByRoleId(roleId);
+
+        return ApiResponse.createBySuccess("查询成功", allUsers);
+    }
+
+    @Override
+    public ApiResponse<List<UserRoleVo>> getAllUserRole() {
+
+        List<UserRoleVo> userRoleVoList = userMapper.getAllUserRole();
+
+        return ApiResponse.createBySuccess("查询成功", userRoleVoList);
     }
 
 

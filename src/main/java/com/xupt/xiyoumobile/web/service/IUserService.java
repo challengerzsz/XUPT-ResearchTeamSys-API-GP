@@ -3,6 +3,7 @@ package com.xupt.xiyoumobile.web.service;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.entity.User;
+import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 
 import java.util.List;
 
@@ -24,4 +25,9 @@ public interface IUserService {
     ApiResponse<User> getUserInfoByUserAccount(String userAccount);
 
     ApiResponse<String> modifyBanUserStatus(String userAccount, Integer banStatus);
+
+    ApiResponse<List<User>> getAllUsersByRoleId(Integer roleId);
+
+    ApiResponse<List<UserRoleVo>> getAllUserRole();
+
 }

@@ -21,7 +21,7 @@ public class SecurityUser implements UserDetails, Serializable {
     private String userAccount;
     private String userName;
     private String userPassword;
-    private Integer ban;
+    private Integer ban = 0;
 
 
     /**

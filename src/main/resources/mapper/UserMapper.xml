@@ -26,33 +26,36 @@
     <update id="updateUserBySelective" parameterType="com.xupt.xiyoumobile.web.entity.User">
         UPDATE xupt_research_team_user_table
         <set>
-        <if test="img != null">
-            img = #{img},
-        </if>
-        <if test="userName != null">
-            user_name = #{userName},
-        </if>
-        <if test="major != null">
-            major = #{major},
-        </if>
-        <if test="grade != null">
-            grade = #{grade},
-        </if>
-        <if test="classify != null">
-            classify = #{classify},
-        </if>
-        <if test="team != null">
-            team = #{team},
-        </if>
-        <if test="guideTeacherId != null">
-            guide_teacher_id = #{guideTeacherId},
-        </if>
-        <if test="personalSignature != null">
-            personal_signature = #{personalSignature},
-        </if>
-        <if test="researchDirection != null">
-            research_direction = #{researchDirection}
-        </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="major != null">
+                major = #{major},
+            </if>
+            <if test="grade != null">
+                grade = #{grade},
+            </if>
+            <if test="classify != null">
+                classify = #{classify},
+            </if>
+            <if test="team != null">
+                team = #{team},
+            </if>
+            <if test="guideTeacherAccount != null">
+                guide_teacher_account = #{guideTeacherAccount},
+            </if>
+            <if test="guideTeacherName != null">
+                guide_teacher_name = #{guideTeacherName},
+            </if>
+            <if test="personalSignature != null">
+                personal_signature = #{personalSignature},
+            </if>
+            <if test="researchDirection != null">
+                research_direction = #{researchDirection}
+            </if>
         </set>
         WHERE id = #{id}
     </update>
@@ -62,5 +65,20 @@
         SET ban = #{banStatus}
         WHERE user_account = #{userAccount}
     </update>
+
+    <select id="getAllUsersByRoleId" resultType="com.xupt.xiyoumobile.web.entity.User">
+        SELECT * FROM xupt_research_team_user_role_table userRole
+        LEFT JOIN xupt_research_team_user_table user
+        ON userRole.user_id = user.id
+        WHERE userRole.role_id = #{roleId};
+    </select>
+
+    <select id="getAllUserRole" resultType="com.xupt.xiyoumobile.web.vo.UserRoleVo">
+        SELECT user.id, user.user_account, user.user_name, son.role_name
+        From (SELECT role.role_name, userRole.user_id FROM xupt_research_team_role_table role JOIN xupt_research_team_user_role_table userRole
+              ON userRole.role_id = role.id) son
+        JOIN xupt_research_team_user_table user
+        ON son.user_id = user.id;
+    </select>
 
 </mapper>

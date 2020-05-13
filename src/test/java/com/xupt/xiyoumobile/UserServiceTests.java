@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 /**
  * @author : zengshuaizhi
  * @date : 2020-05-06 17:52
@@ -27,14 +29,14 @@ public class UserServiceTests {
     @Test
     void testUserRegister() {
         User user = new User();
-        user.setUserAccount("04163216");
+        user.setUserAccount("04111111");
         user.setUserPassword("123456");
-        user.setUserName("江婷婷");
+        user.setUserName("张荣");
         user.setMajor("软件工程");
-        user.setGrade(1);
-        user.setClassify("学硕");
-        user.setResearchDirection(1);
-        user.setSex(1);
+        user.setGrade(0);
+        user.setClassify("老师");
+        user.setResearchDirection(0);
+        user.setSex(0);
 
         userService.register(user);
     }
@@ -44,5 +46,13 @@ public class UserServiceTests {
         User user = userService.selectUserByUserAccount("04163209");
         user.setPersonalSignature("还是越努力越幸运！");
         userService.modifyInfo(user);
+    }
+
+    @Test
+    void testGetAllUsers() {
+        List<User> users = userService.getAllUsersByRoleId(1).getData();
+        for (User user : users) {
+            System.out.println(user.getUserName());
+        }
     }
 }

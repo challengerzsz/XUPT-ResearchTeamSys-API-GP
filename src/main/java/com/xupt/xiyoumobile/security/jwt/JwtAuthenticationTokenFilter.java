@@ -71,7 +71,7 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
                     //组装参数
                     SecurityUser securityUser = new SecurityUser();
                     securityUser.setUserName(claims.getSubject());
-                    securityUser.setId(Long.parseLong(claims.getId()));
+                    securityUser.setUserAccount(claims.getId());
                     securityUser.setAuthorities(authorities);
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(securityUser, userId, authorities);
@@ -80,6 +80,7 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
             } catch (ExpiredJwtException e) {
                 log.warn("[token expired] " + e.getMessage());
             } catch (Exception e) {
+                e.printStackTrace();
                 log.info("[valid token] " + e.getMessage());
             }
         }

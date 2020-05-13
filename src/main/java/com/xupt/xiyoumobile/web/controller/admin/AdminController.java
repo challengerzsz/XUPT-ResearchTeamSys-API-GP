@@ -2,15 +2,17 @@ package com.xupt.xiyoumobile.web.controller.admin;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
+import com.xupt.xiyoumobile.web.entity.ResearchDirection;
+import com.xupt.xiyoumobile.web.service.IResearchDirectionService;
 import com.xupt.xiyoumobile.web.service.IUserService;
+import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -23,9 +25,12 @@ public class AdminController {
 
     private IUserService userService;
 
+    private IResearchDirectionService researchDirectionService;
+
     @Autowired
-    public AdminController(IUserService userService) {
+    public AdminController(IUserService userService, IResearchDirectionService researchDirectionService) {
         this.userService = userService;
+        this.researchDirectionService = researchDirectionService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -38,5 +43,17 @@ public class AdminController {
         }
 
         return userService.modifyBanUserStatus(userAccount, banStatus);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getAllUserRole")
+    public ApiResponse<List<UserRoleVo>> getAllUserRole() {
+        return userService.getAllUserRole();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getAllResearchDirections")
+    public ApiResponse<List<ResearchDirection>> getAllResearchDirections() {
+        return researchDirectionService.getAll();
     }
 }

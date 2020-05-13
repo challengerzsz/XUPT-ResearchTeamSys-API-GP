@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -26,6 +27,12 @@ public class UserController {
     @Autowired
     public UserController(IUserService userService) {
         this.userService = userService;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getAllUsers/{roleId}")
+    public ApiResponse<List<User>> getAllUsers(@PathVariable("roleId") Integer roleId) {
+        return userService.getAllUsersByRoleId(roleId);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN, TEACHER, STUDENT')")
