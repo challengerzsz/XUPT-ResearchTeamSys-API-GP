@@ -30,4 +30,5 @@ public interface IUserService {
 
     ApiResponse<List<UserRoleVo>> getAllUserRole();
 
+    ApiResponse<String> resetPassword(String userAccount, String oldPwd, String newPwd);
 }

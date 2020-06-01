@@ -81,4 +81,9 @@
         ON son.user_id = user.id;
     </select>
 
+    <select id="selectUserPwd" resultType="java.lang.String">
+        SELECT user_password FROM xupt_research_team_user_table
+        WHERE user_account = #{userAccount}
+    </select>
+
 </mapper>

@@ -41,7 +41,8 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         // 获取请求头中JWT的Token
         String tokenHeader = request.getHeader(JwtConfig.TOKEN_HEADER);
         if (null != tokenHeader && tokenHeader.startsWith(JwtConfig.TOKEN_PREFIX)) {

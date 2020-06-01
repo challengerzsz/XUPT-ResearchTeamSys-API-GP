@@ -8,6 +8,7 @@ import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IUserService;
 import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -107,6 +108,26 @@ public class UserService implements IUserService {
         List<UserRoleVo> userRoleVoList = userMapper.getAllUserRole();
 
         return ApiResponse.createBySuccess("查询成功", userRoleVoList);
+    }
+
+    @Override
+    public ApiResponse<String> resetPassword(String userAccount, String oldPwd, String newPwd) {
+
+        User user = userMapper.findByUsername(userAccount);
+        if (user == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.USER_NOTFOUND.getCode(), "用户不存在");
+        }
+
+        if (passwordEncoder.encode(oldPwd).equals(user.getUserPassword())) {
+            user.setUserPassword(passwordEncoder.encode(newPwd));
+            int update = userMapper.updateUserBySelective(user);
+            if (update == 0) {
+                log.error("db error! update user info failed!");
+                return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB error");
+            }
+        }
+
+        return ApiResponse.createBySuccessMsg("重置密码成功");
     }
 
 

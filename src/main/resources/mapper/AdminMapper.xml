@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xupt.xiyoumobile.web.dao.IAdminMapper">
+
+    <update id="arrangeTeamMember" parameterType="com.xupt.xiyoumobile.web.vo.TeamMemberVo">
+        UPDATE xupt_research_team_user_table
+        SET team = #{teamId}
+        WHERE user_account IN
+        <foreach collection="memberIdList" item="userAccount" open="(" close=")" separator=",">
+            #{userAccount}
+        </foreach>
+    </update>
+
+    <update id="modifyUserRole">
+        UPDATE xupt_research_team_user_role_table
+        SET role_id = #{roleId}
+        WHERE user_id = #{userId}
+    </update>
+
+</mapper>

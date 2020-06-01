@@ -1,12 +1,16 @@
 package com.xupt.xiyoumobile.web.controller.admin;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.web.entity.ResearchDirection;
+import com.xupt.xiyoumobile.web.service.IAdminService;
 import com.xupt.xiyoumobile.web.service.IResearchDirectionService;
 import com.xupt.xiyoumobile.web.service.IUserService;
+import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
 import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,19 +22,23 @@ import java.util.List;
  * @author : zengshuaizhi
  * @date : 2020-05-07 22:19
  */
+@Slf4j
 @Api(description = "Admin api")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+
+    private IAdminService adminService;
 
     private IUserService userService;
 
     private IResearchDirectionService researchDirectionService;
 
     @Autowired
-    public AdminController(IUserService userService, IResearchDirectionService researchDirectionService) {
+    public AdminController(IUserService userService, IResearchDirectionService researchDirectionService, IAdminService adminService) {
         this.userService = userService;
         this.researchDirectionService = researchDirectionService;
+        this.adminService = adminService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -55,5 +63,24 @@ public class AdminController {
     @GetMapping("/getAllResearchDirections")
     public ApiResponse<List<ResearchDirection>> getAllResearchDirections() {
         return researchDirectionService.getAll();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/arrangeTeamMember")
+    public ApiResponse<String> arrangeTeamMember(@RequestBody TeamMemberVo teamMemberVo) {
+        if (teamMemberVo == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "参数错误");
+        }
+
+        return adminService.arrangeTeamMember(teamMemberVo);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/modifyUserRole")
+    public ApiResponse<String> modifyUserRole(String userAccount, Integer roleId) {
+        if (StringUtils.isBlank(userAccount)) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "参数错误");
+        }
+        return adminService.modifyUserRole(userAccount, roleId);
     }
 }

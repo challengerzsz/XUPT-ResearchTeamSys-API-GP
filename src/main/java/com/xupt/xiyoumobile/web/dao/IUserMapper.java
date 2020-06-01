@@ -30,4 +30,6 @@ public interface IUserMapper {
 
     List<UserRoleVo> getAllUserRole();
 
+    String selectUserPwd(String userAccount);
+
 }
