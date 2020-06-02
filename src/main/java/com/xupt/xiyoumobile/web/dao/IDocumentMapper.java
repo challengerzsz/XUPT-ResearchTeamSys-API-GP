@@ -26,7 +26,9 @@ public interface IDocumentMapper {
 
     Document findByDocumentId(Integer documentId);
 
-    int deleteDocumentByUserAccount(@Param("userAccount") String userAccount, @Param("documentId") Integer documentId);
+    int deleteDocumentByUserAccountAndId(@Param("userAccount") String userAccount, @Param("documentId") Integer documentId);
 
     List<Document> getMyUploadDocument(String userAccount);
+
+    int checkValid(@Param("userAccount") String userAccount, @Param("id") Integer id);
 }

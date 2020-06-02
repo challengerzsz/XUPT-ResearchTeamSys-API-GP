@@ -15,7 +15,7 @@ public interface IDocumentService {
 
     ApiResponse<List<Document>> searchDocument(Integer type, String content);
 
-    ApiResponse<String> modifyDocument(Document document);
+    ApiResponse<String> modifyDocument(Principal principal, Document document);
 
     ApiResponse<String> uploadDocumentFile(Integer documentId, MultipartFile multipartFile);
 

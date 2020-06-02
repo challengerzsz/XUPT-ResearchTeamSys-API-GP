@@ -51,12 +51,12 @@ public class DocumentController {
 
     @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
     @PostMapping("/modifyDocument")
-    public ApiResponse<String> modifyDocument(Document document) {
+    public ApiResponse<String> modifyDocument(Principal principal, Document document) {
         if (document == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "参数错误!");
         }
 
-        return documentService.modifyDocument(document);
+        return documentService.modifyDocument(principal, document);
     }
 
     @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")

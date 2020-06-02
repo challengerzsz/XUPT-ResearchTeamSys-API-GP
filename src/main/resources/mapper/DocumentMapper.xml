@@ -68,7 +68,7 @@
         WHERE id = #{documentId}
     </select>
 
-    <delete id="deleteDocumentByUserAccount">
+    <delete id="deleteDocumentByUserAccountAndId">
         DELETE FROM xupt_research_team_document_table
         WHERE uploader = #{userAccount} AND id = #{documentId}
     </delete>
@@ -76,5 +76,10 @@
     <select id="getMyUploadDocument" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
         WHERE uploader = #{userAccount}
+    </select>
+
+    <select id="checkValid">
+        SELECT COUNT(*) FROM xupt_research_team_document_table
+        WHERE id = #{id} AND uploader = #{userAccount}
     </select>
 </mapper>

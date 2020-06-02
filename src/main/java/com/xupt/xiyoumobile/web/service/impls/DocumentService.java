@@ -2,6 +2,7 @@ package com.xupt.xiyoumobile.web.service.impls;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
+import com.xupt.xiyoumobile.security.util.FileUploadUtil;
 import com.xupt.xiyoumobile.web.dao.IDocumentMapper;
 import com.xupt.xiyoumobile.web.entity.Document;
 import com.xupt.xiyoumobile.web.service.IDocumentService;
@@ -13,7 +14,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -58,7 +58,14 @@ public class DocumentService implements IDocumentService {
     }
 
     @Override
-    public ApiResponse<String> modifyDocument(Document document) {
+    public ApiResponse<String> modifyDocument(Principal principal, Document document) {
+
+        int checkRes = documentMapper.checkValid(principal.getName(), document.getId());
+        if (checkRes == 0) {
+            log.warn("Someone is trying to modify other's document!");
+            return ApiResponse.createByErrorMsg("该文献非本人上传，无法修改，并已通知管理员！");
+        }
+
         int modifyRes = documentMapper.modifyDocumentBySelective(document);
         if (modifyRes == 0) {
             log.error("DB Error! modifyDocument failed!");
@@ -99,22 +106,16 @@ public class DocumentService implements IDocumentService {
             return ApiResponse.createByErrorMsg("该文献非本人上传，无法删除");
         }
 
-        int deleteRes = documentMapper.deleteDocumentByUserAccount(userAccount, documentId);
+        int deleteRes = documentMapper.deleteDocumentByUserAccountAndId(userAccount, documentId);
         if (deleteRes == 0) {
             log.error("DB Error! uploadDocument failed!");
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
-        File delFile = new File(document.getPdfUrl());
-        if (delFile.exists()) {
-            if (!delFile.delete()) {
-                log.error("Delete document pdf file failed!");
-                return ApiResponse.createByErrorMsg("删除文献附件失败!");
-            }
-        } else {
-            return ApiResponse.createBySuccessMsg("文献附件不存在，删除文献基本信息成功");
+        if (!FileUploadUtil.deleteFile(document.getPdfUrl())) {
+            log.error("Delete document pdf file failed!");
+            return ApiResponse.createByErrorMsg("报告不存在或删除文献附件失败!");
         }
-
 
         return ApiResponse.createBySuccessMsg("删除文献成功");
     }
@@ -126,22 +127,17 @@ public class DocumentService implements IDocumentService {
             return ApiResponse.createByErrorMsg("未查询到该文献基本信息，无法进行附件上传");
         }
 
-        String fileOriginName = multipartFile.getOriginalFilename();
-        if (fileOriginName == null) {
-            log.error("Get file original name failed! fileOriginName is null!");
-            return ApiResponse.createByErrorMsg("获取文件原始名失败!");
-        }
-        String destFilePath = DOCUMENT_UPLOAD_PATH + fileOriginName;
-        File destFile = new File(destFilePath);
-        try {
-            multipartFile.transferTo(destFile);
-        } catch (IOException e) {
-            log.error("multipartFile transferTo a new file errored!");
-            e.printStackTrace();
+        String destFilePath = FileUploadUtil.uploadFile(multipartFile, DOCUMENT_UPLOAD_PATH);
+        if (destFilePath == null) {
+            return ApiResponse.createByErrorMsg("上传文件失败!");
         }
 
         document.setPdfUrl(destFilePath);
-        documentMapper.modifyDocumentBySelective(document);
+        int modifyDocumentRes = documentMapper.modifyDocumentBySelective(document);
+        if (modifyDocumentRes == 0) {
+            log.error("DB Error! uploadDocument failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
+        }
 
         return ApiResponse.createBySuccessMsg("上传文献附件成功");
     }
