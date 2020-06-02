@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 public class Document {
     private Integer id;
     private String author;
+    private String uploader;
     private String direction;
     private String topic;
     private String abstractContent;
@@ -19,6 +20,7 @@ public class Document {
     private String pdfUrl;
     private String useMethod;
     private String innovation;
+    private String comments;
     private String originPath;
     private Timestamp createTime;
     private Timestamp updateTime;

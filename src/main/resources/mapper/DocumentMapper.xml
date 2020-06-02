@@ -17,4 +17,64 @@
         SELECT * FROM xupt_research_team_document_table
         WHERE direction LIKE #{content}
     </select>
+
+    <update id="modifyDocumentBySelective" parameterType="com.xupt.xiyoumobile.web.entity.Document">
+        UPDATE xupt_research_team_document_table
+        <set>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="direction != null">
+                direction = #{direction},
+            </if>
+            <if test="topic != null">
+                topic = #{topic},
+            </if>
+            <if test="abstractContent != null">
+                abstract_content = #{abstractContent},
+            </if>
+            <if test="organ != null">
+                organ = #{organ},
+            </if>
+            <if test="useMethod != null">
+                use_method = #{useMethod},
+            </if>
+            <if test="innovation != null">
+                innovation = #{innovation},
+            </if>
+            <if test="pdfUrl != null">
+                pdf_url = #{pdfUrl},
+            </if>
+            <if test="comments != null">
+                comments = #{comments},
+            </if>
+            <if test="originPath != null">
+                origin_path = #{originPath},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <insert id="insertDocument" parameterType="com.xupt.xiyoumobile.web.entity.Document">
+        INSERT INTO xupt_research_team_document_table
+        (author, uploader, direction, topic, abstract_content, organ, use_method, innovation, comments, origin_path)
+        VALUES (#{document.author}, #{userAccount}, #{document.direction}, #{document.topic},
+        #{document.abstractContent}, #{document.organ}, #{document.useMethod}, #{document.innovation},
+        #{document.comments}, #{document.originPath})
+    </insert>
+
+    <select id="findByDocumentId" resultType="com.xupt.xiyoumobile.web.entity.Document">
+        SELECT * FROM xupt_research_team_document_table
+        WHERE id = #{documentId}
+    </select>
+
+    <delete id="deleteDocumentByUserAccount">
+        DELETE FROM xupt_research_team_document_table
+        WHERE uploader = #{userAccount} AND id = #{documentId}
+    </delete>
+
+    <select id="getMyUploadDocument" resultType="com.xupt.xiyoumobile.web.entity.Document">
+        SELECT * FROM xupt_research_team_document_table
+        WHERE uploader = #{userAccount}
+    </select>
 </mapper>

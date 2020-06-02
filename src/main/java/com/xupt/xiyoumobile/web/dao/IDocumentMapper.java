@@ -2,6 +2,7 @@ package com.xupt.xiyoumobile.web.dao;
 
 import com.xupt.xiyoumobile.web.entity.Document;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,14 @@ public interface IDocumentMapper {
     List<Document> searchDocumentByAuthor(String content);
 
     List<Document> searchDocumentByDirection(String content);
+
+    int modifyDocumentBySelective(Document document);
+
+    int insertDocument(@Param("userAccount") String userAccount, @Param("document") Document document);
+
+    Document findByDocumentId(Integer documentId);
+
+    int deleteDocumentByUserAccount(@Param("userAccount") String userAccount, @Param("documentId") Integer documentId);
+
+    List<Document> getMyUploadDocument(String userAccount);
 }

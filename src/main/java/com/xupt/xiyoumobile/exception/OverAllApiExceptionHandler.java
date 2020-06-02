@@ -13,8 +13,8 @@ import java.net.BindException;
  * @author : zengshuaizhi
  * @date : 2020-03-26 20:26
  */
-@RestControllerAdvice
 @Slf4j
+@RestControllerAdvice
 public class OverAllApiExceptionHandler {
 
     @ExceptionHandler(UserException.class)
