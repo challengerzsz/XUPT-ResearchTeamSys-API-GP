@@ -2,6 +2,7 @@ package com.xupt.xiyoumobile.web.service;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.Paper;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author : zengshuaizhi
@@ -10,4 +11,12 @@ import com.xupt.xiyoumobile.web.entity.Paper;
 public interface IPaperService {
 
     ApiResponse<String> upload(String userAccount, Paper paper);
+
+    ApiResponse<String> uploadPaperFile(String userAccount, Integer paperId, MultipartFile multipartFile);
+
+    ApiResponse<Paper> getMyPaper(String userAccount, Integer type);
+
+    ApiResponse<Paper> getStudentPaper(String userAccount, Integer type);
+
+    ApiResponse<String> modifyPaper(String userAccount, Paper paper);
 }

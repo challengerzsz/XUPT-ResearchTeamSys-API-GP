@@ -19,4 +19,39 @@
             </if>
         </trim>
     </insert>
+
+    <select id="findPaperById" resultType="com.xupt.xiyoumobile.web.entity.Paper">
+        SELECT * FROM xupt_research_team_paper_table
+        WHERE id = #{paperId}
+    </select>
+
+    <update id="modifyPaperSelective" parameterType="com.xupt.xiyoumobile.web.entity.Paper">
+        UPDATE xupt_research_team_paper_table
+        <set>
+            <if test="topic != null">
+                topic = #{topic},
+            </if>
+            <if test="author != null">
+                author = #{author},
+            </if>
+            <if test="abstractZh != null">
+                abstract_zh = #{abstractZh},
+            </if>
+            <if test="abstract_en != null">
+                abstract_en = #{abstractEn},
+            </if>
+            <if test="pdfUrl != null">
+                pdf_url = #{pdfUrl},
+            </if>
+            <if test="acceptTime != null">
+                accept_time = #{acceptTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="findPaperByUserAccountAndType" resultType="com.xupt.xiyoumobile.web.entity.Paper">
+        SELECT * FROM xupt_research_team_paper_table
+        WHERE author = #{userAccount} AND type = #{type}
+    </select>
 </mapper>

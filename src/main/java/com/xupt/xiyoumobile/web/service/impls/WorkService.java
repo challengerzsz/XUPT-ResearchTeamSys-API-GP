@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.security.Principal;
-
 /**
  * @author : zengshuaizhi
  * @date : 2020-06-02 16:15
@@ -24,7 +21,7 @@ import java.security.Principal;
 public class WorkService implements IWorkService {
 
     @Value("${upload.report}")
-    private String WORK_REPORT_PATH;
+    private String WORK_REPORT_UPLOAD_PATH;
 
     private IWorkMapper workMapper;
 
@@ -69,7 +66,7 @@ public class WorkService implements IWorkService {
             return ApiResponse.createByErrorMsg("未查询到该报告基本信息，无法进行附件上传");
         }
 
-        String destFilePath = FileUploadUtil.uploadFile(multipartFile, WORK_REPORT_PATH);
+        String destFilePath = FileUploadUtil.uploadFile(multipartFile, WORK_REPORT_UPLOAD_PATH);
         if (destFilePath == null) {
             return ApiResponse.createByErrorMsg("上传文件失败!");
         }
