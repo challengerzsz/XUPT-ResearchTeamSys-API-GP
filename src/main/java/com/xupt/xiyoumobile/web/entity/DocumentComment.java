@@ -7,7 +7,7 @@ import lombok.Data;
  * @date : 2020-05-15 03:18
  */
 @Data
-public class PaperComment {
+public class DocumentComment {
 
     private Integer id;
     private Integer paperId;

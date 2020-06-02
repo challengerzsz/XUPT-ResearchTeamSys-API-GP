@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xupt.xiyoumobile.web.dao.IPaperMapper">
+    <insert id="insertPaper" parameterType="com.xupt.xiyoumobile.web.entity.Paper">
+        INSERT INTO xupt_research_team_paper_table
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            topic, author, abstract_zh, abstract_en, type,
+            <if test="acceptTime != null">
+                accept_time,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{topic}, #{author}, #{abstractZh}, #{abstractEn}, #{type},
+            <if test="acceptTime != null">
+                #{acceptTime},
+            </if>
+        </trim>
+    </insert>
+</mapper>

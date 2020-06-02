@@ -5,17 +5,17 @@
 <mapper namespace="com.xupt.xiyoumobile.web.dao.IDocumentMapper">
     <select id="searchDocumentByTopic" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
-        WHERE topic LIKE #{content}
+        WHERE topic LIKE CONCAT(#{content}, '%')
     </select>
 
     <select id="searchDocumentByAuthor" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
-        WHERE author LIKE #{content}
+        WHERE author LIKE CONCAT(#{content}, '%')
     </select>
 
     <select id="searchDocumentByDirection" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
-        WHERE direction LIKE #{content}
+        WHERE direction LIKE CONCAT(#{content}, '%')
     </select>
 
     <update id="modifyDocumentBySelective" parameterType="com.xupt.xiyoumobile.web.entity.Document">

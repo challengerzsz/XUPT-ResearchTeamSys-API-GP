@@ -40,8 +40,8 @@ public class DocumentController {
      * @return
      */
     @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
-    @GetMapping("/search/{type}/{content}")
-    public ApiResponse<List<Document>> searchDocument(@PathVariable Integer type, @PathVariable String content) {
+    @GetMapping("/search/{type}")
+    public ApiResponse<List<Document>> searchDocument(@PathVariable Integer type, @RequestParam String content) {
         if (StringUtils.isBlank(content)) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "检索内容为空!");
         }

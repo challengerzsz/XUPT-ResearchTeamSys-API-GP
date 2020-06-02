@@ -6,14 +6,18 @@ import java.sql.Timestamp;
 
 /**
  * @author : zengshuaizhi
- * @date : 2020-06-02 16:08
+ * @date : 2020-06-02 19:30
  */
 @Data
-public class WorkReport {
+public class Paper {
 
     private Integer id;
+    private String topic;
     private String author;
-    private String reportUrl;
+    private String abstractZh;
+    private String abstractEn;
+    private String pdfUrl;
+    private String acceptTime;
     private Integer type;
     private Timestamp createTime;
     private Timestamp updateTime;

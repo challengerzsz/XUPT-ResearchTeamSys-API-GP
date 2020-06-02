@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @date : 2020-05-14 23:43
  */
 @Mapper
-public class IWeeklyReportMapper {
+public interface IWeeklyReportMapper {
 }
