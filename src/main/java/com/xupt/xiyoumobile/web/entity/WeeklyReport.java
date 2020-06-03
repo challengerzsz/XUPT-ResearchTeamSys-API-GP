@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @Data
 public class WeeklyReport {
     private Integer id;
+    private String title;
     private String userAccount;
     private String reportContent;
     private Timestamp createTime;
