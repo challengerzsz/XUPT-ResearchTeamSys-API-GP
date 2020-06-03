@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xupt.xiyoumobile.web.dao.IAchievementMapper">
+
+    <insert id="insertCompetition" parameterType="com.xupt.xiyoumobile.web.entity.Competition">
+        INSERT INTO xupt_research_team_competition_table
+        (competition_name, category, level, members, competition_time)
+        VALUES (#{competitionName}, #{category}, #{level}, #{members}, #{competitionTime})
+    </insert>
+
+    <select id="getAllCompetition" resultType="com.xupt.xiyoumobile.web.entity.Competition">
+        SELECT * FROM xupt_research_team_competition_table
+    </select>
+
+    <select id="findCompetitionById" resultType="com.xupt.xiyoumobile.web.entity.Competition">
+        SELECT * FROM xupt_research_team_competition_table
+        WHERE id = #{competitionId}
+    </select>
+
+    <delete id="deleteCompetitionById">
+        DELETE FROM xupt_research_team_competition_table
+        WHERE id = #{competitionId}
+    </delete>
+
+    <update id="modifyCompetition" parameterType="com.xupt.xiyoumobile.web.entity.Competition">
+        UPDATE xupt_research_team_competition_table
+        <set>
+            <if test="competitionName != null">
+                competition_name = #{competitionName},
+            </if>
+            <if test="category != null">
+                category = #{category},
+            </if>
+            <if test="level != null">
+                level = #{level},
+            </if>
+            <if test="members != null">
+                members = #{members},
+            </if>
+            <if test="competitionTime != null">
+                competition_time = #{competitionTime},
+            </if>
+            update_time = CURRENT_TIME
+        </set>
+    </update>
+</mapper>
