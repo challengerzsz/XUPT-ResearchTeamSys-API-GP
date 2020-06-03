@@ -3,10 +3,12 @@ package com.xupt.xiyoumobile.web.controller;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.web.entity.Competition;
+import com.xupt.xiyoumobile.web.entity.Patent;
 import com.xupt.xiyoumobile.web.service.IAchievementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -63,5 +65,61 @@ public class AchievementController {
 
         return achievementService.modifyCompetition(competition);
     }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/patent/upload")
+    public ApiResponse<String> uploadPatent(Patent patent) {
+        if (patent == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "上传专利信息参数错误!");
+        }
+
+        return achievementService.uploadPatent(patent);
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/patent/uploadFile/{patentId}")
+    public ApiResponse<String> uploadPatentFile(@PathVariable("patentId") Integer patentId,
+                                                MultipartFile multipartFile) {
+
+        if (patentId == null || multipartFile == null || multipartFile.isEmpty()) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "上传专利附件参数错误!");
+        }
+
+        return achievementService.uploadPatentFile(patentId, multipartFile);
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/patent/delete/{patentId}")
+    public ApiResponse<String> deletePatent(@PathVariable("patentId") Integer patentId) {
+
+        if (patentId == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "删除专利参数错误!");
+        }
+
+        return achievementService.deletePatent(patentId);
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
+    @GetMapping("/patent/getAll")
+    public ApiResponse<List<Patent>> getAllPatent() {
+        return achievementService.getAllPatent();
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/patent/modify")
+    public ApiResponse<String> modifyPatent(Patent patent) {
+
+        if (patent == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "修改专利信息参数错误!");
+        }
+
+        return achievementService.modifyPatent(patent);
+    }
+
+
 
 }

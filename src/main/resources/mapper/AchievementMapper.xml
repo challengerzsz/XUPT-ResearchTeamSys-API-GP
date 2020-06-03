@@ -45,4 +45,46 @@
             update_time = CURRENT_TIME
         </set>
     </update>
+
+    <insert id="insertPatent" parameterType="com.xupt.xiyoumobile.web.entity.Patent">
+        INSERT INTO xupt_research_team_patent_table
+        (patent_name, members, status, patent_time)
+        VALUES (#{patentName}, #{members}, #{status}, #{patentTime})
+    </insert>
+
+    <select id="findPatentById" resultType="com.xupt.xiyoumobile.web.entity.Patent">
+        SELECT * FROM xupt_research_team_patent_table
+        WHERE id = #{patentId}
+    </select>
+
+    <delete id="deletePatent">
+        DELETE FROM xupt_research_team_patent_table
+        WHERE id = #{patentId}
+    </delete>
+
+    <update id="modifyPatent" parameterType="com.xupt.xiyoumobile.web.entity.Patent">
+        UPDATE xupt_research_team_patent_table
+        <set>
+            <if test="patentName != null">
+                patent_name = #{patentName},
+            </if>
+            <if test="members != null">
+                members = #{members},
+            </if>
+            <if test="filePath != null">
+                file_path = #{filePath},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="patentTime != null">
+                patent_time = #{patentTime},
+            </if>
+            update_time = CURRENT_TIME
+        </set>
+    </update>
+
+    <select id="getAllPatent" resultType="com.xupt.xiyoumobile.web.entity.Patent">
+        SELECT * FROM xupt_research_team_patent_table
+    </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.xupt.xiyoumobile.web.dao;
 
 import com.xupt.xiyoumobile.web.entity.Competition;
+import com.xupt.xiyoumobile.web.entity.Patent;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -21,4 +22,15 @@ public interface IAchievementMapper {
     int deleteCompetitionById(Integer competitionId);
 
     int modifyCompetition(Competition competition);
+
+    int insertPatent(Patent patent);
+
+    Patent findPatentById(Integer patentId);
+
+    int deletePatent(Integer patentId);
+
+    int modifyPatent(Patent patent);
+
+    List<Patent> getAllPatent();
+
 }

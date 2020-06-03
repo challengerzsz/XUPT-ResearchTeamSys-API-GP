@@ -2,6 +2,8 @@ package com.xupt.xiyoumobile.web.service;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.Competition;
+import com.xupt.xiyoumobile.web.entity.Patent;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,4 +20,14 @@ public interface IAchievementService {
     ApiResponse<String> deleteCompetition(Integer competitionId);
 
     ApiResponse<String> modifyCompetition(Competition competition);
+
+    ApiResponse<String> uploadPatent(Patent patent);
+
+    ApiResponse<String> deletePatent(Integer patentId);
+
+    ApiResponse<String> uploadPatentFile(Integer patentId, MultipartFile multipartFile);
+
+    ApiResponse<List<Patent>> getAllPatent();
+
+    ApiResponse<String> modifyPatent(Patent patent);
 }
