@@ -6,6 +6,7 @@ import com.xupt.xiyoumobile.security.util.FileUploadUtil;
 import com.xupt.xiyoumobile.web.dao.IAchievementMapper;
 import com.xupt.xiyoumobile.web.entity.Competition;
 import com.xupt.xiyoumobile.web.entity.Patent;
+import com.xupt.xiyoumobile.web.entity.SoftWareCopyright;
 import com.xupt.xiyoumobile.web.service.IAchievementService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,15 @@ public class AchievementService implements IAchievementService {
 
     @Value("${upload.patent}")
     private String PATENT_UPLOAD_PATH;
+
+    @Value("${upload.softWareCopyright.document")
+    private String SOFTWARE_COPYRIGHT_DOCUMENT_PATH;
+
+    @Value("${upload.softWareCopyright.project")
+    private String SOFTWARE_COPYRIGHT_PROJECT_PATH;
+
+    @Value("${upload.softWareCopyright.certificate")
+    private String SOFTWARE_COPYRIGHT_CERTIFICATE_PATH;
 
     private IAchievementMapper achievementMapper;
 
@@ -133,9 +143,9 @@ public class AchievementService implements IAchievementService {
 
         patent.setFilePath(destPath);
 
-        ApiResponse<String> modifyRes = commonModifyPatent(patent);
-        if (!modifyRes.isSuccess()) {
-            return modifyRes;
+        if (commonModifyPatent(patent)) {
+            log.error("DB Error! modifyPatent failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
         return ApiResponse.createBySuccessMsg("上传专利附件成功");
@@ -154,16 +164,93 @@ public class AchievementService implements IAchievementService {
 
     @Override
     public ApiResponse<String> modifyPatent(Patent patent) {
-        return commonModifyPatent(patent);
-    }
-
-    private ApiResponse<String> commonModifyPatent(Patent patent) {
-        int modifyPatentRes = achievementMapper.modifyPatent(patent);
-        if (modifyPatentRes == 0) {
+        if (commonModifyPatent(patent)) {
             log.error("DB Error! modifyPatent failed!");
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
+        return ApiResponse.createBySuccessMsg("修改专利信息成功");
+    }
+
+    @Override
+    public ApiResponse<String> uploadSoftWareCopyright(SoftWareCopyright softWareCopyright) {
+
+        int uploadSoftWareCopyrightRes = achievementMapper.insertSoftWareCopyright(softWareCopyright);
+        if (uploadSoftWareCopyrightRes == 0) {
+            log.error("DB Error! insertSoftWareCopyright failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
+        }
+
+        return ApiResponse.createBySuccessMsg("上传软件著作权信息成功");
+    }
+
+    @Override
+    public ApiResponse<String> uploadSoftWareCopyrightFiles(Integer softWareCopyrightId, MultipartFile document,
+                                                            MultipartFile project, MultipartFile certificate) {
+
+        SoftWareCopyright softWareCopyright = achievementMapper.findSoftWareCopyrightById(softWareCopyrightId);
+        if (softWareCopyright == null) {
+            return ApiResponse.createByErrorMsg("软件著作权信息不存在，上传附件失败!");
+        }
+
+        if (document != null && !document.isEmpty()) {
+            String documentDestPath = FileUploadUtil.uploadFile(document, SOFTWARE_COPYRIGHT_DOCUMENT_PATH);
+            if (documentDestPath != null) {
+                softWareCopyright.setDocumentPath(documentDestPath);
+            }
+        }
+
+        if (project != null && !project.isEmpty()) {
+            String projectDestPath = FileUploadUtil.uploadFile(project, SOFTWARE_COPYRIGHT_PROJECT_PATH);
+            if (projectDestPath != null) {
+                softWareCopyright.setProjectPath(projectDestPath);
+            }
+        }
+
+        if (certificate != null && !certificate.isEmpty()) {
+            String certificateDestPath = FileUploadUtil.uploadFile(certificate, SOFTWARE_COPYRIGHT_CERTIFICATE_PATH);
+            if (certificateDestPath != null) {
+                softWareCopyright.setCertificatePath(certificateDestPath);
+            }
+        }
+
+
+        if (commonModifySoftWareCopyright(softWareCopyright)) {
+            log.error("DB Error! modifySoftwareCopyright failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
+        }
+
+        return ApiResponse.createBySuccessMsg("上传软件著作权附件成功");
+    }
+
+    @Override
+    public ApiResponse<String> modifySoftWareCopyright(SoftWareCopyright softWareCopyright) {
+        if (commonModifySoftWareCopyright(softWareCopyright)) {
+            log.error("DB Error! modifySoftwareCopyright failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
+        }
+
         return ApiResponse.createBySuccessMsg("更新专利信息成功");
+    }
+
+    @Override
+    public ApiResponse<List<SoftWareCopyright>> getAllSoftWareCopyright() {
+
+        List<SoftWareCopyright> softWareCopyrights = achievementMapper.getAllSoftWareCopyright();
+        if (CollectionUtils.isEmpty(softWareCopyrights)) {
+            return ApiResponse.createByErrorMsg("未上传任何软件著作权信息!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", softWareCopyrights);
+    }
+
+    private Boolean commonModifySoftWareCopyright(SoftWareCopyright softWareCopyright) {
+        int modifySoftwareCopyrightRes = achievementMapper.modifySoftwareCopyright(softWareCopyright);
+        return modifySoftwareCopyrightRes == 0;
+    }
+
+    private Boolean commonModifyPatent(Patent patent) {
+        int modifyPatentRes = achievementMapper.modifyPatent(patent);
+        return modifyPatentRes == 0;
     }
 }

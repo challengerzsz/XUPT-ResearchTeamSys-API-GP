@@ -3,6 +3,7 @@ package com.xupt.xiyoumobile.web.service;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.Competition;
 import com.xupt.xiyoumobile.web.entity.Patent;
+import com.xupt.xiyoumobile.web.entity.SoftWareCopyright;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -30,4 +31,13 @@ public interface IAchievementService {
     ApiResponse<List<Patent>> getAllPatent();
 
     ApiResponse<String> modifyPatent(Patent patent);
+
+    ApiResponse<String> uploadSoftWareCopyright(SoftWareCopyright softWareCopyright);
+
+    ApiResponse<String> uploadSoftWareCopyrightFiles(Integer softWareCopyrightId, MultipartFile document,
+                                                     MultipartFile project, MultipartFile certificate);
+
+    ApiResponse<String> modifySoftWareCopyright(SoftWareCopyright softWareCopyright);
+
+    ApiResponse<List<SoftWareCopyright>> getAllSoftWareCopyright();
 }

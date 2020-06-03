@@ -4,7 +4,9 @@ import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.web.entity.Competition;
 import com.xupt.xiyoumobile.web.entity.Patent;
+import com.xupt.xiyoumobile.web.entity.SoftWareCopyright;
 import com.xupt.xiyoumobile.web.service.IAchievementService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.List;
  * @author : zengshuaizhi
  * @date : 2020-06-03 13:32
  */
+@Slf4j
 @RestController
 @RequestMapping("/achievement")
 public class AchievementController {
@@ -120,6 +123,48 @@ public class AchievementController {
         return achievementService.modifyPatent(patent);
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/softWareCopyright/upload")
+    public ApiResponse<String> uploadSoftWareCopyright(SoftWareCopyright softWareCopyright) {
+        if (softWareCopyright == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "上传软件著作权信息参数错误!");
+        }
 
+        return achievementService.uploadSoftWareCopyright(softWareCopyright);
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/softWareCopyright/uploadFile/{softWareCopyrightId}")
+    public ApiResponse<String> uploadSoftWareCopyrightFiles(@PathVariable("softWareCopyrightId") Integer softWareCopyrightId,
+                                                            @RequestParam(value = "document", required = false) MultipartFile document,
+                                                            @RequestParam(value = "project", required = false) MultipartFile project,
+                                                            @RequestParam(value = "certificate", required = false) MultipartFile certificate) {
+
+        if (softWareCopyrightId == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "上传软件著作权附件参数错误!");
+        }
+
+        return achievementService.uploadSoftWareCopyrightFiles(softWareCopyrightId, document, project, certificate);
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/softWareCopyright/modify")
+    public ApiResponse<String> modifySoftWareCopyright(SoftWareCopyright softWareCopyright) {
+
+        if (softWareCopyright == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "修改软件著作权信息参数错误!");
+        }
+
+        return achievementService.modifySoftWareCopyright(softWareCopyright);
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
+    @GetMapping("/softWareCopyright/getAll")
+    public ApiResponse<List<SoftWareCopyright>> getAllSoftWareCopyright() {
+        return achievementService.getAllSoftWareCopyright();
+    }
 
 }

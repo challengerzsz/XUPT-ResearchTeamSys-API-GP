@@ -87,4 +87,44 @@
     <select id="getAllPatent" resultType="com.xupt.xiyoumobile.web.entity.Patent">
         SELECT * FROM xupt_research_team_patent_table
     </select>
+
+    <insert id="insertSoftWareCopyright" parameterType="com.xupt.xiyoumobile.web.entity.SoftWareCopyright">
+        INSERT INTO xupt_research_team_software_copyright_table
+        (software_copyright_name, members, time)
+        VALUES (#{softwareCopyrightName}, #{members}, #{time})
+    </insert>
+
+    <select id="findSoftWareCopyrightById" resultType="com.xupt.xiyoumobile.web.entity.SoftWareCopyright">
+        SELECT * FROM xupt_research_team_software_copyright_table
+        WHERE id = #{softWareCopyrightId}
+    </select>
+
+    <update id="modifySoftwareCopyright" parameterType="com.xupt.xiyoumobile.web.entity.SoftWareCopyright">
+        UPDATE xupt_research_team_software_copyright_table
+        <set>
+            <if test="softwareCopyrightName != null">
+                software_copyright_name = #{softwareCopyrightName},
+            </if>
+            <if test="members != null">
+                members = #{members},
+            </if>
+            <if test="documentPath != null">
+                document_path = #{documentPath},
+            </if>
+            <if test="projectPath != null">
+                project_path = #{projectPath},
+            </if>
+            <if test="certificatePath != null">
+                certificate_path = #{certificatePath},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            update_time = CURRENT_TIME
+        </set>
+    </update>
+
+    <select id="getAllSoftWareCopyright" resultType="com.xupt.xiyoumobile.web.entity.SoftWareCopyright">
+        SELECT * FROM xupt_research_team_software_copyright_table
+    </select>
 </mapper>

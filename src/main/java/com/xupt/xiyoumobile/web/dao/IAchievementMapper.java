@@ -2,6 +2,7 @@ package com.xupt.xiyoumobile.web.dao;
 
 import com.xupt.xiyoumobile.web.entity.Competition;
 import com.xupt.xiyoumobile.web.entity.Patent;
+import com.xupt.xiyoumobile.web.entity.SoftWareCopyright;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -33,4 +34,11 @@ public interface IAchievementMapper {
 
     List<Patent> getAllPatent();
 
+    int insertSoftWareCopyright(SoftWareCopyright softWareCopyright);
+
+    SoftWareCopyright findSoftWareCopyrightById(Integer softWareCopyrightId);
+
+    int modifySoftwareCopyright(SoftWareCopyright softWareCopyright);
+
+    List<SoftWareCopyright> getAllSoftWareCopyright();
 }
