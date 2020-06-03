@@ -1,7 +1,10 @@
 package com.xupt.xiyoumobile.web.service;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
+import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
+
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -12,4 +15,9 @@ public interface IAdminService {
     ApiResponse<String> arrangeTeamMember(TeamMemberVo teamMemberVo);
 
     ApiResponse<String> modifyUserRole(String userAccount, Integer roleId);
+
+    ApiResponse<List<AdminClaimExpenseStatisticsVo>> getClaimExpenseStatistics(Integer type, String typeName, String beginDate,
+                                                                               String endDate);
+
+    ApiResponse<Integer> getAchievementStatistics(Integer type);
 }

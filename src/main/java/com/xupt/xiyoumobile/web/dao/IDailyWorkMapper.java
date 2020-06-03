@@ -2,7 +2,9 @@ package com.xupt.xiyoumobile.web.dao;
 
 import com.xupt.xiyoumobile.web.entity.ClaimExpense;
 import com.xupt.xiyoumobile.web.entity.Project;
+import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,4 +32,9 @@ public interface IDailyWorkMapper {
     int deleteProjectById(Integer projectId);
 
     int modifyProject(Project project);
+
+    AdminClaimExpenseStatisticsVo getClaimExpenseStatisticsByUserAccount(String userAccount);
+
+    AdminClaimExpenseStatisticsVo getClaimExpenseStatisticsByTypeName(@Param("userAccount") String userAccount,
+                                                                            @Param("typeName") String typeName);
 }

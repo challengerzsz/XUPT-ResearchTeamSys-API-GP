@@ -19,4 +19,38 @@
         WHERE user_id = #{userId}
     </update>
 
+    <select id="getClaimExpenseStatisticsByUserAccount" resultType="com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo">
+        SELECT t.userAccount, count(*) count FROM xupt_research_team_claim_expense_table t
+        WHERE t.create_time BETWEEN #{beginDate} AND #{endDate}
+        GROUP BY t.userAccount
+        ORDER BY count ASC
+    </select>
+
+    <select id="getClaimExpenseStatisticsByType" resultType="com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo">
+        SELECT t.userAccount, count(*) count FROM xupt_research_team_claim_expense_table t
+        WHERE (t.create_time BETWEEN #{beginDate} AND #{endDate}) AND t.type = #{typeName}
+        GROUP BY t.userAccount
+        ORDER BY count ASC;
+    </select>
+
+    <select id="getPaperStatistics">
+        SELECT COUNT(*) FROM xupt_research_team_paper_table
+        WHERE type = 0 AND create_time > DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+    </select>
+
+    <select id="getCompetitionStatistics">
+        SELECT COUNT(*) FROM xupt_research_team_competition_table
+        WHERE create_time > DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+    </select>
+
+    <select id="getPatentStatistics">
+        SELECT COUNT(*) FROM xupt_research_team_patent_table
+        WHERE create_time > DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+    </select>
+
+    <select id="getSoftWareCopyrightStatistics">
+        SELECT COUNT(*) FROM xupt_research_team_software_copyright_table
+        WHERE create_time > DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+    </select>
+
 </mapper>

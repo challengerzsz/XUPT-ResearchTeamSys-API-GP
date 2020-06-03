@@ -94,4 +94,9 @@
             update_time = CURRENT_TIME
         </set>
     </update>
+
+    <select id="getClaimExpenseStatisticsByUserAccount" resultType="com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo">
+        SELECT t.userAccount, count(*) count FROM xupt_research_team_claim_expense_table t
+        WHERE userAccount = #{userAccount}
+    </select>
 </mapper>

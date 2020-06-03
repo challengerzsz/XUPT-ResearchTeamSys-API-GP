@@ -3,7 +3,9 @@ package com.xupt.xiyoumobile.web.service;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.ClaimExpense;
 import com.xupt.xiyoumobile.web.entity.Project;
+import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -27,4 +29,6 @@ public interface IDailyWorkService {
     ApiResponse<String> deleteProject(Integer projectId);
 
     ApiResponse<String> modifyProject(Project project);
+
+    ApiResponse<AdminClaimExpenseStatisticsVo> getClaimExpenseStatistics(Integer type, String typeName, Principal principal);
 }

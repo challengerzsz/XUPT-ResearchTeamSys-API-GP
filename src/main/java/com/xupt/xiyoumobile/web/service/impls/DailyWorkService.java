@@ -8,11 +8,13 @@ import com.xupt.xiyoumobile.web.entity.Project;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IDailyWorkService;
 import com.xupt.xiyoumobile.web.service.IUserService;
+import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -148,5 +150,38 @@ public class DailyWorkService implements IDailyWorkService {
         }
 
         return ApiResponse.createBySuccessMsg("修改项目信息成功");
+    }
+
+    /**
+     * 查看个人报销统计
+     * @param type 0:总览 1:类型
+     * @param typeName
+     * @param principal
+     * @return
+     */
+    @Override
+    public ApiResponse<AdminClaimExpenseStatisticsVo> getClaimExpenseStatistics(Integer type, String typeName,
+                                                                                      Principal principal) {
+
+        String userAccount = principal.getName();
+        AdminClaimExpenseStatisticsVo result = null;
+
+        switch (type) {
+            case 0:
+                result = dailyWorkMapper.getClaimExpenseStatisticsByUserAccount(userAccount);
+                break;
+            case 1:
+                if (typeName == null) {
+                    return ApiResponse.createByErrorMsg("查看个人报销统计参数出错!");
+                }
+                result = dailyWorkMapper.getClaimExpenseStatisticsByTypeName(userAccount, typeName);
+                break;
+        }
+
+        if (result == null) {
+            return ApiResponse.createByErrorMsg("未查询到个人报销数据!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", result);
     }
 }

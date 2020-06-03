@@ -1,12 +1,12 @@
 package com.xupt.xiyoumobile.web.controller.admin;
 
-import com.alibaba.fastjson.JSONObject;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.web.entity.ResearchDirection;
 import com.xupt.xiyoumobile.web.service.IAdminService;
 import com.xupt.xiyoumobile.web.service.IResearchDirectionService;
 import com.xupt.xiyoumobile.web.service.IUserService;
+import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
 import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 import io.swagger.annotations.Api;
@@ -82,5 +82,34 @@ public class AdminController {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "参数错误");
         }
         return adminService.modifyUserRole(userAccount, roleId);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/statistics/claimExpense/{type}")
+    public ApiResponse<List<AdminClaimExpenseStatisticsVo>> getClaimExpenseStatistics(
+            @PathVariable("type") Integer type,
+            @RequestParam String beginDate,
+            @RequestParam String endDate,
+            @RequestParam(required = false) String typeName) {
+
+        if (type == null || beginDate == null || endDate == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "查询报销统计参数错误!");
+        }
+
+        return adminService.getClaimExpenseStatistics(type, typeName, beginDate, endDate);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/statistics/achievement/{type}")
+    public ApiResponse<Integer> getAchievementStatistics(
+            @PathVariable("type") Integer type) {
+
+        if (type == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "查询成果统计参数错误!");
+        }
+
+        return adminService.getAchievementStatistics(type);
     }
 }

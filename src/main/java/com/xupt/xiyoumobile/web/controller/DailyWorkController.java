@@ -5,12 +5,10 @@ import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.web.entity.ClaimExpense;
 import com.xupt.xiyoumobile.web.entity.Project;
 import com.xupt.xiyoumobile.web.service.IDailyWorkService;
+import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -43,7 +41,7 @@ public class DailyWorkController {
     }
 
     @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
-    @PostMapping("/claimExpense/getAllMyClaimExpense")
+    @GetMapping("/claimExpense/getAllMyClaimExpense")
     public ApiResponse<List<ClaimExpense>> getAllMyClaimExpense(Principal principal) {
         return dailyWorkService.getAllMyClaimExpense(principal.getName());
     }
@@ -85,7 +83,7 @@ public class DailyWorkController {
     }
 
     @PreAuthorize("hasRole('TEACHER, STUDENT')")
-    @PostMapping("/project/getAll")
+    @GetMapping("/project/getAll")
     public ApiResponse<List<Project>> getAllProject() {
         return dailyWorkService.getAllProject();
     }
@@ -112,4 +110,20 @@ public class DailyWorkController {
 
         return dailyWorkService.modifyProject(project);
     }
+
+    @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
+    @GetMapping("/statistics/claimExpense/{type}")
+    public ApiResponse<AdminClaimExpenseStatisticsVo> getClaimExpenseStatistics(
+            @PathVariable("type") Integer type,
+            @RequestParam(required = false) String typeName,
+            Principal principal) {
+        if (type == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "查看统计信息参数错误!");
+        }
+
+        return dailyWorkService.getClaimExpenseStatistics(type, typeName, principal);
+    }
+
+
 }

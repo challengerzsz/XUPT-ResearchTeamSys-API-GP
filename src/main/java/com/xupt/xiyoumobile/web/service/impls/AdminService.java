@@ -6,10 +6,14 @@ import com.xupt.xiyoumobile.web.dao.IAdminMapper;
 import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IAdminService;
+import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -56,5 +60,67 @@ public class AdminService implements IAdminService {
         }
 
         return ApiResponse.createBySuccessMsg("修改用户权限成功");
+    }
+
+    /**
+     * 管理员查看报销统计
+     * @param type 0:按人 1:按类型
+     * @return
+     */
+    @Override
+    public ApiResponse<List<AdminClaimExpenseStatisticsVo>> getClaimExpenseStatistics(
+            Integer type, String typeName, String beginDate, String endDate) {
+
+        List<AdminClaimExpenseStatisticsVo> result = null;
+        // 这switch case 有魔数了 如果后来有人维护这个API 把这改一下吧..
+        switch (type) {
+            case 0:
+                result = adminMapper.getClaimExpenseStatisticsByUserAccount(beginDate, endDate);
+                break;
+            case 1:
+                if (typeName == null) {
+                    return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                            "按类型查询报销记录参数错误");
+                }
+                result = adminMapper.getClaimExpenseStatisticsByType(typeName, beginDate, endDate);
+                break;
+        }
+
+        if (CollectionUtils.isEmpty(result)) {
+            ApiResponse.createByErrorMsg("未查询到记录!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", result);
+    }
+
+    /**
+     *
+     * @param type 0:论文 1:竞赛 2:专利 3:软件著作权
+     * @return
+     */
+    @Override
+    public ApiResponse<Integer> getAchievementStatistics(Integer type) {
+
+        Integer result = null;
+        switch (type) {
+            case 0:
+                result = adminMapper.getPaperStatistics();
+                break;
+            case 1:
+                result = adminMapper.getCompetitionStatistics();
+                break;
+            case 2:
+                result = adminMapper.getPatentStatistics();
+                break;
+            case 3:
+                result = adminMapper.getSoftWareCopyrightStatistics();
+                break;
+        }
+
+        if (result == null) {
+            return ApiResponse.createByErrorMsg("未查询到相关统计记录!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", result);
     }
 }
