@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,39 +52,15 @@ public class JwtAuthenticationTokenFilter extends BasicAuthenticationFilter {
                 // 截取JWT前缀
                 String token = tokenHeader.replace(JwtConfig.TOKEN_PREFIX, "");
                 // 解析JWT
-                Claims claims = Jwts.parser()
-                        .setSigningKey(JwtConfig.SECRET)
-                        .parseClaimsJws(token)
-                        .getBody();
-                // 获取用户名
-                String username = claims.getSubject();
-                String userId = claims.getId();
-                if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(userId)) {
-                    // 获取角色
-                    List<GrantedAuthority> authorities = new ArrayList<>();
-                    String authority = claims.get("authorities").toString();
-                    if (!StringUtils.isEmpty(authority)) {
-                        List<Map<String, String>> authorityMap = JSONObject.parseObject(authority, List.class);
-                        for (Map<String, String> role : authorityMap) {
-                            if (!Collections.isEmpty(role)) {
-                                authorities.add(new SimpleGrantedAuthority(role.get("authority")));
-                            }
-                        }
-                    }
-                    //组装参数
-                    SecurityUser securityUser = new SecurityUser();
-                    securityUser.setUserName(claims.getSubject());
-                    securityUser.setUserAccount(claims.getId());
-                    securityUser.setAuthorities(authorities);
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(securityUser, userId, authorities);
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                Principal principal = JwtUtil.authenticateJsonWebToken(token);
+                if (principal != null) {
+                    SecurityContextHolder.getContext().setAuthentication((Authentication) principal);
                 }
             } catch (ExpiredJwtException e) {
                 log.warn("[token expired] " + e.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
-                log.info("[valid token] " + e.getMessage());
+                log.error("[valid token] " + e.getMessage());
             }
         }
         filterChain.doFilter(request, response);

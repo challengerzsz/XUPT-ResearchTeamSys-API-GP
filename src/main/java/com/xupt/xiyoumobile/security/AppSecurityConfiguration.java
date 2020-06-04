@@ -117,7 +117,8 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/webjars/**",
                 "/swagger-resources/**",
                 "/v2/**",
-                "/swagger-ui.html"
+                "/swagger-ui.html",
+                "/im-server/**"
         );
     }
 
