@@ -37,10 +37,8 @@ class ResearchTeamManagementSysApiApplicationTests {
         user.setUserAccount("04163216");
         user.setUserPassword("123456");
         user.setUserName("江婷婷");
-        user.setMajor("软件工程");
-        user.setGrade(1);
         user.setClassify("学硕");
-        user.setResearchDirection(1);
+        user.setResearchDirection("AI");
         user.setSex(1);
 
 //        userService.register(user);

@@ -48,7 +48,7 @@ public class UserService implements IUserService {
     public ApiResponse<String> register(User user) {
 
         // passwordEncoder 加密
-        user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+        user.setUserPassword(passwordEncoder.encode(user.getUserAccount()));
 
         int mod = userMapper.register(user);
 
@@ -57,7 +57,7 @@ public class UserService implements IUserService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "注册失败");
         }
 
-        return ApiResponse.createBySuccessMsg("register user success");
+        return ApiResponse.createBySuccessMsg("注册成功");
     }
 
     @Override
@@ -68,7 +68,7 @@ public class UserService implements IUserService {
             log.error("userMapper modify user failed!");
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "更新用户信息失败");
         }
-        return null;
+        return ApiResponse.createBySuccessMsg("更新用户信息成功");
     }
 
     @Override

@@ -50,8 +50,9 @@ public class UserController {
         return userService.getUserInfoByUserAccount(userAccount);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
-    public ApiResponse<String> register(@Valid User user) {
+    public ApiResponse<String> register(User user) {
         if (user == null) {
             return ApiResponse.createByErrorMsg("用户信息为空，注册失败");
         }

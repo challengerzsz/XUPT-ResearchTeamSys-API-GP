@@ -36,7 +36,7 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setContentType("application/json; charset=utf-8");
 
         PrintWriter printWriter = response.getWriter();
-        String body = JSON.toJSONString(ApiResponse.createBySuccess(token));
+        String body = JSON.toJSONString(ApiResponse.createBySuccess("登录成功", token));
         printWriter.write(body);
         printWriter.flush();
         printWriter.close();

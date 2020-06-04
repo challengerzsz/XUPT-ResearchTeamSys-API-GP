@@ -20,18 +20,15 @@ public class User implements Serializable {
     private Long id;
     private String userAccount;
     @JsonIgnore
-    @NotEmpty(message = "password can not be null")
     private String userPassword;
     private String img;
     private String userName;
-    private String major;
-    private Integer grade;
     private String classify;
     private Integer team;
     private String guideTeacherAccount;
     private String guideTeacherName;
     private String personalSignature;
-    private Integer researchDirection;
+    private String researchDirection;
     private Integer sex;
     private Integer ban;
 

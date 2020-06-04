@@ -32,10 +32,8 @@ public class UserServiceTests {
         user.setUserAccount("04111111");
         user.setUserPassword("123456");
         user.setUserName("张荣");
-        user.setMajor("软件工程");
-        user.setGrade(0);
         user.setClassify("老师");
-        user.setResearchDirection(0);
+        user.setResearchDirection("AI");
         user.setSex(0);
 
         userService.register(user);

@@ -18,9 +18,8 @@
     <!--注册接口提供的是db中非空数据 无选择性地insert-->
     <insert id="register" parameterType="com.xupt.xiyoumobile.web.entity.User">
         INSERT INTO xupt_research_team_user_table
-        (user_account, user_password, user_name, major, grade, classify, research_direction, sex)
-        VALUES (#{userAccount}, #{userPassword}, #{userName}, #{major}, #{grade},
-        #{classify}, #{researchDirection}, #{sex})
+        (user_account, user_password, user_name, classify, research_direction, sex)
+        VALUES (#{userAccount}, #{userPassword}, #{userName}, #{classify}, #{researchDirection}, #{sex})
     </insert>
 
     <update id="updateUserBySelective" parameterType="com.xupt.xiyoumobile.web.entity.User">
