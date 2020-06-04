@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,11 +35,15 @@ public class AdminController {
 
     private IResearchDirectionService researchDirectionService;
 
+    private SimpMessagingTemplate simpMessagingTemplate;
+
     @Autowired
-    public AdminController(IUserService userService, IResearchDirectionService researchDirectionService, IAdminService adminService) {
+    public AdminController(IUserService userService, IResearchDirectionService researchDirectionService,
+                           IAdminService adminService, SimpMessagingTemplate simpMessagingTemplate) {
         this.userService = userService;
         this.researchDirectionService = researchDirectionService;
         this.adminService = adminService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -111,5 +116,18 @@ public class AdminController {
         }
 
         return adminService.getAchievementStatistics(type);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/publishNotice")
+    public ApiResponse<String> publishNotice(@RequestParam("notice") String notice) {
+
+        if (notice == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "发布公告信息不能为空!");
+        }
+
+        simpMessagingTemplate.convertAndSend("/topic/all", notice);
+        return ApiResponse.createBySuccessMsg("发布公告成功");
     }
 }

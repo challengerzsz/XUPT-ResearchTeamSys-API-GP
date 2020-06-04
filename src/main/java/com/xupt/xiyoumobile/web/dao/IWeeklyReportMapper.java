@@ -1,6 +1,11 @@
 package com.xupt.xiyoumobile.web.dao;
 
+import com.xupt.xiyoumobile.web.entity.WeeklyReport;
+import com.xupt.xiyoumobile.web.entity.WeeklyReportComment;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -8,4 +13,16 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface IWeeklyReportMapper {
+
+    int insertWeeklyReport(WeeklyReport weeklyReport);
+
+    List<WeeklyReport> getAllWeeklyReportByUserAccount(String userAccount);
+
+    WeeklyReport findWeeklyReportById(Integer weeklyReportId);
+
+    int insertWeeklyReportComment(@Param("weeklyReportId") Integer weeklyReportId,
+                                  @Param("userAccount") String userAccount,
+                                  @Param("comment") String comment);
+
+    List<WeeklyReportComment> findWeeklyReportCommentById(Integer weeklyReportId);
 }
