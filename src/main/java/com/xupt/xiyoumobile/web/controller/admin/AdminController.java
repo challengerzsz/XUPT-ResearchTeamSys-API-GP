@@ -86,7 +86,7 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/statistics/claimExpense/{type}")
-    public ApiResponse<List<AdminClaimExpenseStatisticsVo>> getClaimExpenseStatistics(
+    public ApiResponse<List<AdminClaimExpenseStatisticsVo>> getAdminClaimExpenseStatistics(
             @PathVariable("type") Integer type,
             @RequestParam String beginDate,
             @RequestParam String endDate,
