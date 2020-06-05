@@ -41,12 +41,12 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/getTeacherInfo/{type}/{userName}")
+    @GetMapping("/getUserSimpleInfo/{type}/{userName}")
     public ApiResponse<SimpleUserInfoVo> getUserSimpleInfo(@PathVariable("type") Integer type,
                                                            @PathVariable("userName") String userName) {
         if (type == null || userName == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
-                    "查询老师信息失败，参数错误!");
+                    "查询用户简单信息失败，参数错误!");
         }
 
         return userService.getUserSimpleInfo(type, userName);
