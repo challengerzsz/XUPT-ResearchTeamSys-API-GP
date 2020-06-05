@@ -6,6 +6,7 @@ import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IUserService;
+import com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo;
 import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -139,6 +140,17 @@ public class UserService implements IUserService {
         }
 
         return ApiResponse.createBySuccessMsg("重置密码成功");
+    }
+
+    @Override
+    public ApiResponse<SimpleUserInfoVo> getUserSimpleInfo(Integer type, String userName) {
+
+        SimpleUserInfoVo simpleUserInfoVo = userMapper.getUserSimpleInfo(type, userName);
+        if (simpleUserInfoVo == null) {
+            return ApiResponse.createByErrorMsg("不存在该类型用户!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", simpleUserInfoVo);
     }
 
 

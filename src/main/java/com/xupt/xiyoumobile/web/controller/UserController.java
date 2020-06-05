@@ -4,6 +4,7 @@ import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IUserService;
+import com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +40,18 @@ public class UserController {
         return userService.getAllUsersByRoleId(roleId);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getTeacherInfo/{type}/{userName}")
+    public ApiResponse<SimpleUserInfoVo> getUserSimpleInfo(@PathVariable("type") Integer type,
+                                                           @PathVariable("userName") String userName) {
+        if (type == null || userName == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "查询老师信息失败，参数错误!");
+        }
+
+        return userService.getUserSimpleInfo(type, userName);
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN, TEACHER, STUDENT')")
     @GetMapping("/info")
     public ApiResponse<User> getUserInfo(Principal principal) {
@@ -67,7 +80,7 @@ public class UserController {
         }
         return userService.modifyInfo(user);
     }
-    
+
     @PreAuthorize(("hasAnyRole('ADMIN, TEACHER, STUDENT')"))
     @PostMapping("/resetPwd")
     public ApiResponse<String> resetPassword(String userAccount, String oldPwd, String newPwd) {
@@ -75,7 +88,7 @@ public class UserController {
         if (StringUtils.isAnyBlank(userAccount, oldPwd, newPwd)) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "参数错误");
         }
-        
+
         return userService.resetPassword(userAccount, oldPwd, newPwd);
     }
 

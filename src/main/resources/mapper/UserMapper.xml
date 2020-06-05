@@ -85,4 +85,13 @@
         VALUES (#{userId}, #{role})
     </insert>
 
+    <select id="getUserSimpleInfo" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
+        SELECT son.* FROM
+        (SELECT user.user_name, user.user_account
+        FROM xupt_research_team_user_role_table userRole
+        JOIN xupt_research_team_user_table user
+        ON userRole.user_id = user.id
+        WHERE userRole.role_id = 3) son;
+    </select>
+
 </mapper>
