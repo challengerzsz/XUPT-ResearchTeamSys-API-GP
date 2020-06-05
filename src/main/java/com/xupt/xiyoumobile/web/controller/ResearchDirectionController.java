@@ -28,7 +28,7 @@ public class ResearchDirectionController {
         this.researchDirectionService = researchDirectionService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN, STUDENT')")
+    @PreAuthorize("hasAnyRole('ADMIN, STUDENT, TEACHER')")
     @GetMapping("/getAll")
     public ApiResponse<List<ResearchDirection>> getAllResearchDirection() {
         return researchDirectionService.getAll();
