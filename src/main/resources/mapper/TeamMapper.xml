@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xupt.xiyoumobile.web.dao.ITeamMapper">
+    <insert id="insertTeam" parameterType="com.xupt.xiyoumobile.web.entity.Team">
+        INSERT INTO xupt_research_team_team_table
+        (guide_teacher_account, guide_teacher_name, team_name, student_count, team_direction)
+        VALUES
+        (#{guideTeacherAccount}, #{guideTeacherName}, #{teamName}, #{studentCount}, #{teamDirection})
+    </insert>
+
+    <select id="findTeamByTeacherName" resultType="com.xupt.xiyoumobile.web.entity.Team">
+        SELECT * FROM xupt_research_team_team_table
+        WHERE guide_teacher_name = #{teacherName}
+    </select>
+
+    <delete id="deleteTeamById">
+        DELETE FROM xupt_research_team_team_table
+        WHERE id = #{teamId}
+    </delete>
+
+    <update id="modifyTeamInfo" parameterType="com.xupt.xiyoumobile.web.entity.Team">
+        UPDATE xupt_research_team_team_table
+        <set>
+            <if test="teamName != null">
+                team_name = #{teamName},
+            </if>
+            <if test="teamImg != null">
+                team_img = #{teamImg},
+            </if>
+            <if test="studentCount != null">
+                student_count = #{studentCount},
+            </if>
+            <if test="teamDirection != null">
+                team_direction = #{teamDirection},
+            </if>
+            update_time = CURRENT_TIMESTAMP
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

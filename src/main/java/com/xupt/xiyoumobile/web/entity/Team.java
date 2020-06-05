@@ -12,7 +12,8 @@ import java.sql.Timestamp;
 public class Team {
 
     private Integer id;
-    private String guideTeacher;
+    private String guideTeacherAccount;
+    private String guideTeacherName;
     private String teamName;
     private String teamImg;
     private Integer studentCount;
