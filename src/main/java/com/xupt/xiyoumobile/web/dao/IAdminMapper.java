@@ -32,4 +32,14 @@ public interface IAdminMapper {
     Integer getPatentStatistics();
 
     Integer getSoftWareCopyrightStatistics();
+
+    Integer countTeam();
+
+    Integer countMember();
+
+    Integer countAchievement();
+
+    Integer countPaper();
+
+    Integer countDocument();
 }

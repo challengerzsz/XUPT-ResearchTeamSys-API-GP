@@ -73,7 +73,7 @@
     </select>
 
     <select id="getAllUserRole" resultType="com.xupt.xiyoumobile.web.vo.UserRoleVo">
-        SELECT user.id, user.user_account, user.user_name, son.role_name
+        SELECT user.id, user.user_account, user.user_name, son.role_name, user.ban
         From (SELECT role.role_name, userRole.user_id FROM xupt_research_team_role_table role JOIN xupt_research_team_user_role_table userRole
               ON userRole.role_id = role.id) son
         JOIN xupt_research_team_user_table user
@@ -84,5 +84,11 @@
         SELECT user_password FROM xupt_research_team_user_table
         WHERE user_account = #{userAccount}
     </select>
+
+    <insert id="insertUserRole">
+        INSERT INTO xupt_research_team_user_role_table
+        (user_id, role_id)
+        VALUES (#{userId}, #{role})
+    </insert>
 
 </mapper>

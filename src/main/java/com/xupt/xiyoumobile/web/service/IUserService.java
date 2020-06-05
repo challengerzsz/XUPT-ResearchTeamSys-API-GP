@@ -18,7 +18,7 @@ public interface IUserService {
 
     List<Role> selectRoleByUserId(Long id);
 
-    ApiResponse<String> register(User user);
+    ApiResponse<String> register(User user, Integer role);
 
     ApiResponse<String> modifyInfo(User user);
 

@@ -25,6 +25,7 @@ import java.util.List;
 public class UserService implements IUserService {
 
     private IUserMapper userMapper;
+
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -45,7 +46,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ApiResponse<String> register(User user) {
+    public ApiResponse<String> register(User user, Integer role) {
 
         // passwordEncoder 加密
         user.setUserPassword(passwordEncoder.encode(user.getUserAccount()));
@@ -55,6 +56,16 @@ public class UserService implements IUserService {
         if (mod == 0) {
             log.error("userMapper insert user failed!");
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "注册失败");
+        }
+
+        // 因为没有用mybatis的插入回写主键 这里需要查一下userId
+        Long userId = userMapper.findByUsername(user.getUserAccount()).getId();
+
+        // 写用户权限表
+        int insertUserRoleRes = userMapper.insertUserRole(userId, role);
+        if (insertUserRoleRes == 0) {
+            log.error("DB Error! insertUserRole failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
         return ApiResponse.createBySuccessMsg("注册成功");

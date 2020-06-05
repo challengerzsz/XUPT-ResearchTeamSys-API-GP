@@ -13,5 +13,6 @@ public class UserRoleVo {
     private String userAccount;
     private String userName;
     private String roleName;
+    private Integer ban;
 
 }

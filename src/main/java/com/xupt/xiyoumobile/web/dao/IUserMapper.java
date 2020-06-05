@@ -30,4 +30,5 @@ public interface IUserMapper {
 
     List<UserRoleVo> getAllUserRole();
 
+    int insertUserRole(@Param("userId") Long userId, @Param("role") Integer role);
 }

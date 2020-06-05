@@ -53,4 +53,24 @@
         WHERE create_time > DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
     </select>
 
+    <select id="countTeam" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM xupt_research_team_team_table
+    </select>
+
+    <select id="countMember" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM xupt_research_team_user_table
+    </select>
+
+    <select id="countPaper" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM xupt_research_team_paper_table
+    </select>
+
+    <select id="countDocument" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM xupt_research_team_document_table
+    </select>
+
+    <select id="countAchievement" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM xupt_research_team_patent_table
+    </select>
+
 </mapper>

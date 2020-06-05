@@ -2,6 +2,7 @@ package com.xupt.xiyoumobile.web.service;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
+import com.xupt.xiyoumobile.web.vo.CountVo;
 import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface IAdminService {
                                                                                String endDate);
 
     ApiResponse<Integer> getAchievementStatistics(Integer type);
+
+    ApiResponse<CountVo> countAll();
 }

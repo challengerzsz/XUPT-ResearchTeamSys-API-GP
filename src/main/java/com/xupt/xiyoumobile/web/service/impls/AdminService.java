@@ -7,6 +7,7 @@ import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IAdminService;
 import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
+import com.xupt.xiyoumobile.web.vo.CountVo;
 import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,5 +123,17 @@ public class AdminService implements IAdminService {
         }
 
         return ApiResponse.createBySuccess("查询成功", result);
+    }
+
+    @Override
+    public ApiResponse<CountVo> countAll() {
+        CountVo countVo = new CountVo();
+        countVo.setTeamCount(adminMapper.countTeam());
+        countVo.setMemberCount(adminMapper.countMember());
+        countVo.setAchievementCount(adminMapper.countAchievement());
+        countVo.setDocumentCount(adminMapper.countDocument());
+        countVo.setPaperCount(adminMapper.countPaper());
+
+        return ApiResponse.createBySuccess("查询成功", countVo);
     }
 }

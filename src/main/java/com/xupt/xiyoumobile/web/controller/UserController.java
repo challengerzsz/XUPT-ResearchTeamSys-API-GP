@@ -52,11 +52,11 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
-    public ApiResponse<String> register(User user) {
-        if (user == null) {
+    public ApiResponse<String> register(User user, Integer role) {
+        if (user == null || role == null) {
             return ApiResponse.createByErrorMsg("用户信息为空，注册失败");
         }
-        return userService.register(user);
+        return userService.register(user, role);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN, TEACHER, STUDENT')")

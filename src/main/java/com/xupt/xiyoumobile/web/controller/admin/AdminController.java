@@ -7,6 +7,7 @@ import com.xupt.xiyoumobile.web.service.IAdminService;
 import com.xupt.xiyoumobile.web.service.IResearchDirectionService;
 import com.xupt.xiyoumobile.web.service.IUserService;
 import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
+import com.xupt.xiyoumobile.web.vo.CountVo;
 import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
 import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 import io.swagger.annotations.Api;
@@ -129,5 +130,11 @@ public class AdminController {
 
         simpMessagingTemplate.convertAndSend("/topic/all", notice);
         return ApiResponse.createBySuccessMsg("发布公告成功");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/countAll")
+    public ApiResponse<CountVo> countAll() {
+        return adminService.countAll();
     }
 }
