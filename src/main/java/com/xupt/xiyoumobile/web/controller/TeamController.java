@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author : zengshuaizhi
  * @date : 2020-06-05 16:32
@@ -65,5 +67,10 @@ public class TeamController {
         }
 
         return teamService.modifyTeamInfo(team);
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getAllTeam")
+    public ApiResponse<List<Team>> getAllTeam() {
+        return teamService.getAllTeam();
     }
 }

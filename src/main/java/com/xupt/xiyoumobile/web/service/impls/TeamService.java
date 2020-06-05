@@ -8,6 +8,9 @@ import com.xupt.xiyoumobile.web.service.ITeamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -70,5 +73,16 @@ public class TeamService implements ITeamService {
         }
 
         return ApiResponse.createBySuccessMsg("修改小组信息成功");
+    }
+
+    @Override
+    public ApiResponse<List<Team>> getAllTeam() {
+
+        List<Team> teams = teamMapper.getAllTeam();
+        if (CollectionUtils.isEmpty(teams)) {
+            return ApiResponse.createByErrorMsg("该系统中不存在小组信息，请创建小组!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", teams);
     }
 }

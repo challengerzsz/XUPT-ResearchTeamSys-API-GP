@@ -39,4 +39,8 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <select id="getAllTeam" resultType="com.xupt.xiyoumobile.web.entity.Team">
+        SELECT * FROM xupt_research_team_team_table
+    </select>
 </mapper>

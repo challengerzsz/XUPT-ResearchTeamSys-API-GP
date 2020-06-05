@@ -31,12 +31,6 @@
             <if test="userName != null">
                 user_name = #{userName},
             </if>
-            <if test="major != null">
-                major = #{major},
-            </if>
-            <if test="grade != null">
-                grade = #{grade},
-            </if>
             <if test="classify != null">
                 classify = #{classify},
             </if>

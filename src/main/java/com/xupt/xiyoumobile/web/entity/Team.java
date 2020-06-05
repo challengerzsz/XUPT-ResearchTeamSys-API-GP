@@ -17,7 +17,7 @@ public class Team {
     private String teamName;
     private String teamImg;
     private Integer studentCount;
-    private Integer teamDirection;
+    private String teamDirection;
     private Timestamp createTime;
     private Timestamp updateTime;
 

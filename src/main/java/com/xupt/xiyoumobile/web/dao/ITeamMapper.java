@@ -3,6 +3,8 @@ package com.xupt.xiyoumobile.web.dao;
 import com.xupt.xiyoumobile.web.entity.Team;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @author : zengshuaizhi
  * @date : 2020-06-05 16:44
@@ -17,4 +19,7 @@ public interface ITeamMapper {
     int deleteTeamById(Integer teamId);
 
     int modifyTeamInfo(Team team);
+
+    List<Team> getAllTeam();
+
 }
