@@ -59,7 +59,7 @@
         WHERE id = #{id}
     </update>
 
-    <update id="banUserByUserAccount" parameterType="java.lang.String">
+    <update id="banUserByUserAccount">
         UPDATE xupt_research_team_user_table
         SET ban = #{banStatus}
         WHERE user_account = #{userAccount}
