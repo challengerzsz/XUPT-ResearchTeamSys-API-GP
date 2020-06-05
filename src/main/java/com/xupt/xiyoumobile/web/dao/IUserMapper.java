@@ -33,5 +33,5 @@ public interface IUserMapper {
 
     int insertUserRole(@Param("userId") Long userId, @Param("role") Integer role);
 
-    SimpleUserInfoVo getUserSimpleInfo(@Param("type") Integer type, @Param("userName") String userName);
+    List<SimpleUserInfoVo> getUserSimpleInfo(Integer type);
 }

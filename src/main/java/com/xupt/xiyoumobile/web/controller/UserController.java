@@ -41,15 +41,14 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/getUserSimpleInfo/{type}/{userName}")
-    public ApiResponse<SimpleUserInfoVo> getUserSimpleInfo(@PathVariable("type") Integer type,
-                                                           @PathVariable("userName") String userName) {
-        if (type == null || userName == null) {
+    @GetMapping("/getUserSimpleInfo/{type}")
+    public ApiResponse<List<SimpleUserInfoVo>> getUserSimpleInfo(@PathVariable("type") Integer type) {
+        if (type == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
                     "查询用户简单信息失败，参数错误!");
         }
 
-        return userService.getUserSimpleInfo(type, userName);
+        return userService.getUserSimpleInfo(type);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN, TEACHER, STUDENT')")

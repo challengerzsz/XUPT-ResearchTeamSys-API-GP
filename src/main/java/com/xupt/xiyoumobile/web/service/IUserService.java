@@ -32,6 +32,6 @@ public interface IUserService {
 
     ApiResponse<String> resetPassword(String userAccount, String oldPwd, String newPwd);
 
-    ApiResponse<SimpleUserInfoVo> getUserSimpleInfo(Integer type, String userName);
+    ApiResponse<List<SimpleUserInfoVo>> getUserSimpleInfo(Integer type);
 
 }

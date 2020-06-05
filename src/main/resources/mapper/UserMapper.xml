@@ -91,7 +91,7 @@
         FROM xupt_research_team_user_role_table userRole
         JOIN xupt_research_team_user_table user
         ON userRole.user_id = user.id
-        WHERE userRole.role_id = 3) son;
+        WHERE userRole.role_id = #{type}) son;
     </select>
 
 </mapper>

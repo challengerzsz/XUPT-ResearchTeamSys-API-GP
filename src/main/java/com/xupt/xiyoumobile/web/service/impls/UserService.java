@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -143,14 +144,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ApiResponse<SimpleUserInfoVo> getUserSimpleInfo(Integer type, String userName) {
+    public ApiResponse<List<SimpleUserInfoVo>> getUserSimpleInfo(Integer type) {
 
-        SimpleUserInfoVo simpleUserInfoVo = userMapper.getUserSimpleInfo(type, userName);
-        if (simpleUserInfoVo == null) {
+        List<SimpleUserInfoVo> simpleUserInfoVoList = userMapper.getUserSimpleInfo(type);
+        if (CollectionUtils.isEmpty(simpleUserInfoVoList)) {
             return ApiResponse.createByErrorMsg("不存在该类型用户!");
         }
 
-        return ApiResponse.createBySuccess("查询成功", simpleUserInfoVo);
+        return ApiResponse.createBySuccess("查询成功", simpleUserInfoVoList);
     }
 
 
