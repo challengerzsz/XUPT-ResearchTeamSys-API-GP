@@ -154,5 +154,16 @@ public class UserService implements IUserService {
         return ApiResponse.createBySuccess("查询成功", simpleUserInfoVoList);
     }
 
+    @Override
+    public ApiResponse<List<SimpleUserInfoVo>> getAllNoTeamStudent() {
+
+        List<SimpleUserInfoVo> simpleUserInfoVoList = userMapper.getAllNoTeamStudent();
+        if (CollectionUtils.isEmpty(simpleUserInfoVoList)) {
+            return ApiResponse.createByErrorMsg("系统中无未分组的同学!");
+        }
+
+        return ApiResponse.createBySuccess("查询未分组同学成功", simpleUserInfoVoList);
+    }
+
 
 }

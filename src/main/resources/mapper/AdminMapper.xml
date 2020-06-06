@@ -4,11 +4,11 @@
 
 <mapper namespace="com.xupt.xiyoumobile.web.dao.IAdminMapper">
 
-    <update id="arrangeTeamMember" parameterType="com.xupt.xiyoumobile.web.vo.TeamMemberVo">
+    <update id="arrangeTeamMember" parameterType="com.xupt.xiyoumobile.web.vo.ArrangeTeamVo">
         UPDATE xupt_research_team_user_table
-        SET team = #{teamId}
+        SET team = #{teamId}, guide_teacher_account = #{guideTeacherAccount}, guide_teacher_name = #{guideTeacherAccount}
         WHERE user_account IN
-        <foreach collection="memberIdList" item="userAccount" open="(" close=")" separator=",">
+        <foreach collection="memberAccountList" item="userAccount" open="(" close=")" separator=",">
             #{userAccount}
         </foreach>
     </update>

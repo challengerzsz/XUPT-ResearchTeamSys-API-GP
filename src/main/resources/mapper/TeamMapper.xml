@@ -43,4 +43,15 @@
     <select id="getAllTeam" resultType="com.xupt.xiyoumobile.web.entity.Team">
         SELECT * FROM xupt_research_team_team_table
     </select>
+
+    <select id="getTeamInfoByTeacherAccount" resultType="com.xupt.xiyoumobile.web.entity.Team">
+        SELECT * FROM xupt_research_team_team_table
+        WHERE guide_teacher_account = #{teacherAccount}
+    </select>
+
+    <update id="addTeamStudentCount">
+        UPDATE xupt_research_team_team_table
+        SET student_count = student_count + #{size}
+        WHERE id = #{teamId}
+    </update>
 </mapper>

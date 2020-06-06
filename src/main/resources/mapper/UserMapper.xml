@@ -94,4 +94,11 @@
         WHERE userRole.role_id = #{type}) son;
     </select>
 
+    <select id="getAllNoTeamStudent" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
+        SELECT * FROM xupt_research_team_user_role_table userRole
+            JOIN xupt_research_team_user_table user
+                ON userRole.user_id = user.id
+        WHERE userRole.role_id = 3 AND user.team IS NULL
+    </select>
+
 </mapper>

@@ -8,7 +8,7 @@ import com.xupt.xiyoumobile.web.service.IResearchDirectionService;
 import com.xupt.xiyoumobile.web.service.IUserService;
 import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 import com.xupt.xiyoumobile.web.vo.CountVo;
-import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
+import com.xupt.xiyoumobile.web.vo.ArrangeTeamVo;
 import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -73,12 +73,12 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/arrangeTeamMember")
-    public ApiResponse<String> arrangeTeamMember(@RequestBody TeamMemberVo teamMemberVo) {
-        if (teamMemberVo == null) {
+    public ApiResponse<String> arrangeTeamMember(@RequestBody ArrangeTeamVo arrangeTeamVo) {
+        if (arrangeTeamVo == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "参数错误");
         }
 
-        return adminService.arrangeTeamMember(teamMemberVo);
+        return adminService.arrangeTeamMember(arrangeTeamVo);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

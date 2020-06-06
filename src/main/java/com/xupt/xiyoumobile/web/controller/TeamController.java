@@ -73,4 +73,15 @@ public class TeamController {
     public ApiResponse<List<Team>> getAllTeam() {
         return teamService.getAllTeam();
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getTeamInfoByTeacherAccount/{teacherAccount}")
+    public ApiResponse<List<Team>> getTeamInfoByTeacherAccount(@PathVariable("teacherAccount") Integer teacherAccount) {
+        if (teacherAccount == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "获取老师指导小组失败,参数错误!");
+        }
+
+        return teamService.getTeamInfoByTeacherAccount(teacherAccount);
+    }
 }

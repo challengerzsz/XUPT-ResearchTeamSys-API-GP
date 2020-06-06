@@ -34,4 +34,6 @@ public interface IUserService {
 
     ApiResponse<List<SimpleUserInfoVo>> getUserSimpleInfo(Integer type);
 
+    ApiResponse<List<SimpleUserInfoVo>> getAllNoTeamStudent();
+
 }

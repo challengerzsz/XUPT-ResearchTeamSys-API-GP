@@ -9,8 +9,10 @@ import java.util.List;
  * @date : 2020-05-22 11:06
  */
 @Data
-public class TeamMemberVo {
+public class ArrangeTeamVo {
 
     private Integer teamId;
-    private List<String> memberIdList;
+    private String guideTeacherAccount;
+    private String guideTeacherName;
+    private List<String> memberAccountList;
 }

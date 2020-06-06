@@ -3,15 +3,18 @@ package com.xupt.xiyoumobile.web.service.impls;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.web.dao.IAdminMapper;
+import com.xupt.xiyoumobile.web.dao.ITeamMapper;
 import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IAdminService;
 import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 import com.xupt.xiyoumobile.web.vo.CountVo;
-import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
+import com.xupt.xiyoumobile.web.vo.ArrangeTeamVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -28,20 +31,27 @@ public class AdminService implements IAdminService {
 
     private IUserMapper userMapper;
 
+    private ITeamMapper teamMapper;
+
     @Autowired
-    public AdminService(IAdminMapper adminMapper, IUserMapper userMapper) {
+    public AdminService(IAdminMapper adminMapper, IUserMapper userMapper, ITeamMapper teamMapper) {
         this.adminMapper = adminMapper;
         this.userMapper = userMapper;
+        this.teamMapper = teamMapper;
     }
 
     @Override
-    public ApiResponse<String> arrangeTeamMember(TeamMemberVo teamMemberVo) {
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public ApiResponse<String> arrangeTeamMember(ArrangeTeamVo arrangeTeamVo) {
 
-        int arrangeRes = adminMapper.arrangeTeamMember(teamMemberVo);
+        int arrangeRes = adminMapper.arrangeTeamMember(arrangeTeamVo);
         if (arrangeRes == 0) {
             log.error("DB error ! arrangeTeamMember failed!");
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB error");
         }
+
+        int addTeamStudentCountRes = teamMapper.addTeamStudentCount(arrangeTeamVo.getTeamId(),
+                arrangeTeamVo.getMemberAccountList().size());
 
         return ApiResponse.createBySuccessMsg("安排小组成员成功");
     }

@@ -85,4 +85,15 @@ public class TeamService implements ITeamService {
 
         return ApiResponse.createBySuccess("查询成功", teams);
     }
+
+    @Override
+    public ApiResponse<List<Team>> getTeamInfoByTeacherAccount(Integer teacherAccount) {
+
+        List<Team> teams = teamMapper.getTeamInfoByTeacherAccount(teacherAccount);
+        if (CollectionUtils.isEmpty(teams)) {
+            return ApiResponse.createByErrorMsg("该教师尚未分配指导小组,可通过创建小组指定该老师!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", teams);
+    }
 }

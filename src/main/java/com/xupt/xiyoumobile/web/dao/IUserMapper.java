@@ -34,4 +34,7 @@ public interface IUserMapper {
     int insertUserRole(@Param("userId") Long userId, @Param("role") Integer role);
 
     List<SimpleUserInfoVo> getUserSimpleInfo(Integer type);
+
+    List<SimpleUserInfoVo> getAllNoTeamStudent();
+
 }

@@ -1,7 +1,7 @@
 package com.xupt.xiyoumobile.web.dao;
 
 import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
-import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
+import com.xupt.xiyoumobile.web.vo.ArrangeTeamVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface IAdminMapper {
 
-    int arrangeTeamMember(TeamMemberVo teamMemberVo);
+    int arrangeTeamMember(ArrangeTeamVo arrangeTeamVo);
 
     int modifyUserRole(@Param("userId") Long userId, @Param("roleId") Integer roleId);
 
