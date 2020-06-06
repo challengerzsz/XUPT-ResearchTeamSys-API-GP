@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -83,5 +84,11 @@ public class TeamController {
         }
 
         return teamService.getTeamInfoByTeacherAccount(teacherAccount);
+    }
+
+    @PreAuthorize("hasAnyRole('STUDENT')")
+    @GetMapping("/getMyTeamInfo")
+    public ApiResponse<Team> getMyTeamInfo(Principal principal) {
+        return teamService.getMyTeamInfo(principal.getName());
     }
 }

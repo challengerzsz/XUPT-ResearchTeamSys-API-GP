@@ -26,4 +26,6 @@ public interface ITeamMapper {
     List<Team> getTeamInfoByTeacherAccount(Integer teacherAccount);
 
     int addTeamStudentCount(@Param("teamId") Integer teamId, @Param("size") int size);
+
+    Team findTeamById(Integer teamId);
 }
