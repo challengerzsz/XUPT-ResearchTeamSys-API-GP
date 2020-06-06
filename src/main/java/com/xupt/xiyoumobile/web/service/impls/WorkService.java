@@ -53,7 +53,7 @@ public class WorkService implements IWorkService {
 
         WorkReport workReport = workMapper.findReportByUserAccountAndType(userAccount, type);
         if (workReport == null) {
-            return ApiResponse.createByErrorMsg("您还未上传该类型的报告");
+            return ApiResponse.createByErrorMsg("您有报告未上传");
         }
 
         return ApiResponse.createBySuccess("查询成功", workReport);

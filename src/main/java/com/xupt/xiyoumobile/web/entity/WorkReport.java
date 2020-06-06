@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 public class WorkReport {
 
     private Integer id;
+    private String paperName;
     private String author;
     private String reportUrl;
     private Integer type;

@@ -37,9 +37,9 @@ public class WorkController {
         return workService.uploadReport(principal.getName(), workReport, type);
     }
 
-    @PreAuthorize("hasRole('STUDEN')")
+    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping("/report/uploadFile/{type}")
-    public ApiResponse<String> uploadReportFile(Principal principal, MultipartFile multipartFile,
+    public ApiResponse<String> uploadReportFile(Principal principal, @RequestParam("file") MultipartFile multipartFile,
                                                 @PathVariable("type") Integer type) {
 
         if (multipartFile == null || multipartFile.isEmpty()) {
