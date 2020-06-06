@@ -5,6 +5,7 @@ import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo;
 import com.xupt.xiyoumobile.web.vo.UserRoleVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,4 +37,5 @@ public interface IUserService {
 
     ApiResponse<List<SimpleUserInfoVo>> getAllNoTeamStudent();
 
+    ApiResponse<String> uploadUserImg(String userAccount, MultipartFile multipartFile);
 }

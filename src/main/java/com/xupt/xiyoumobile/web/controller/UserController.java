@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -80,7 +81,7 @@ public class UserController {
         return userService.modifyInfo(user);
     }
 
-    @PreAuthorize(("hasAnyRole('ADMIN, TEACHER, STUDENT')"))
+    @PreAuthorize("hasAnyRole('ADMIN, TEACHER, STUDENT')")
     @PostMapping("/resetPwd")
     public ApiResponse<String> resetPassword(String userAccount, String oldPwd, String newPwd) {
 
@@ -95,6 +96,17 @@ public class UserController {
     @GetMapping("/getAllNoTeamStudent")
     public ApiResponse<List<SimpleUserInfoVo>> getAllNoTeamStudent() {
         return userService.getAllNoTeamStudent();
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
+    @PostMapping("/uploadUserImg")
+    public ApiResponse<String> uploadUserImg(Principal principal, @RequestParam("file") MultipartFile multipartFile) {
+        if (multipartFile == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "上传用户头像参数错误");
+        }
+
+        return userService.uploadUserImg(principal.getName(), multipartFile);
     }
 
 }
