@@ -3,8 +3,11 @@ package com.xupt.xiyoumobile.web.service.impls;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.web.dao.ITeamMapper;
+import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.entity.Team;
+import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.ITeamService;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +23,14 @@ import java.util.List;
 @Service
 public class TeamService implements ITeamService {
 
-
     private ITeamMapper teamMapper;
 
+    private IUserMapper userMapper;
+
     @Autowired
-    public TeamService(ITeamMapper teamMapper) {
+    public TeamService(ITeamMapper teamMapper, IUserMapper userMapper) {
         this.teamMapper = teamMapper;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -95,5 +100,23 @@ public class TeamService implements ITeamService {
         }
 
         return ApiResponse.createBySuccess("查询成功", teams);
+    }
+
+    @Override
+    public ApiResponse<Team> getMyTeamInfo(String userAccount) {
+
+        User user = userMapper.findByUsername(userAccount);
+        if (user == null) {
+            return ApiResponse.createByErrorMsg("该用户不存在,查询小组信息失败");
+        }
+        if (user.getTeam() == null) {
+            return ApiResponse.createByErrorMsg("您尚未加入小组，联系管理员加入小组!");
+        }
+        Team team = teamMapper.findTeamById(user.getTeam());
+        if (team == null) {
+            return ApiResponse.createByErrorMsg("查询小组信息失败!");
+        }
+
+        return ApiResponse.createBySuccess("查询小组信息成功", team);
     }
 }

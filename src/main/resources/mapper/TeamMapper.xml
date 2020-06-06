@@ -5,18 +5,19 @@
 <mapper namespace="com.xupt.xiyoumobile.web.dao.ITeamMapper">
     <insert id="insertTeam" parameterType="com.xupt.xiyoumobile.web.entity.Team">
         INSERT INTO xupt_research_team_team_table
-        (guide_teacher_account, guide_teacher_name, team_name, team_direction)
-        VALUES
-        (#{guideTeacherAccount}, #{guideTeacherName}, #{teamName}, #{teamDirection})
+            (guide_teacher_account, guide_teacher_name, team_name, team_direction)
+        VALUES (#{guideTeacherAccount}, #{guideTeacherName}, #{teamName}, #{teamDirection})
     </insert>
 
     <select id="findTeamByTeacherName" resultType="com.xupt.xiyoumobile.web.entity.Team">
-        SELECT * FROM xupt_research_team_team_table
+        SELECT *
+        FROM xupt_research_team_team_table
         WHERE guide_teacher_name = #{teacherName}
     </select>
 
     <delete id="deleteTeamById">
-        DELETE FROM xupt_research_team_team_table
+        DELETE
+        FROM xupt_research_team_team_table
         WHERE id = #{teamId}
     </delete>
 
@@ -41,11 +42,13 @@
     </update>
 
     <select id="getAllTeam" resultType="com.xupt.xiyoumobile.web.entity.Team">
-        SELECT * FROM xupt_research_team_team_table
+        SELECT *
+        FROM xupt_research_team_team_table
     </select>
 
     <select id="getTeamInfoByTeacherAccount" resultType="com.xupt.xiyoumobile.web.entity.Team">
-        SELECT * FROM xupt_research_team_team_table
+        SELECT *
+        FROM xupt_research_team_team_table
         WHERE guide_teacher_account = #{teacherAccount}
     </select>
 
@@ -54,4 +57,10 @@
         SET student_count = student_count + #{size}
         WHERE id = #{teamId}
     </update>
+
+    <select id="findTeamById" resultType="com.xupt.xiyoumobile.web.entity.Team">
+        SELECT *
+        FROM xupt_research_team_team_table
+        WHERE id = #{teamId}
+    </select>
 </mapper>

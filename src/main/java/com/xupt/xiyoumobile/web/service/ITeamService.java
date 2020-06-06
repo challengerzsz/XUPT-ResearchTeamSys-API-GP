@@ -22,4 +22,6 @@ public interface ITeamService {
     ApiResponse<List<Team>> getAllTeam();
 
     ApiResponse<List<Team>> getTeamInfoByTeacherAccount(Integer teacherAccount);
+
+    ApiResponse<Team> getMyTeamInfo(String userAccount);
 }

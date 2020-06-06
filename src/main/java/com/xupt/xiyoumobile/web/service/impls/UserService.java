@@ -2,6 +2,7 @@ package com.xupt.xiyoumobile.web.service.impls;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
+import com.xupt.xiyoumobile.security.util.FileUploadUtil;
 import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.entity.User;
@@ -9,12 +10,13 @@ import com.xupt.xiyoumobile.web.service.IUserService;
 import com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo;
 import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,6 +31,9 @@ public class UserService implements IUserService {
     private IUserMapper userMapper;
 
     private PasswordEncoder passwordEncoder;
+
+    @Value("${upload.userImg}")
+    private String USER_IMG_UPLOAD_PATH;
 
     @Autowired
     public UserService(IUserMapper userMapper, @Lazy PasswordEncoder passwordEncoder) {
@@ -163,6 +168,28 @@ public class UserService implements IUserService {
         }
 
         return ApiResponse.createBySuccess("查询未分组同学成功", simpleUserInfoVoList);
+    }
+
+    @Override
+    public ApiResponse<String> uploadUserImg(String userAccount, MultipartFile multipartFile) {
+
+        // TODO: 2020/6/6 删除旧头像 修改用户头像文件名
+        User user = userMapper.findByUsername(userAccount);
+        if (user == null) {
+            return ApiResponse.createByErrorMsg("用户不存在,上传头像失败!");
+        }
+        String destFilePath = FileUploadUtil.uploadFile(multipartFile, USER_IMG_UPLOAD_PATH);
+        if (destFilePath == null) {
+            return ApiResponse.createByErrorMsg("上传用户头像失败");
+        }
+        user.setImg(destFilePath);
+        int modifyUserInfoRes = userMapper.updateUserBySelective(user);
+        if (modifyUserInfoRes == 0) {
+            log.error("db error! update user info failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB error");
+        }
+
+        return ApiResponse.createBySuccessMsg("上传用户头像成功");
     }
 
 
