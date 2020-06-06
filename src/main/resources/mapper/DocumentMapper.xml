@@ -18,17 +18,17 @@
     </select>
     <select id="searchDocumentByTopic" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
-        WHERE topic LIKE CONCAT(#{content}, '%')
+        WHERE topic LIKE CONCAT('%', #{content}, '%')
     </select>
 
     <select id="searchDocumentByAuthor" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
-        WHERE author LIKE CONCAT(#{content}, '%')
+        WHERE author LIKE CONCAT('%', #{content}, '%')
     </select>
 
     <select id="searchDocumentByDirection" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
-        WHERE direction LIKE CONCAT(#{content}, '%')
+        WHERE direction LIKE CONCAT('%', #{content}, '%')
     </select>
 
     <update id="modifyDocumentBySelective" parameterType="com.xupt.xiyoumobile.web.entity.Document">
