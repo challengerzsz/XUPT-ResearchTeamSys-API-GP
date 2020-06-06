@@ -68,7 +68,7 @@
         WHERE id = #{id}
     </update>
 
-    <insert id="insertDocument" parameterType="com.xupt.xiyoumobile.web.entity.Document">
+    <insert id="insertDocument" parameterType="com.xupt.xiyoumobile.web.entity.Document" useGeneratedKeys="true" keyProperty="document.id">
         INSERT INTO xupt_research_team_document_table
         (author, uploader, direction, topic, abstract_content, organ, use_method, innovation, comments, origin_path)
         VALUES (#{document.author}, #{userAccount}, #{document.direction}, #{document.topic},

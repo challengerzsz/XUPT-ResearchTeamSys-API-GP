@@ -19,7 +19,7 @@ public interface IDocumentService {
 
     ApiResponse<String> uploadDocumentFile(Integer documentId, MultipartFile multipartFile);
 
-    ApiResponse<String> uploadDocument(Principal principal, Document document);
+    ApiResponse<Integer> uploadDocument(Principal principal, Document document);
 
     ApiResponse<List<Document>> getMyUploadDocument(String userAccount);
 

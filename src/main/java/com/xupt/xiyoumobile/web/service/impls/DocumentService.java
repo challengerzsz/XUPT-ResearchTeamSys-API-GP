@@ -105,14 +105,14 @@ public class DocumentService implements IDocumentService {
     }
 
     @Override
-    public ApiResponse<String> uploadDocument(Principal principal, Document document) {
+    public ApiResponse<Integer> uploadDocument(Principal principal, Document document) {
         int insertDocumentRes = documentMapper.insertDocument(principal.getName(), document);
         if (insertDocumentRes == 0) {
             log.error("DB Error! uploadDocument failed!");
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
-        return ApiResponse.createBySuccessMsg("添加文献基本信息成功");
+        return ApiResponse.createBySuccess("添加文献基本信息成功", document.getId());
     }
 
     @Override

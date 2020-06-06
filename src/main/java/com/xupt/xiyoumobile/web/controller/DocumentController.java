@@ -64,7 +64,7 @@ public class DocumentController {
 
     @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
     @PostMapping("/uploadDocument")
-    public ApiResponse<String> uploadDocument(Principal principal, Document document) {
+    public ApiResponse<Integer> uploadDocument(Principal principal, Document document) {
         if (document == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "文献信息参数错误!");
         }
