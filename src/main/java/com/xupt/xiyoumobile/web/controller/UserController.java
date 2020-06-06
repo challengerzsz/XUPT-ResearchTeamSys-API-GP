@@ -91,4 +91,10 @@ public class UserController {
         return userService.resetPassword(userAccount, oldPwd, newPwd);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getAllNoTeamStudent")
+    public ApiResponse<List<SimpleUserInfoVo>> getAllNoTeamStudent() {
+        return userService.getAllNoTeamStudent();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.xupt.xiyoumobile.web.dao;
 
 import com.xupt.xiyoumobile.web.entity.Team;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,4 +23,7 @@ public interface ITeamMapper {
 
     List<Team> getAllTeam();
 
+    List<Team> getTeamInfoByTeacherAccount(Integer teacherAccount);
+
+    int addTeamStudentCount(@Param("teamId") Integer teamId, @Param("size") int size);
 }

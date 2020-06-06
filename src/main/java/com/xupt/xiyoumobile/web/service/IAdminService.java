@@ -3,7 +3,7 @@ package com.xupt.xiyoumobile.web.service;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 import com.xupt.xiyoumobile.web.vo.CountVo;
-import com.xupt.xiyoumobile.web.vo.TeamMemberVo;
+import com.xupt.xiyoumobile.web.vo.ArrangeTeamVo;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface IAdminService {
 
-    ApiResponse<String> arrangeTeamMember(TeamMemberVo teamMemberVo);
+    ApiResponse<String> arrangeTeamMember(ArrangeTeamVo arrangeTeamVo);
 
     ApiResponse<String> modifyUserRole(String userAccount, Integer roleId);
 
