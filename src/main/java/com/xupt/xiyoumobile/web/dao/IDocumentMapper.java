@@ -37,4 +37,6 @@ public interface IDocumentMapper {
     List<Document> searchMyDocumentByAuthor(@Param("userAccount") String userAccount, @Param("content") String content);
 
     List<Document> searchMyDocumentByDirection(@Param("userAccount") String userAccount, @Param("content") String content);
+
+    List<Document> getAllDocument();
 }

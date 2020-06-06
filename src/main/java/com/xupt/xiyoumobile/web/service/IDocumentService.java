@@ -25,4 +25,5 @@ public interface IDocumentService {
 
     ApiResponse<String> deleteDocument(String userAccount, Integer documentId);
 
+    ApiResponse<List<Document>> getAllDocument();
 }

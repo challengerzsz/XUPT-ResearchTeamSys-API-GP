@@ -150,6 +150,17 @@ public class DocumentService implements IDocumentService {
     }
 
     @Override
+    public ApiResponse<List<Document>> getAllDocument() {
+
+        List<Document> documents = documentMapper.getAllDocument();
+        if (CollectionUtils.isEmpty(documents)) {
+            return ApiResponse.createByErrorMsg("系统中未上传任何文献!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", documents);
+    }
+
+    @Override
     public ApiResponse<String> uploadDocumentFile(Integer documentId, MultipartFile multipartFile) {
         Document document = documentMapper.findByDocumentId(documentId);
         if (document == null) {

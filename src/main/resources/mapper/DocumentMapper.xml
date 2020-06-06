@@ -95,4 +95,8 @@
         SELECT COUNT(*) FROM xupt_research_team_document_table
         WHERE id = #{id} AND uploader = #{userAccount}
     </select>
+
+    <select id="getAllDocument" resultType="com.xupt.xiyoumobile.web.entity.Document">
+        SELECT * FROM xupt_research_team_document_table
+    </select>
 </mapper>

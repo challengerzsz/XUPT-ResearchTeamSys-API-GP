@@ -109,4 +109,10 @@ public class DocumentController {
 
         return documentService.deleteDocument(principal.getName(), documentId);
     }
+
+    @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
+    @GetMapping("/getAllDocument")
+    public ApiResponse<List<Document>> getAllDocument() {
+        return documentService.getAllDocument();
+    }
 }
