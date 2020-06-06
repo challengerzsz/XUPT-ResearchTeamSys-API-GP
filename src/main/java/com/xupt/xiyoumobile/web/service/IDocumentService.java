@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface IDocumentService {
 
-    ApiResponse<List<Document>> searchDocument(Integer type, String content);
+    ApiResponse<List<Document>> searchDocument(String userAccount, Integer range, Integer type, String content);
 
     ApiResponse<String> modifyDocument(Principal principal, Document document);
 

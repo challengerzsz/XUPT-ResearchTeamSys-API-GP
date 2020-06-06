@@ -35,18 +35,21 @@ public class DocumentController {
      * 按论文题目、作者、研究方向模糊搜索
      * 0 1 2
      * like content
+     *
      * @param type
      * @param content
      * @return
      */
     @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
-    @GetMapping("/search/{type}")
-    public ApiResponse<List<Document>> searchDocument(@PathVariable Integer type, @RequestParam String content) {
+    @GetMapping("/search/{range}/{type}")
+    public ApiResponse<List<Document>> searchDocument(Principal principal, @PathVariable Integer type,
+                                                      @PathVariable("range") Integer range,
+                                                      @RequestParam String content) {
         if (StringUtils.isBlank(content)) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "检索内容为空!");
         }
 
-        return documentService.searchDocument(type, content);
+        return documentService.searchDocument(principal.getName(), range, type, content);
     }
 
     @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")

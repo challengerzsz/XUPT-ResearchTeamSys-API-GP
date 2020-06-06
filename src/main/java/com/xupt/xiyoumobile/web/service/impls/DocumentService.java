@@ -27,6 +27,16 @@ public class DocumentService implements IDocumentService {
     @Value("${upload.document}")
     private String DOCUMENT_UPLOAD_PATH;
 
+    private static final Integer SEARCH_IN_USER_MODE = 0;
+
+    private static final Integer SEARCH_IN_SYSTEM_MODE = 1;
+
+    private static final int SEARCH_BY_TOPIC = 0;
+
+    private static final int SEARCH_BY_AUTHOR = 1;
+
+    private static final int SEARCH_BY_DIRECTION = 2;
+
     private IDocumentMapper documentMapper;
 
     @Autowired
@@ -35,19 +45,39 @@ public class DocumentService implements IDocumentService {
     }
 
     @Override
-    public ApiResponse<List<Document>> searchDocument(Integer type, String content) {
+    public ApiResponse<List<Document>> searchDocument(String userAccount, Integer range,
+                                                      Integer type, String content) {
         List<Document> documents = null;
-        switch (type) {
-            case 0:
-                documents = documentMapper.searchDocumentByTopic(content);
-                break;
-            case 1:
-                documents = documentMapper.searchDocumentByAuthor(content);
-                break;
-            case 2:
-                documents = documentMapper.searchDocumentByDirection(content);
-                break;
+        // 搜索个人上传文献
+        if (range.equals(SEARCH_IN_USER_MODE)) {
+            switch (type) {
+                case SEARCH_BY_TOPIC:
+                    documents = documentMapper.searchMyDocumentByTopic(userAccount, content);
+                    break;
+                case SEARCH_BY_AUTHOR:
+                    documents = documentMapper.searchMyDocumentByAuthor(userAccount, content);
+                    break;
+                case SEARCH_BY_DIRECTION:
+                    documents = documentMapper.searchMyDocumentByDirection(userAccount, content);
+                    break;
+            }
         }
+
+        // 搜索全局文献
+        if (range.equals(SEARCH_IN_SYSTEM_MODE)) {
+            switch (type) {
+                case SEARCH_BY_TOPIC:
+                    documents = documentMapper.searchDocumentByTopic(content);
+                    break;
+                case SEARCH_BY_AUTHOR:
+                    documents = documentMapper.searchDocumentByAuthor(content);
+                    break;
+                case SEARCH_BY_DIRECTION:
+                    documents = documentMapper.searchDocumentByDirection(content);
+                    break;
+            }
+        }
+
 
         if (documents == null) {
             return ApiResponse.createBySuccessMsg("无需要检索的文献!");
