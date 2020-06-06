@@ -5,9 +5,9 @@
 <mapper namespace="com.xupt.xiyoumobile.web.dao.ITeamMapper">
     <insert id="insertTeam" parameterType="com.xupt.xiyoumobile.web.entity.Team">
         INSERT INTO xupt_research_team_team_table
-        (guide_teacher_account, guide_teacher_name, team_name, student_count, team_direction)
+        (guide_teacher_account, guide_teacher_name, team_name, team_direction)
         VALUES
-        (#{guideTeacherAccount}, #{guideTeacherName}, #{teamName}, #{studentCount}, #{teamDirection})
+        (#{guideTeacherAccount}, #{guideTeacherName}, #{teamName}, #{teamDirection})
     </insert>
 
     <select id="findTeamByTeacherName" resultType="com.xupt.xiyoumobile.web.entity.Team">
