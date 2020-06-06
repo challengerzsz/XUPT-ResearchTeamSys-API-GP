@@ -31,12 +31,6 @@
             <if test="userName != null">
                 user_name = #{userName},
             </if>
-            <if test="major != null">
-                major = #{major},
-            </if>
-            <if test="grade != null">
-                grade = #{grade},
-            </if>
             <if test="classify != null">
                 classify = #{classify},
             </if>
@@ -59,7 +53,7 @@
         WHERE id = #{id}
     </update>
 
-    <update id="banUserByUserAccount" parameterType="java.lang.String">
+    <update id="banUserByUserAccount">
         UPDATE xupt_research_team_user_table
         SET ban = #{banStatus}
         WHERE user_account = #{userAccount}
@@ -90,5 +84,14 @@
         (user_id, role_id)
         VALUES (#{userId}, #{role})
     </insert>
+
+    <select id="getUserSimpleInfo" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
+        SELECT son.* FROM
+        (SELECT user.user_name, user.user_account
+        FROM xupt_research_team_user_role_table userRole
+        JOIN xupt_research_team_user_table user
+        ON userRole.user_id = user.id
+        WHERE userRole.role_id = #{type}) son;
+    </select>
 
 </mapper>

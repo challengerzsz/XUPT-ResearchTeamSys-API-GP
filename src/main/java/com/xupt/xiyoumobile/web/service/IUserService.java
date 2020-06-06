@@ -3,6 +3,7 @@ package com.xupt.xiyoumobile.web.service;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.entity.User;
+import com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo;
 import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 
 import java.util.List;
@@ -12,7 +13,6 @@ import java.util.List;
  * @date : 2020-03-27 09:43
  */
 public interface IUserService {
-
 
     User selectUserByUserAccount(String username);
 
@@ -31,4 +31,7 @@ public interface IUserService {
     ApiResponse<List<UserRoleVo>> getAllUserRole();
 
     ApiResponse<String> resetPassword(String userAccount, String oldPwd, String newPwd);
+
+    ApiResponse<List<SimpleUserInfoVo>> getUserSimpleInfo(Integer type);
+
 }

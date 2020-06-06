@@ -3,6 +3,7 @@ package com.xupt.xiyoumobile.web.dao;
 
 import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.entity.User;
+import com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo;
 import com.xupt.xiyoumobile.web.vo.UserRoleVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -31,4 +32,6 @@ public interface IUserMapper {
     List<UserRoleVo> getAllUserRole();
 
     int insertUserRole(@Param("userId") Long userId, @Param("role") Integer role);
+
+    List<SimpleUserInfoVo> getUserSimpleInfo(Integer type);
 }
