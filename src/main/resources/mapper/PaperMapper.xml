@@ -3,7 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.xupt.xiyoumobile.web.dao.IPaperMapper">
-    <insert id="insertPaper" parameterType="com.xupt.xiyoumobile.web.entity.Paper" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertPaper" parameterType="com.xupt.xiyoumobile.web.entity.Paper" useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO xupt_research_team_paper_table
         <trim prefix="(" suffix=")" suffixOverrides=",">
             topic, author, author_name, abstract_zh, abstract_en, type,
@@ -21,7 +22,8 @@
     </insert>
 
     <select id="findPaperById" resultType="com.xupt.xiyoumobile.web.entity.Paper">
-        SELECT * FROM xupt_research_team_paper_table
+        SELECT *
+        FROM xupt_research_team_paper_table
         WHERE id = #{paperId}
     </select>
 
@@ -51,7 +53,18 @@
     </update>
 
     <select id="findPaperByUserAccountAndType" resultType="com.xupt.xiyoumobile.web.entity.Paper">
-        SELECT * FROM xupt_research_team_paper_table
-        WHERE author = #{userAccount} AND type = #{type}
+        SELECT *
+        FROM xupt_research_team_paper_table
+        WHERE author = #{userAccount}
+          AND type = #{type}
     </select>
+
+    <select id="getMyStudentPapers" resultType="com.xupt.xiyoumobile.web.entity.Paper">
+        SELECT *
+        FROM xupt_research_team_paper_table
+        WHERE author IN
+              (SELECT user_account FROM xupt_research_team_user_table WHERE guide_teacher_account = #{userAccount})
+          AND type = #{type}
+    </select>
+
 </mapper>

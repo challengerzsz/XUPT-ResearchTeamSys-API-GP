@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -94,6 +95,18 @@ public class PaperService implements IPaperService {
         }
 
         return modifyPaperSelective(paper);
+    }
+
+    @Override
+    public ApiResponse<List<Paper>> getMyStudentPapers(String userAccount, Integer type) {
+
+        List<Paper> papers = paperMapper.getMyStudentPapers(userAccount, type);
+        if (CollectionUtils.isEmpty(papers)) {
+            return ApiResponse.createByErrorMsg("您管理的学生还未有人上传论文!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", papers);
+
     }
 
     private ApiResponse<String> modifyPaperSelective(Paper paper) {

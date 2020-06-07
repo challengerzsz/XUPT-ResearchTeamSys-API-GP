@@ -4,6 +4,7 @@ import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.Paper;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -21,4 +22,6 @@ public interface IPaperService {
     ApiResponse<List<Paper>> getStudentPaper(String userAccount, Integer type);
 
     ApiResponse<String> modifyPaper(String userAccount, Paper paper);
+
+    ApiResponse<List<Paper>> getMyStudentPapers(String userAccount, Integer type);
 }

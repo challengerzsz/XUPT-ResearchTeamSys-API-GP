@@ -20,4 +20,6 @@ public interface IPaperMapper {
     int modifyPaperSelective(Paper paper);
 
     List<Paper> findPaperByUserAccountAndType(@Param("userAccount") String userAccount, @Param("type") Integer type);
+
+    List<Paper> getMyStudentPapers(@Param("userAccount") String userAccount, @Param("type") Integer type);
 }

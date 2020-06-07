@@ -81,4 +81,16 @@ public class PaperController {
 
         return paperService.modifyPaper(principal.getName(), paper);
     }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @GetMapping("/getMyStudentPapers/{type}")
+    public ApiResponse<List<Paper>> getMyStudentPapers(@PathVariable("type") Integer type,
+                                                       Principal principal) {
+        if (type == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "查看指导学生论文参数错误");
+        }
+
+        return paperService.getMyStudentPapers(principal.getName(), type);
+    }
 }

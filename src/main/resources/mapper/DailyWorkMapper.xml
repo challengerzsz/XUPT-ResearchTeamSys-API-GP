@@ -99,6 +99,7 @@
             </if>
             update_time = CURRENT_TIME
         </set>
+        WHERE id = #{id}
     </update>
 
     <select id="getClaimExpenseStatisticsByUserAccount"
