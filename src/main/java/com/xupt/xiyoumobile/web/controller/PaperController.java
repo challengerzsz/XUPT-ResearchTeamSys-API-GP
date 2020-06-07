@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -52,7 +53,7 @@ public class PaperController {
 
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/getMyPaper/{type}")
-    public ApiResponse<Paper> getMyPaper(Principal principal, @PathVariable("type") Integer type) {
+    public ApiResponse<List<Paper>> getMyPaper(Principal principal, @PathVariable("type") Integer type) {
         if (type == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "参数错误");
         }
@@ -62,7 +63,7 @@ public class PaperController {
 
     @PreAuthorize("hasRole('TEACHER')")
     @GetMapping("/getStudentPaper/{userAccount}/{type}")
-    public ApiResponse<Paper> getStudentPaper(@PathVariable("userAccount") String userAccount,
+    public ApiResponse<List<Paper>> getStudentPaper(@PathVariable("userAccount") String userAccount,
                                               @PathVariable("type") Integer type) {
         if (userAccount == null || type == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "参数错误");
@@ -72,7 +73,7 @@ public class PaperController {
     }
 
     @PreAuthorize("hasRole('STUDENT')")
-    @GetMapping("/modifyPaper")
+    @PostMapping("/modifyPaper")
     public ApiResponse<String> modifyPaper(Principal principal, Paper paper) {
         if (paper == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "参数错误");

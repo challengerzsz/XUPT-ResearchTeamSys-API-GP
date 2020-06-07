@@ -1,8 +1,11 @@
 package com.xupt.xiyoumobile.web.dao;
 
+import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.Paper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -17,5 +20,5 @@ public interface IPaperMapper {
 
     int modifyPaperSelective(Paper paper);
 
-    Paper findPaperByUserAccountAndType(@Param("userAccount") String userAccount, @Param("type") Integer type);
+    List<Paper> findPaperByUserAccountAndType(@Param("userAccount") String userAccount, @Param("type") Integer type);
 }

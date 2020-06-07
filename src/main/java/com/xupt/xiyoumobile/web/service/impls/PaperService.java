@@ -10,7 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -63,12 +66,12 @@ public class PaperService implements IPaperService {
     }
 
     @Override
-    public ApiResponse<Paper> getMyPaper(String userAccount, Integer type) {
+    public ApiResponse<List<Paper>> getMyPaper(String userAccount, Integer type) {
         return getPaperByUserAccountAndType(userAccount, type);
     }
 
     @Override
-    public ApiResponse<Paper> getStudentPaper(String userAccount, Integer type) {
+    public ApiResponse<List<Paper>> getStudentPaper(String userAccount, Integer type) {
         return getPaperByUserAccountAndType(userAccount, type);
     }
 
@@ -97,13 +100,13 @@ public class PaperService implements IPaperService {
         return ApiResponse.createBySuccessMsg("更新成功");
     }
 
-    private ApiResponse<Paper> getPaperByUserAccountAndType(String userAccount, Integer type) {
-        Paper paper = paperMapper.findPaperByUserAccountAndType(userAccount, type);
-        if (paper == null) {
+    private ApiResponse<List<Paper>> getPaperByUserAccountAndType(String userAccount, Integer type) {
+        List<Paper> papers = paperMapper.findPaperByUserAccountAndType(userAccount, type);
+        if (CollectionUtils.isEmpty(papers)) {
             return ApiResponse.createByErrorMsg("还没有上传该类型的文献!");
         }
 
-        return ApiResponse.createBySuccess("查询成功", paper);
+        return ApiResponse.createBySuccess("查询成功", papers);
     }
 
 }
