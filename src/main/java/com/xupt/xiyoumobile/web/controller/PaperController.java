@@ -28,7 +28,7 @@ public class PaperController {
 
     @PreAuthorize("hasRole('STUDENT')")
     @PostMapping("/upload")
-    public ApiResponse<String> uploadPaper(Principal principal, Paper paper) {
+    public ApiResponse<Integer> uploadPaper(Principal principal, Paper paper) {
 
         if (paper == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
@@ -40,7 +40,7 @@ public class PaperController {
 
     @PreAuthorize("hasRole('STUDENT')")
     @PostMapping("/uploadFile/{paperId}")
-    public ApiResponse<String> uploadPaperFile(Principal principal, MultipartFile multipartFile,
+    public ApiResponse<String> uploadPaperFile(Principal principal, @RequestParam("file") MultipartFile multipartFile,
                                                @PathVariable("paperId") Integer paperId) {
 
         if (paperId == null) {

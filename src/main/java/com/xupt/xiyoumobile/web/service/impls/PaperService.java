@@ -31,7 +31,7 @@ public class PaperService implements IPaperService {
     }
 
     @Override
-    public ApiResponse<String> upload(String userAccount, Paper paper) {
+    public ApiResponse<Integer> upload(String userAccount, Paper paper) {
 
         paper.setAuthor(userAccount);
 
@@ -41,7 +41,7 @@ public class PaperService implements IPaperService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
-        return ApiResponse.createBySuccessMsg("上传论文信息成功");
+        return ApiResponse.createBySuccess("上传论文信息成功", paper.getId());
     }
 
     @Override

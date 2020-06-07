@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface IPaperService {
 
-    ApiResponse<String> upload(String userAccount, Paper paper);
+    ApiResponse<Integer> upload(String userAccount, Paper paper);
 
     ApiResponse<String> uploadPaperFile(String userAccount, Integer paperId, MultipartFile multipartFile);
 
