@@ -13,16 +13,17 @@ import java.util.List;
  */
 public interface IDocumentService {
 
-    ApiResponse<List<Document>> searchDocument(Integer type, String content);
+    ApiResponse<List<Document>> searchDocument(String userAccount, Integer range, Integer type, String content);
 
     ApiResponse<String> modifyDocument(Principal principal, Document document);
 
     ApiResponse<String> uploadDocumentFile(Integer documentId, MultipartFile multipartFile);
 
-    ApiResponse<String> uploadDocument(Principal principal, Document document);
+    ApiResponse<Integer> uploadDocument(Principal principal, Document document);
 
     ApiResponse<List<Document>> getMyUploadDocument(String userAccount);
 
     ApiResponse<String> deleteDocument(String userAccount, Integer documentId);
 
+    ApiResponse<List<Document>> getAllDocument();
 }

@@ -83,13 +83,13 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('ADMIN, TEACHER, STUDENT')")
     @PostMapping("/resetPwd")
-    public ApiResponse<String> resetPassword(String userAccount, String oldPwd, String newPwd) {
+    public ApiResponse<String> resetPassword(Principal principal, String oldPwd, String newPwd) {
 
-        if (StringUtils.isAnyBlank(userAccount, oldPwd, newPwd)) {
+        if (StringUtils.isAnyBlank(oldPwd, newPwd)) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "参数错误");
         }
 
-        return userService.resetPassword(userAccount, oldPwd, newPwd);
+        return userService.resetPassword(principal.getName(), oldPwd, newPwd);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -119,4 +119,15 @@ public class TeamService implements ITeamService {
 
         return ApiResponse.createBySuccess("查询小组信息成功", team);
     }
+
+    @Override
+    public ApiResponse<List<Team>> getMyTeams(String userAccount) {
+
+        List<Team> teams = teamMapper.getMyTeams(userAccount);
+        if (CollectionUtils.isEmpty(teams)) {
+            return ApiResponse.createByErrorMsg("您目前还未担任指导老师职责,请联系管理员!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", teams);
+    }
 }

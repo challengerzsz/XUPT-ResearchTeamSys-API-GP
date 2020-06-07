@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -37,9 +38,9 @@ public class WorkController {
         return workService.uploadReport(principal.getName(), workReport, type);
     }
 
-    @PreAuthorize("hasRole('STUDEN')")
+    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping("/report/uploadFile/{type}")
-    public ApiResponse<String> uploadReportFile(Principal principal, MultipartFile multipartFile,
+    public ApiResponse<String> uploadReportFile(Principal principal, @RequestParam("file") MultipartFile multipartFile,
                                                 @PathVariable("type") Integer type) {
 
         if (multipartFile == null || multipartFile.isEmpty()) {
@@ -80,5 +81,16 @@ public class WorkController {
         }
 
         return workService.deleteWorkReport(principal.getName(), workReportId);
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @GetMapping("/getTeamWorkReports/{type}")
+    public ApiResponse<List<WorkReport>> getTeamWorkReports(Principal principal, @PathVariable("type") Integer type) {
+        if (type == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "查询小组内过程文档参数错误!");
+        }
+
+        return workService.getTeamWorkReports(principal.getName(), type);
     }
 }

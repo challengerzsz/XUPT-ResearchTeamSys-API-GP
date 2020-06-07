@@ -12,8 +12,9 @@ import java.sql.Timestamp;
 public class WeeklyReportComment {
 
     private Integer id;
-    private Integer weeklyReportComment;
+    private Integer weeklyReportId;
     private String teacherAccount;
+    private String teacherName;
     private String content;
     private Timestamp create_time;
 

@@ -6,18 +6,23 @@
 
     <insert id="insertOpeningReport" parameterType="com.xupt.xiyoumobile.web.entity.WorkReport">
         INSERT INTO xupt_research_team_work_report_table
-        (author, type)
-        VALUES (#{author}, #{type})
+            (paper_name, author, type)
+        VALUES (#{paperName}, #{author}, #{type})
     </insert>
 
     <select id="findReportByUserAccountAndType" resultType="com.xupt.xiyoumobile.web.entity.WorkReport">
-        SELECT * FROM xupt_research_team_work_report_table
-        WHERE author = #{userAccount} AND type = #{type}
+        SELECT *
+        FROM xupt_research_team_work_report_table
+        WHERE author = #{userAccount}
+          AND type = #{type}
     </select>
 
     <update id="modifyReportSelective" parameterType="com.xupt.xiyoumobile.web.entity.WorkReport">
         UPDATE xupt_research_team_work_report_table
         <set>
+            <if test="paperName != null">
+                paper_name = #{paperName},
+            </if>
             <if test="author != null">
                 author = #{author},
             </if>
@@ -28,18 +33,33 @@
         WHERE id = #{id}
     </update>
 
-    <select id="checkValid">
-        SELECT COUNT(*) FROM xupt_research_team_work_report_table
-        WHERE id = #{id} AND author = #{userAccount}
+    <select id="checkValid" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM xupt_research_team_work_report_table
+        WHERE id = #{id}
+          AND author = #{userAccount}
     </select>
 
     <delete id="deleteWorkReportByUserAccountAndId">
-        DELETE FROM xupt_research_team_work_report_table
-        WHERE id = #{id} AND author = #{userAccount}
+        DELETE
+        FROM xupt_research_team_work_report_table
+        WHERE id = #{id}
+          AND author = #{userAccount}
     </delete>
 
     <select id="findReportByReportId" resultType="com.xupt.xiyoumobile.web.entity.WorkReport">
-        SELECT * FROM xupt_research_team_work_report_table
+        SELECT *
+        FROM xupt_research_team_work_report_table
         WHERE id = #{workReportId}
+    </select>
+
+    <select id="getTeamWorkReports" resultType="com.xupt.xiyoumobile.web.entity.WorkReport">
+        SELECT *
+        FROM xupt_research_team_work_report_table wrt
+        WHERE wrt.author IN
+              (SELECT user.user_account
+               FROM xupt_research_team_user_table user
+               WHERE guide_teacher_account = #{userAccount})
+          AND wrt.type = #{type}
     </select>
 </mapper>

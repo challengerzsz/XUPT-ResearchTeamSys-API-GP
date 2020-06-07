@@ -3,19 +3,32 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.xupt.xiyoumobile.web.dao.IDocumentMapper">
+
+    <select id="searchMyDocumentByTopic" resultType="com.xupt.xiyoumobile.web.entity.Document">
+        SELECT * FROM xupt_research_team_document_table
+        WHERE uploader = #{userAccount} AND topic LIKE CONCAT('%', #{content}, '%')
+    </select>
+    <select id="searchMyDocumentByAuthor" resultType="com.xupt.xiyoumobile.web.entity.Document">
+        SELECT * FROM xupt_research_team_document_table
+        WHERE uploader = #{userAccount} AND author LIKE CONCAT('%', #{content}, '%')
+    </select>
+    <select id="searchMyDocumentByDirection" resultType="com.xupt.xiyoumobile.web.entity.Document">
+        SELECT * FROM xupt_research_team_document_table
+        WHERE uploader = #{userAccount} AND direction LIKE CONCAT('%', #{content}, '%')
+    </select>
     <select id="searchDocumentByTopic" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
-        WHERE topic LIKE CONCAT(#{content}, '%')
+        WHERE topic LIKE CONCAT('%', #{content}, '%')
     </select>
 
     <select id="searchDocumentByAuthor" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
-        WHERE author LIKE CONCAT(#{content}, '%')
+        WHERE author LIKE CONCAT('%', #{content}, '%')
     </select>
 
     <select id="searchDocumentByDirection" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
-        WHERE direction LIKE CONCAT(#{content}, '%')
+        WHERE direction LIKE CONCAT('%', #{content}, '%')
     </select>
 
     <update id="modifyDocumentBySelective" parameterType="com.xupt.xiyoumobile.web.entity.Document">
@@ -55,7 +68,7 @@
         WHERE id = #{id}
     </update>
 
-    <insert id="insertDocument" parameterType="com.xupt.xiyoumobile.web.entity.Document">
+    <insert id="insertDocument" parameterType="com.xupt.xiyoumobile.web.entity.Document" useGeneratedKeys="true" keyProperty="document.id">
         INSERT INTO xupt_research_team_document_table
         (author, uploader, direction, topic, abstract_content, organ, use_method, innovation, comments, origin_path)
         VALUES (#{document.author}, #{userAccount}, #{document.direction}, #{document.topic},
@@ -81,5 +94,9 @@
     <select id="checkValid">
         SELECT COUNT(*) FROM xupt_research_team_document_table
         WHERE id = #{id} AND uploader = #{userAccount}
+    </select>
+
+    <select id="getAllDocument" resultType="com.xupt.xiyoumobile.web.entity.Document">
+        SELECT * FROM xupt_research_team_document_table
     </select>
 </mapper>

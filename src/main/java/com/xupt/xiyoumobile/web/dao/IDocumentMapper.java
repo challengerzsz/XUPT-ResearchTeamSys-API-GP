@@ -31,4 +31,12 @@ public interface IDocumentMapper {
     List<Document> getMyUploadDocument(String userAccount);
 
     int checkValid(@Param("userAccount") String userAccount, @Param("id") Integer id);
+
+    List<Document> searchMyDocumentByTopic(@Param("userAccount") String userAccount, @Param("content") String content);
+
+    List<Document> searchMyDocumentByAuthor(@Param("userAccount") String userAccount, @Param("content") String content);
+
+    List<Document> searchMyDocumentByDirection(@Param("userAccount") String userAccount, @Param("content") String content);
+
+    List<Document> getAllDocument();
 }

@@ -91,4 +91,10 @@ public class TeamController {
     public ApiResponse<Team> getMyTeamInfo(Principal principal) {
         return teamService.getMyTeamInfo(principal.getName());
     }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @GetMapping("/getMyTeams")
+    public ApiResponse<List<Team>> getMyTeams(Principal principal) {
+        return teamService.getMyTeams(principal.getName());
+    }
 }

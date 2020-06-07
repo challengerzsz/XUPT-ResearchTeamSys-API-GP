@@ -6,6 +6,7 @@ import com.xupt.xiyoumobile.web.entity.Role;
 import com.xupt.xiyoumobile.web.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -35,10 +37,14 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
     private IUserService userService;
 
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserAuthenticationProvider(AppUserDetailsService appUserDetailsService, IUserService userService) {
+    public UserAuthenticationProvider(AppUserDetailsService appUserDetailsService, IUserService userService,
+                                      @Lazy PasswordEncoder passwordEncoder) {
         this.appUserDetailsService = appUserDetailsService;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -53,7 +59,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             throw new UsernameNotFoundException("用户不存在");
         }
         // 校验密码
-        if (!new BCryptPasswordEncoder().matches(password, securityUserInfo.getPassword())) {
+        if (!passwordEncoder.matches(password, securityUserInfo.getPassword())) {
             throw new BadCredentialsException("密码错误");
         }
 

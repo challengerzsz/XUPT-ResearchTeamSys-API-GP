@@ -22,7 +22,12 @@ public interface IWeeklyReportMapper {
 
     int insertWeeklyReportComment(@Param("weeklyReportId") Integer weeklyReportId,
                                   @Param("userAccount") String userAccount,
+                                  @Param("teacherName") String teacherName,
                                   @Param("comment") String comment);
 
     List<WeeklyReportComment> findWeeklyReportCommentById(Integer weeklyReportId);
+
+    List<WeeklyReportComment> getCommentsByWeeklyReportId(Integer weeklyReportId);
+
+    List<WeeklyReport> getTeamWeeklyReport(Integer teamId);
 }

@@ -4,6 +4,8 @@ import com.xupt.xiyoumobile.web.entity.Paper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author : zengshuaizhi
  * @date : 2020-06-02 19:40
@@ -17,5 +19,7 @@ public interface IPaperMapper {
 
     int modifyPaperSelective(Paper paper);
 
-    Paper findPaperByUserAccountAndType(@Param("userAccount") String userAccount, @Param("type") Integer type);
+    List<Paper> findPaperByUserAccountAndType(@Param("userAccount") String userAccount, @Param("type") Integer type);
+
+    List<Paper> getMyStudentPapers(@Param("userAccount") String userAccount, @Param("type") Integer type);
 }

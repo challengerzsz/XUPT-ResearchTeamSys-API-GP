@@ -14,6 +14,7 @@ public class Paper {
     private Integer id;
     private String topic;
     private String author;
+    private String authorName;
     private String abstractZh;
     private String abstractEn;
     private String pdfUrl;

@@ -136,16 +136,19 @@ public class UserService implements IUserService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.USER_NOTFOUND.getCode(), "用户不存在");
         }
 
-        if (passwordEncoder.encode(oldPwd).equals(user.getUserPassword())) {
+        // TODO: 2020/6/7 fix resetPwd bug !!!
+        if (passwordEncoder.matches(oldPwd, user.getUserPassword())) {
             user.setUserPassword(passwordEncoder.encode(newPwd));
             int update = userMapper.updateUserBySelective(user);
             if (update == 0) {
                 log.error("db error! update user info failed!");
                 return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB error");
             }
+
+            return ApiResponse.createBySuccessMsg("修改密码成功");
         }
 
-        return ApiResponse.createBySuccessMsg("重置密码成功");
+        return ApiResponse.createByErrorMsg("重置密码失败!");
     }
 
     @Override

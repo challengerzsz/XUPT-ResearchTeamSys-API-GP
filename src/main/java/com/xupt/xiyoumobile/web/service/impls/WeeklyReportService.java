@@ -49,7 +49,7 @@ public class WeeklyReportService implements IWeeklyReportService {
 
         User user = userMapper.findByUsername(userAccount);
         weeklyReport.setUserAccount(userAccount);
-
+        weeklyReport.setUserName(user.getUserName());
         int insertWeeklyReportRes = weeklyReportMapper.insertWeeklyReport(weeklyReport);
         if (insertWeeklyReportRes == 0) {
             log.error("DB Error! insertWeeklyReport failed!");
@@ -77,13 +77,17 @@ public class WeeklyReportService implements IWeeklyReportService {
     @Override
     public ApiResponse<String> commentOnWeeklyReport(String userAccount, Integer weeklyReportId, String comment) {
 
+        User user = userMapper.findByUsername(userAccount);
+
         WeeklyReport weeklyReport = weeklyReportMapper.findWeeklyReportById(weeklyReportId);
         if (weeklyReport == null) {
             return ApiResponse.createByErrorMsg("该周报不存在，评论失败");
         }
 
+
         int insertWeeklyReportCommentRes =
-                weeklyReportMapper.insertWeeklyReportComment(weeklyReportId, userAccount, comment);
+                weeklyReportMapper.insertWeeklyReportComment(weeklyReportId, userAccount,
+                        user.getUserName(), comment);
         if (insertWeeklyReportCommentRes == 0) {
             log.error("DB Error! insertWeeklyReportComment failed!");
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
@@ -104,5 +108,27 @@ public class WeeklyReportService implements IWeeklyReportService {
         WeeklyReportVo weeklyReportVo = new WeeklyReportVo(weeklyReport, weeklyReportComments);
 
         return ApiResponse.createBySuccess("查询成功", weeklyReportVo);
+    }
+
+    @Override
+    public ApiResponse<List<WeeklyReportComment>> getComments(Integer weeklyReportId) {
+
+        List<WeeklyReportComment> weeklyReportComments = weeklyReportMapper.getCommentsByWeeklyReportId(weeklyReportId);
+        if (CollectionUtils.isEmpty(weeklyReportComments)) {
+            return ApiResponse.createByErrorMsg("该周报无教师批注!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", weeklyReportComments);
+    }
+
+    @Override
+    public ApiResponse<List<WeeklyReport>> getTeamWeeklyReport(Integer teamId) {
+
+        List<WeeklyReport> weeklyReports = weeklyReportMapper.getTeamWeeklyReport(teamId);
+        if (CollectionUtils.isEmpty(weeklyReports)) {
+            return ApiResponse.createByErrorMsg("该小组内无周报信息");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", weeklyReports);
     }
 }
