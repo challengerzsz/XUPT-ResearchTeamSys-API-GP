@@ -3,14 +3,19 @@ package com.xupt.xiyoumobile.web.service.impls;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.security.util.FileUploadUtil;
+import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.dao.IWorkMapper;
+import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.entity.WorkReport;
 import com.xupt.xiyoumobile.web.service.IWorkService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -25,19 +30,25 @@ public class WorkService implements IWorkService {
 
     private IWorkMapper workMapper;
 
+    private IUserMapper userMapper;
+
     @Autowired
-    public WorkService(IWorkMapper workMapper) {
+    public WorkService(IWorkMapper workMapper, IUserMapper userMapper) {
         this.workMapper = workMapper;
+        this.userMapper = userMapper;
     }
 
 
     @Override
-    public ApiResponse<String> uploadReport(String userAccount, WorkReport openingReport, Integer type) {
+    public ApiResponse<String> uploadReport(String userAccount, WorkReport report, Integer type) {
 
-        openingReport.setAuthor(userAccount);
-        openingReport.setType(type);
+        User user = userMapper.findByUsername(userAccount);
 
-        int insertOpeningReportRes = workMapper.insertOpeningReport(openingReport);
+        report.setAuthor(userAccount);
+        report.setAuthorName(user.getUserName());
+        report.setType(type);
+
+        int insertOpeningReportRes = workMapper.insertReport(report);
         if (insertOpeningReportRes == 0) {
             log.error("DB Error! uploadOpeningReport failed!");
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
@@ -61,6 +72,7 @@ public class WorkService implements IWorkService {
 
     @Override
     public ApiResponse<String> uploadReportFile(String userAccount, MultipartFile multipartFile, Integer type) {
+
         WorkReport workReport = workMapper.findReportByUserAccountAndType(userAccount, type);
         if (workReport == null) {
             return ApiResponse.createByErrorMsg("未查询到该报告基本信息，无法进行附件上传");
@@ -118,6 +130,17 @@ public class WorkService implements IWorkService {
         }
 
         return ApiResponse.createBySuccessMsg("删除报告成功!");
+    }
+
+    @Override
+    public ApiResponse<List<WorkReport>> getTeamWorkReports(String userAccount, Integer type) {
+
+        List<WorkReport> workReports = workMapper.getTeamWorkReports(userAccount, type);
+        if (CollectionUtils.isEmpty(workReports)) {
+            return ApiResponse.createByErrorMsg("小组内无同学上传该类型报告!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", workReports);
     }
 
     private boolean checkValid(String userAccount, Integer workReportId) {

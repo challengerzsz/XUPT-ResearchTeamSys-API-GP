@@ -4,6 +4,8 @@ import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.WorkReport;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @author : zengshuaizhi
  * @date : 2020-06-02 16:14
@@ -19,4 +21,6 @@ public interface IWorkService {
     ApiResponse<String> modifyWorkReport(String userAccount, WorkReport workReport, Integer type);
 
     ApiResponse<String> deleteWorkReport(String userAccount, Integer workReportId);
+
+    ApiResponse<List<WorkReport>> getTeamWorkReports(String userAccount, Integer type);
 }

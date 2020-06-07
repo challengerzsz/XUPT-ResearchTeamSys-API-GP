@@ -14,6 +14,7 @@ public class WorkReport {
     private Integer id;
     private String paperName;
     private String author;
+    private String authorName;
     private String reportUrl;
     private Integer type;
     private Timestamp createTime;

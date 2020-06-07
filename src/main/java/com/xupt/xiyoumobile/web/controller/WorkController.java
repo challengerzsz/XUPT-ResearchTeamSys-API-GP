@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -80,5 +81,16 @@ public class WorkController {
         }
 
         return workService.deleteWorkReport(principal.getName(), workReportId);
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @GetMapping("/getTeamWorkReports/{type}")
+    public ApiResponse<List<WorkReport>> getTeamWorkReports(Principal principal, @PathVariable("type") Integer type) {
+        if (type == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "查询小组内过程文档参数错误!");
+        }
+
+        return workService.getTeamWorkReports(principal.getName(), type);
     }
 }
