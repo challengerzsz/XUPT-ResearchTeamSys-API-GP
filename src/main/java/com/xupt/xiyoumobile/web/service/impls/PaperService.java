@@ -4,7 +4,9 @@ import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.security.util.FileUploadUtil;
 import com.xupt.xiyoumobile.web.dao.IPaperMapper;
+import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.entity.Paper;
+import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IPaperService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +30,20 @@ public class PaperService implements IPaperService {
 
     private IPaperMapper paperMapper;
 
+    private IUserMapper userMapper;
+
     @Autowired
-    public PaperService(IPaperMapper paperMapper) {
+    public PaperService(IPaperMapper paperMapper, IUserMapper userMapper) {
         this.paperMapper = paperMapper;
+        this.userMapper = userMapper;
     }
 
     @Override
     public ApiResponse<Integer> upload(String userAccount, Paper paper) {
 
+        User user = userMapper.findByUsername(userAccount);
         paper.setAuthor(userAccount);
-
+        paper.setAuthorName(user.getUserName());
         int insertPaperRes = paperMapper.insertPaper(paper);
         if (insertPaperRes == 0) {
             log.error("DB Error upload paper info failed!");

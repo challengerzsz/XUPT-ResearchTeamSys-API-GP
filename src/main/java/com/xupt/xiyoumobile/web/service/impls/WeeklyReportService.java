@@ -49,7 +49,7 @@ public class WeeklyReportService implements IWeeklyReportService {
 
         User user = userMapper.findByUsername(userAccount);
         weeklyReport.setUserAccount(userAccount);
-
+        weeklyReport.setUserName(user.getUserName());
         int insertWeeklyReportRes = weeklyReportMapper.insertWeeklyReport(weeklyReport);
         if (insertWeeklyReportRes == 0) {
             log.error("DB Error! insertWeeklyReport failed!");
@@ -119,5 +119,16 @@ public class WeeklyReportService implements IWeeklyReportService {
         }
 
         return ApiResponse.createBySuccess("查询成功", weeklyReportComments);
+    }
+
+    @Override
+    public ApiResponse<List<WeeklyReport>> getTeamWeeklyReport(Integer teamId) {
+
+        List<WeeklyReport> weeklyReports = weeklyReportMapper.getTeamWeeklyReport(teamId);
+        if (CollectionUtils.isEmpty(weeklyReports)) {
+            return ApiResponse.createByErrorMsg("该小组内无周报信息");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", weeklyReports);
     }
 }

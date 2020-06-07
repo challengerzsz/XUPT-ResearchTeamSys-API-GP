@@ -81,4 +81,15 @@ public class WeeklyReportController {
         return weeklyReportService.getWeeklyReport(weeklyReportId);
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
+    @GetMapping("/getTeamWeeklyReport/{teamId}")
+    public ApiResponse<List<WeeklyReport>> getTeamWeeklyReport(@PathVariable("teamId") Integer teamId) {
+        if (teamId == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "查询小组周报参数错误!");
+        }
+
+        return weeklyReportService.getTeamWeeklyReport(teamId);
+    }
+
 }

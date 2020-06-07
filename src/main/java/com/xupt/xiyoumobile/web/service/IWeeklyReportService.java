@@ -22,4 +22,6 @@ public interface IWeeklyReportService {
     ApiResponse<WeeklyReportVo> getWeeklyReport(Integer weeklyReportId);
 
     ApiResponse<List<WeeklyReportComment>> getComments(Integer weeklyReportId);
+
+    ApiResponse<List<WeeklyReport>> getTeamWeeklyReport(Integer teamId);
 }

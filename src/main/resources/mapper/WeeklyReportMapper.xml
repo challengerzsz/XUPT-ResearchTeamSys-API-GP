@@ -5,8 +5,8 @@
 <mapper namespace="com.xupt.xiyoumobile.web.dao.IWeeklyReportMapper">
     <insert id="insertWeeklyReport" parameterType="com.xupt.xiyoumobile.web.entity.WeeklyReport">
         INSERT INTO xupt_research_team_weekly_report_table
-            (title, user_account, report_content_md, report_content_h5)
-        VALUES (#{title}, #{userAccount}, #{reportContentMd}, #{reportContentH5})
+            (title, user_account, user_name, report_content_md, report_content_h5)
+        VALUES (#{title}, #{userAccount}, #{userName}, #{reportContentMd}, #{reportContentH5})
     </insert>
 
     <select id="getAllWeeklyReportByUserAccount" resultType="com.xupt.xiyoumobile.web.entity.WeeklyReport">
@@ -34,7 +34,15 @@
     </select>
 
     <select id="getCommentsByWeeklyReportId" resultType="com.xupt.xiyoumobile.web.entity.WeeklyReportComment">
-        SELECT *FROM xupt_research_team_weekly_report_comment_table
+        SELECT *
+        FROM xupt_research_team_weekly_report_comment_table
         WHERE weekly_report_id = #{weeklyReportId}
+    </select>
+
+    <select id="getTeamWeeklyReport" resultType="com.xupt.xiyoumobile.web.entity.WeeklyReport">
+        SELECT *
+        FROM xupt_research_team_weekly_report_table
+        WHERE user_account IN (SELECT user_account FROM xupt_research_team_user_table WHERE team = #{teamId})
+        ORDER BY create_time DESC
     </select>
 </mapper>

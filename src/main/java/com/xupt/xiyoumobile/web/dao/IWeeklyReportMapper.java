@@ -28,4 +28,6 @@ public interface IWeeklyReportMapper {
     List<WeeklyReportComment> findWeeklyReportCommentById(Integer weeklyReportId);
 
     List<WeeklyReportComment> getCommentsByWeeklyReportId(Integer weeklyReportId);
+
+    List<WeeklyReport> getTeamWeeklyReport(Integer teamId);
 }

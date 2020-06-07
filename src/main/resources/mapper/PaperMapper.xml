@@ -6,14 +6,14 @@
     <insert id="insertPaper" parameterType="com.xupt.xiyoumobile.web.entity.Paper" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO xupt_research_team_paper_table
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            topic, author, abstract_zh, abstract_en, type,
+            topic, author, author_name, abstract_zh, abstract_en, type,
             <if test="acceptTime != null">
                 accept_time,
             </if>
         </trim>
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{topic}, #{author}, #{abstractZh}, #{abstractEn}, #{type},
+            #{topic}, #{author}, #{authorName}, #{abstractZh}, #{abstractEn}, #{type},
             <if test="acceptTime != null">
                 #{acceptTime},
             </if>

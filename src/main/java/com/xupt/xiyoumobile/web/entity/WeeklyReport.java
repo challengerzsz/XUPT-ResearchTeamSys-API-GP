@@ -13,6 +13,7 @@ public class WeeklyReport {
     private Integer id;
     private String title;
     private String userAccount;
+    private String userName;
     private String reportContentMd;
     private String reportContentH5;
     private Timestamp createTime;

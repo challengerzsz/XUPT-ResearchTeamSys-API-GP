@@ -1,6 +1,5 @@
 package com.xupt.xiyoumobile.web.dao;
 
-import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.Paper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
