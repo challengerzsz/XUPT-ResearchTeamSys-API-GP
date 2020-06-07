@@ -103,7 +103,7 @@ public class PaperService implements IPaperService {
     private ApiResponse<List<Paper>> getPaperByUserAccountAndType(String userAccount, Integer type) {
         List<Paper> papers = paperMapper.findPaperByUserAccountAndType(userAccount, type);
         if (CollectionUtils.isEmpty(papers)) {
-            return ApiResponse.createByErrorMsg("还没有上传该类型的文献!");
+            return ApiResponse.createByErrorMsg("还没有上传该类型的论文!");
         }
 
         return ApiResponse.createBySuccess("查询成功", papers);

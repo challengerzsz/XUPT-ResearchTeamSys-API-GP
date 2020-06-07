@@ -8,21 +8,24 @@
         INSERT INTO xupt_research_team_claim_expense_table
         (userAccount, userName, type, unit_price, amount, total_price, date, comment, status)
         VALUES (#{userAccount}, #{userName}, #{type}, #{unitPrice}, #{amount}, #{totalPrice},
-        #{date}, #{comment}, status)
+                #{date}, #{comment}, status)
     </insert>
 
     <select id="selectClaimExpenseByUserAccount" resultType="com.xupt.xiyoumobile.web.entity.ClaimExpense">
-        SELECT * FROM xupt_research_team_claim_expense_table
+        SELECT *
+        FROM xupt_research_team_claim_expense_table
         WHERE userAccount = #{userAccount}
     </select>
 
     <select id="findClaimExpenseById" resultType="com.xupt.xiyoumobile.web.entity.ClaimExpense">
-        SELECT * FROM xupt_research_team_claim_expense_table
+        SELECT *
+        FROM xupt_research_team_claim_expense_table
         WHERE id = #{claimExpenseId}
     </select>
 
     <delete id="deleteClaimExpenseById">
-        DELETE FROM xupt_research_team_claim_expense_table
+        DELETE
+        FROM xupt_research_team_claim_expense_table
         WHERE id = #{claimExpenseId}
     </delete>
 
@@ -52,21 +55,24 @@
             </if>
             update_time = CURRENT_TIME
         </set>
+        WHERE id = #{id}
     </update>
 
     <insert id="insertProject" parameterType="com.xupt.xiyoumobile.web.entity.Project">
         INSERT INTO xupt_research_team_project_table
-        (project_no, project_name, type, level, host_name, members)
+            (project_no, project_name, type, level, host_name, members)
         VALUES (#{projectNo}, #{projectName}, #{type}, #{level}, #{hostName}, #{members})
     </insert>
 
     <select id="getAllProject" resultType="com.xupt.xiyoumobile.web.entity.Project">
-        SELECT * FROM xupt_research_team_project_table
+        SELECT *
+        FROM xupt_research_team_project_table
         ORDER BY create_time DESC
     </select>
 
     <delete id="deleteProjectById">
-        DELETE FROM xupt_research_team_project_table
+        DELETE
+        FROM xupt_research_team_project_table
         WHERE id = #{projectId}
     </delete>
 
@@ -95,8 +101,10 @@
         </set>
     </update>
 
-    <select id="getClaimExpenseStatisticsByUserAccount" resultType="com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo">
-        SELECT t.userAccount, count(*) count FROM xupt_research_team_claim_expense_table t
+    <select id="getClaimExpenseStatisticsByUserAccount"
+            resultType="com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo">
+        SELECT t.userAccount, count(*) count
+        FROM xupt_research_team_claim_expense_table t
         WHERE userAccount = #{userAccount}
     </select>
 </mapper>
