@@ -82,7 +82,7 @@ public class DailyWorkController {
         return dailyWorkService.uploadProject(project);
     }
 
-    @PreAuthorize("hasRole('TEACHER, STUDENT')")
+    @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
     @GetMapping("/project/getAll")
     public ApiResponse<List<Project>> getAllProject() {
         return dailyWorkService.getAllProject();

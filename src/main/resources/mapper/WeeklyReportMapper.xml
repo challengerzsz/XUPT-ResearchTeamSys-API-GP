@@ -5,28 +5,36 @@
 <mapper namespace="com.xupt.xiyoumobile.web.dao.IWeeklyReportMapper">
     <insert id="insertWeeklyReport" parameterType="com.xupt.xiyoumobile.web.entity.WeeklyReport">
         INSERT INTO xupt_research_team_weekly_report_table
-        (title, user_account, report_content)
-        VALUES (#{title}, #{userAccount}, #{reportContent})
+            (title, user_account, report_content_md, report_content_h5)
+        VALUES (#{title}, #{userAccount}, #{reportContentMd}, #{reportContentH5})
     </insert>
 
     <select id="getAllWeeklyReportByUserAccount" resultType="com.xupt.xiyoumobile.web.entity.WeeklyReport">
-        SELECT * FROM xupt_research_team_weekly_report_table
+        SELECT *
+        FROM xupt_research_team_weekly_report_table
         WHERE user_account = #{userAccount}
     </select>
 
     <select id="findWeeklyReportById" resultType="com.xupt.xiyoumobile.web.entity.WeeklyReport">
-        SELECT * FROM xupt_research_team_weekly_report_table
+        SELECT *
+        FROM xupt_research_team_weekly_report_table
         WHERE id = #{weeklyReportId}
     </select>
 
     <insert id="insertWeeklyReportComment">
         INSERT INTO xupt_research_team_weekly_report_comment_table
-        (weekly_report_id, teacher_account, content)
-        VALUES (#{weeklyReportId}, #{userAccount}, #{comment})
+            (weekly_report_id, teacher_account, teacher_name, content)
+        VALUES (#{weeklyReportId}, #{userAccount}, #{teacherName}, #{comment})
     </insert>
 
     <select id="findWeeklyReportCommentById" resultType="com.xupt.xiyoumobile.web.entity.WeeklyReportComment">
-        SELECT * FROM xupt_research_team_weekly_report_comment_table
+        SELECT *
+        FROM xupt_research_team_weekly_report_comment_table
+        WHERE weekly_report_id = #{weeklyReportId}
+    </select>
+
+    <select id="getCommentsByWeeklyReportId" resultType="com.xupt.xiyoumobile.web.entity.WeeklyReportComment">
+        SELECT *FROM xupt_research_team_weekly_report_comment_table
         WHERE weekly_report_id = #{weeklyReportId}
     </select>
 </mapper>

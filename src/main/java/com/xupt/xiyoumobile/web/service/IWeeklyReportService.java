@@ -2,6 +2,7 @@ package com.xupt.xiyoumobile.web.service;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.WeeklyReport;
+import com.xupt.xiyoumobile.web.entity.WeeklyReportComment;
 import com.xupt.xiyoumobile.web.vo.WeeklyReportVo;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface IWeeklyReportService {
     ApiResponse<String> commentOnWeeklyReport(String userAccount, Integer weeklyReportId, String comment);
 
     ApiResponse<WeeklyReportVo> getWeeklyReport(Integer weeklyReportId);
+
+    ApiResponse<List<WeeklyReportComment>> getComments(Integer weeklyReportId);
 }

@@ -3,6 +3,7 @@ package com.xupt.xiyoumobile.web.controller;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.web.entity.WeeklyReport;
+import com.xupt.xiyoumobile.web.entity.WeeklyReportComment;
 import com.xupt.xiyoumobile.web.service.IWeeklyReportService;
 import com.xupt.xiyoumobile.web.vo.WeeklyReportVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,17 @@ public class WeeklyReportController {
         }
 
         return weeklyReportService.commentOnWeeklyReport(principal.getName(), weeklyReportId, comment);
+    }
+
+    @PreAuthorize("hasRole('STUDENT')")
+    @GetMapping("/getComments/{weeklyReportId}")
+    public ApiResponse<List<WeeklyReportComment>> getComments(@PathVariable("weeklyReportId") Integer weeklyReportId) {
+        if (weeklyReportId == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "获取周报批注参数错误!");
+        }
+
+        return weeklyReportService.getComments(weeklyReportId);
     }
 
 
