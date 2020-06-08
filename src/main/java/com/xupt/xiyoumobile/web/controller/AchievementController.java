@@ -71,7 +71,7 @@ public class AchievementController {
 
     @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/patent/upload")
-    public ApiResponse<String> uploadPatent(Patent patent) {
+    public ApiResponse<Integer> uploadPatent(Patent patent) {
         if (patent == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
                     "上传专利信息参数错误!");
@@ -125,7 +125,7 @@ public class AchievementController {
 
     @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/softWareCopyright/upload")
-    public ApiResponse<String> uploadSoftWareCopyright(SoftWareCopyright softWareCopyright) {
+    public ApiResponse<Integer> uploadSoftWareCopyright(SoftWareCopyright softWareCopyright) {
         if (softWareCopyright == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
                     "上传软件著作权信息参数错误!");
@@ -135,18 +135,17 @@ public class AchievementController {
     }
 
     @PreAuthorize("hasRole('TEACHER')")
-    @PostMapping("/softWareCopyright/uploadFile/{softWareCopyrightId}")
-    public ApiResponse<String> uploadSoftWareCopyrightFiles(@PathVariable("softWareCopyrightId") Integer softWareCopyrightId,
-                                                            @RequestParam(value = "document", required = false) MultipartFile document,
-                                                            @RequestParam(value = "project", required = false) MultipartFile project,
-                                                            @RequestParam(value = "certificate", required = false) MultipartFile certificate) {
+    @PostMapping("/softWareCopyright/uploadFile/{softWareCopyrightId}/{type}")
+    public ApiResponse<String> uploadSoftWareCopyrightFile(@PathVariable("softWareCopyrightId") Integer softWareCopyrightId,
+                                                           @RequestParam(value = "file") MultipartFile file,
+                                                           @PathVariable("type") Integer type) {
 
         if (softWareCopyrightId == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
                     "上传软件著作权附件参数错误!");
         }
 
-        return achievementService.uploadSoftWareCopyrightFiles(softWareCopyrightId, document, project, certificate);
+        return achievementService.uploadSoftWareCopyrightFile(softWareCopyrightId, file, type);
     }
 
     @PreAuthorize("hasRole('TEACHER')")
@@ -165,6 +164,17 @@ public class AchievementController {
     @GetMapping("/softWareCopyright/getAll")
     public ApiResponse<List<SoftWareCopyright>> getAllSoftWareCopyright() {
         return achievementService.getAllSoftWareCopyright();
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/softWareCopyright/delete/{scId}")
+    public ApiResponse<String> deleteSoftWareCopyright(@PathVariable("scId") Integer scId) {
+        if (scId == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "删除软件著作权参数错误!");
+        }
+
+        return achievementService.deleteSoftWareCopyright(scId);
     }
 
 }

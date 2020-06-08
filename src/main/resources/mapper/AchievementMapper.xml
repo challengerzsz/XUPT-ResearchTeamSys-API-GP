@@ -4,23 +4,27 @@
 
 <mapper namespace="com.xupt.xiyoumobile.web.dao.IAchievementMapper">
 
-    <insert id="insertCompetition" parameterType="com.xupt.xiyoumobile.web.entity.Competition">
+    <insert id="insertCompetition" parameterType="com.xupt.xiyoumobile.web.entity.Competition" useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO xupt_research_team_competition_table
-        (competition_name, category, level, members, competition_time)
+            (competition_name, category, level, members, competition_time)
         VALUES (#{competitionName}, #{category}, #{level}, #{members}, #{competitionTime})
     </insert>
 
     <select id="getAllCompetition" resultType="com.xupt.xiyoumobile.web.entity.Competition">
-        SELECT * FROM xupt_research_team_competition_table
+        SELECT *
+        FROM xupt_research_team_competition_table
     </select>
 
     <select id="findCompetitionById" resultType="com.xupt.xiyoumobile.web.entity.Competition">
-        SELECT * FROM xupt_research_team_competition_table
+        SELECT *
+        FROM xupt_research_team_competition_table
         WHERE id = #{competitionId}
     </select>
 
     <delete id="deleteCompetitionById">
-        DELETE FROM xupt_research_team_competition_table
+        DELETE
+        FROM xupt_research_team_competition_table
         WHERE id = #{competitionId}
     </delete>
 
@@ -44,21 +48,25 @@
             </if>
             update_time = CURRENT_TIME
         </set>
+        WHERE id = #{id}
     </update>
 
-    <insert id="insertPatent" parameterType="com.xupt.xiyoumobile.web.entity.Patent">
+    <insert id="insertPatent" parameterType="com.xupt.xiyoumobile.web.entity.Patent" useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO xupt_research_team_patent_table
-        (patent_name, members, status, patent_time)
+            (patent_name, members, status, patent_time)
         VALUES (#{patentName}, #{members}, #{status}, #{patentTime})
     </insert>
 
     <select id="findPatentById" resultType="com.xupt.xiyoumobile.web.entity.Patent">
-        SELECT * FROM xupt_research_team_patent_table
+        SELECT *
+        FROM xupt_research_team_patent_table
         WHERE id = #{patentId}
     </select>
 
     <delete id="deletePatent">
-        DELETE FROM xupt_research_team_patent_table
+        DELETE
+        FROM xupt_research_team_patent_table
         WHERE id = #{patentId}
     </delete>
 
@@ -82,20 +90,25 @@
             </if>
             update_time = CURRENT_TIME
         </set>
+        WHERE id = #{id}
     </update>
 
     <select id="getAllPatent" resultType="com.xupt.xiyoumobile.web.entity.Patent">
-        SELECT * FROM xupt_research_team_patent_table
+        SELECT *
+        FROM xupt_research_team_patent_table
     </select>
 
-    <insert id="insertSoftWareCopyright" parameterType="com.xupt.xiyoumobile.web.entity.SoftWareCopyright">
+    <insert id="insertSoftWareCopyright" parameterType="com.xupt.xiyoumobile.web.entity.SoftWareCopyright"
+            useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO xupt_research_team_software_copyright_table
-        (software_copyright_name, members, time)
+            (software_copyright_name, members, time)
         VALUES (#{softwareCopyrightName}, #{members}, #{time})
     </insert>
 
     <select id="findSoftWareCopyrightById" resultType="com.xupt.xiyoumobile.web.entity.SoftWareCopyright">
-        SELECT * FROM xupt_research_team_software_copyright_table
+        SELECT *
+        FROM xupt_research_team_software_copyright_table
         WHERE id = #{softWareCopyrightId}
     </select>
 
@@ -122,9 +135,17 @@
             </if>
             update_time = CURRENT_TIME
         </set>
+        WHERE id = #{id}
     </update>
 
     <select id="getAllSoftWareCopyright" resultType="com.xupt.xiyoumobile.web.entity.SoftWareCopyright">
-        SELECT * FROM xupt_research_team_software_copyright_table
+        SELECT *
+        FROM xupt_research_team_software_copyright_table
     </select>
+
+    <delete id="deleteSoftWareCopyright">
+        DELETE
+        FROM xupt_research_team_software_copyright_table
+        WHERE id = #{scId}
+    </delete>
 </mapper>

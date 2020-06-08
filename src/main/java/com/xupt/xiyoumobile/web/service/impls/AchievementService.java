@@ -28,14 +28,21 @@ public class AchievementService implements IAchievementService {
     @Value("${upload.patent}")
     private String PATENT_UPLOAD_PATH;
 
-    @Value("${upload.softWareCopyright.document")
+    @Value("${upload.softWareCopyright.document}")
     private String SOFTWARE_COPYRIGHT_DOCUMENT_PATH;
 
-    @Value("${upload.softWareCopyright.project")
+    @Value("${upload.softWareCopyright.project}")
     private String SOFTWARE_COPYRIGHT_PROJECT_PATH;
 
-    @Value("${upload.softWareCopyright.certificate")
+    @Value("${upload.softWareCopyright.certificate}")
     private String SOFTWARE_COPYRIGHT_CERTIFICATE_PATH;
+
+    private static final int DOCUMENT_FILE = 0;
+
+    private static final int PROJECT_FILE = 1;
+
+    private static final int CERTIFICATE_FILE = 2;
+
 
     private IAchievementMapper achievementMapper;
 
@@ -96,7 +103,7 @@ public class AchievementService implements IAchievementService {
     }
 
     @Override
-    public ApiResponse<String> uploadPatent(Patent patent) {
+    public ApiResponse<Integer> uploadPatent(Patent patent) {
 
         int uploadPatentRes = achievementMapper.insertPatent(patent);
         if (uploadPatentRes == 0) {
@@ -104,7 +111,7 @@ public class AchievementService implements IAchievementService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
-        return ApiResponse.createBySuccessMsg("上传专利信息成功");
+        return ApiResponse.createBySuccess("上传专利信息成功", patent.getId());
     }
 
     @Override
@@ -115,9 +122,9 @@ public class AchievementService implements IAchievementService {
             return ApiResponse.createByErrorMsg("该专利信息不存在，删除专利失败");
         }
 
-        if (!FileUploadUtil.deleteFile(patent.getFilePath())) {
-            return ApiResponse.createByErrorMsg("该专利附件不存在或删除失败!");
-        }
+//        if (!FileUploadUtil.deleteFile(patent.getFilePath())) {
+//            return ApiResponse.createByErrorMsg("该专利附件不存在或删除失败!");
+//        }
 
         int deletePatentRes = achievementMapper.deletePatent(patentId);
         if (deletePatentRes == 0) {
@@ -173,7 +180,7 @@ public class AchievementService implements IAchievementService {
     }
 
     @Override
-    public ApiResponse<String> uploadSoftWareCopyright(SoftWareCopyright softWareCopyright) {
+    public ApiResponse<Integer> uploadSoftWareCopyright(SoftWareCopyright softWareCopyright) {
 
         int uploadSoftWareCopyrightRes = achievementMapper.insertSoftWareCopyright(softWareCopyright);
         if (uploadSoftWareCopyrightRes == 0) {
@@ -181,39 +188,38 @@ public class AchievementService implements IAchievementService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
-        return ApiResponse.createBySuccessMsg("上传软件著作权信息成功");
+        return ApiResponse.createBySuccess("上传软件著作权信息成功", softWareCopyright.getId());
     }
 
     @Override
-    public ApiResponse<String> uploadSoftWareCopyrightFiles(Integer softWareCopyrightId, MultipartFile document,
-                                                            MultipartFile project, MultipartFile certificate) {
+    public ApiResponse<String> uploadSoftWareCopyrightFile(Integer softWareCopyrightId, MultipartFile file,
+                                                           Integer type) {
 
         SoftWareCopyright softWareCopyright = achievementMapper.findSoftWareCopyrightById(softWareCopyrightId);
         if (softWareCopyright == null) {
             return ApiResponse.createByErrorMsg("软件著作权信息不存在，上传附件失败!");
         }
-
-        if (document != null && !document.isEmpty()) {
-            String documentDestPath = FileUploadUtil.uploadFile(document, SOFTWARE_COPYRIGHT_DOCUMENT_PATH);
-            if (documentDestPath != null) {
-                softWareCopyright.setDocumentPath(documentDestPath);
-            }
+        String destPath;
+        switch (type) {
+            case DOCUMENT_FILE:
+                destPath = FileUploadUtil.uploadFile(file, SOFTWARE_COPYRIGHT_DOCUMENT_PATH);
+                if (destPath != null) {
+                    softWareCopyright.setDocumentPath(destPath);
+                }
+                break;
+            case PROJECT_FILE:
+                destPath = FileUploadUtil.uploadFile(file, SOFTWARE_COPYRIGHT_PROJECT_PATH);
+                if (destPath != null) {
+                    softWareCopyright.setProjectPath(destPath);
+                }
+                break;
+            case CERTIFICATE_FILE:
+                destPath = FileUploadUtil.uploadFile(file, SOFTWARE_COPYRIGHT_CERTIFICATE_PATH);
+                if (destPath != null) {
+                    softWareCopyright.setCertificatePath(destPath);
+                }
+                break;
         }
-
-        if (project != null && !project.isEmpty()) {
-            String projectDestPath = FileUploadUtil.uploadFile(project, SOFTWARE_COPYRIGHT_PROJECT_PATH);
-            if (projectDestPath != null) {
-                softWareCopyright.setProjectPath(projectDestPath);
-            }
-        }
-
-        if (certificate != null && !certificate.isEmpty()) {
-            String certificateDestPath = FileUploadUtil.uploadFile(certificate, SOFTWARE_COPYRIGHT_CERTIFICATE_PATH);
-            if (certificateDestPath != null) {
-                softWareCopyright.setCertificatePath(certificateDestPath);
-            }
-        }
-
 
         if (commonModifySoftWareCopyright(softWareCopyright)) {
             log.error("DB Error! modifySoftwareCopyright failed!");
@@ -242,6 +248,18 @@ public class AchievementService implements IAchievementService {
         }
 
         return ApiResponse.createBySuccess("查询成功", softWareCopyrights);
+    }
+
+    @Override
+    public ApiResponse<String> deleteSoftWareCopyright(Integer scId) {
+
+        int deleteSCRes = achievementMapper.deleteSoftWareCopyright(scId);
+        if (deleteSCRes == 0) {
+            log.error("DB Error! deleteSoftWareCopyright failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
+        }
+
+        return ApiResponse.createBySuccessMsg("删除软著信息成功");
     }
 
     private Boolean commonModifySoftWareCopyright(SoftWareCopyright softWareCopyright) {
