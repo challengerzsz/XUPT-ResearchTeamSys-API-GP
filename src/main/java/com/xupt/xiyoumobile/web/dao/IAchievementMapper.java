@@ -41,4 +41,6 @@ public interface IAchievementMapper {
     int modifySoftwareCopyright(SoftWareCopyright softWareCopyright);
 
     List<SoftWareCopyright> getAllSoftWareCopyright();
+
+    int deleteSoftWareCopyright(Integer scId);
 }

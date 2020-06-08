@@ -98,7 +98,9 @@
         FROM xupt_research_team_patent_table
     </select>
 
-    <insert id="insertSoftWareCopyright" parameterType="com.xupt.xiyoumobile.web.entity.SoftWareCopyright">
+    <insert id="insertSoftWareCopyright" parameterType="com.xupt.xiyoumobile.web.entity.SoftWareCopyright"
+            useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO xupt_research_team_software_copyright_table
             (software_copyright_name, members, time)
         VALUES (#{softwareCopyrightName}, #{members}, #{time})
@@ -140,4 +142,10 @@
         SELECT *
         FROM xupt_research_team_software_copyright_table
     </select>
+
+    <delete id="deleteSoftWareCopyright">
+        DELETE
+        FROM xupt_research_team_software_copyright_table
+        WHERE id = #{scId}
+    </delete>
 </mapper>

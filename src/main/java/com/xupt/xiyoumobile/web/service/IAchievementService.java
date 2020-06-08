@@ -32,12 +32,13 @@ public interface IAchievementService {
 
     ApiResponse<String> modifyPatent(Patent patent);
 
-    ApiResponse<String> uploadSoftWareCopyright(SoftWareCopyright softWareCopyright);
+    ApiResponse<Integer> uploadSoftWareCopyright(SoftWareCopyright softWareCopyright);
 
-    ApiResponse<String> uploadSoftWareCopyrightFiles(Integer softWareCopyrightId, MultipartFile document,
-                                                     MultipartFile project, MultipartFile certificate);
+    ApiResponse<String> uploadSoftWareCopyrightFile(Integer softWareCopyrightId, MultipartFile file, Integer type);
 
     ApiResponse<String> modifySoftWareCopyright(SoftWareCopyright softWareCopyright);
 
     ApiResponse<List<SoftWareCopyright>> getAllSoftWareCopyright();
+
+    ApiResponse<String> deleteSoftWareCopyright(Integer scId);
 }
