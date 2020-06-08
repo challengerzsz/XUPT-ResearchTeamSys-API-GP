@@ -71,7 +71,7 @@ public class AchievementController {
 
     @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/patent/upload")
-    public ApiResponse<String> uploadPatent(Patent patent) {
+    public ApiResponse<Integer> uploadPatent(Patent patent) {
         if (patent == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
                     "上传专利信息参数错误!");

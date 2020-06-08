@@ -22,7 +22,7 @@ public interface IAchievementService {
 
     ApiResponse<String> modifyCompetition(Competition competition);
 
-    ApiResponse<String> uploadPatent(Patent patent);
+    ApiResponse<Integer> uploadPatent(Patent patent);
 
     ApiResponse<String> deletePatent(Integer patentId);
 

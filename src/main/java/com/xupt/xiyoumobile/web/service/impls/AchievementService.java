@@ -96,7 +96,7 @@ public class AchievementService implements IAchievementService {
     }
 
     @Override
-    public ApiResponse<String> uploadPatent(Patent patent) {
+    public ApiResponse<Integer> uploadPatent(Patent patent) {
 
         int uploadPatentRes = achievementMapper.insertPatent(patent);
         if (uploadPatentRes == 0) {
@@ -104,7 +104,7 @@ public class AchievementService implements IAchievementService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
-        return ApiResponse.createBySuccessMsg("上传专利信息成功");
+        return ApiResponse.createBySuccess("上传专利信息成功", patent.getId());
     }
 
     @Override
@@ -115,9 +115,9 @@ public class AchievementService implements IAchievementService {
             return ApiResponse.createByErrorMsg("该专利信息不存在，删除专利失败");
         }
 
-        if (!FileUploadUtil.deleteFile(patent.getFilePath())) {
-            return ApiResponse.createByErrorMsg("该专利附件不存在或删除失败!");
-        }
+//        if (!FileUploadUtil.deleteFile(patent.getFilePath())) {
+//            return ApiResponse.createByErrorMsg("该专利附件不存在或删除失败!");
+//        }
 
         int deletePatentRes = achievementMapper.deletePatent(patentId);
         if (deletePatentRes == 0) {
