@@ -32,13 +32,16 @@ public class UserService implements IUserService {
 
     private PasswordEncoder passwordEncoder;
 
+    private FileUploadUtil fileUploadUtil;
+
     @Value("${upload.userImg}")
     private String USER_IMG_UPLOAD_PATH;
 
     @Autowired
-    public UserService(IUserMapper userMapper, @Lazy PasswordEncoder passwordEncoder) {
+    public UserService(IUserMapper userMapper, @Lazy PasswordEncoder passwordEncoder, FileUploadUtil fileUploadUtil) {
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+        this.fileUploadUtil = fileUploadUtil;
     }
 
     @Override
@@ -181,7 +184,7 @@ public class UserService implements IUserService {
         if (user == null) {
             return ApiResponse.createByErrorMsg("用户不存在,上传头像失败!");
         }
-        String destFilePath = FileUploadUtil.uploadFile(multipartFile, USER_IMG_UPLOAD_PATH);
+        String destFilePath = fileUploadUtil.uploadFile(userAccount, multipartFile, USER_IMG_UPLOAD_PATH);
         if (destFilePath == null) {
             return ApiResponse.createByErrorMsg("上传用户头像失败");
         }

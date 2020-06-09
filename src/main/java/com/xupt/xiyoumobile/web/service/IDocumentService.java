@@ -17,7 +17,7 @@ public interface IDocumentService {
 
     ApiResponse<String> modifyDocument(Principal principal, Document document);
 
-    ApiResponse<String> uploadDocumentFile(Integer documentId, MultipartFile multipartFile);
+    ApiResponse<String> uploadDocumentFile(String userAccount, Integer documentId, MultipartFile multipartFile);
 
     ApiResponse<Integer> uploadDocument(Principal principal, Document document);
 

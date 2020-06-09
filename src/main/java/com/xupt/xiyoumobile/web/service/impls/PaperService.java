@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.security.Principal;
 import java.util.List;
 
 /**
@@ -33,10 +32,13 @@ public class PaperService implements IPaperService {
 
     private IUserMapper userMapper;
 
+    private FileUploadUtil fileUploadUtil;
+
     @Autowired
-    public PaperService(IPaperMapper paperMapper, IUserMapper userMapper) {
+    public PaperService(IPaperMapper paperMapper, IUserMapper userMapper, FileUploadUtil fileUploadUtil) {
         this.paperMapper = paperMapper;
         this.userMapper = userMapper;
+        this.fileUploadUtil = fileUploadUtil;
     }
 
     @Override
@@ -62,7 +64,7 @@ public class PaperService implements IPaperService {
             return ApiResponse.createByErrorMsg("不存在该论文，上传文件失败!");
         }
 
-        String uploadPaperFilePath = FileUploadUtil.uploadFile(multipartFile, PAPER_UPLOAD_PATH);
+        String uploadPaperFilePath = fileUploadUtil.uploadFile(userAccount, multipartFile, PAPER_UPLOAD_PATH);
         if (uploadPaperFilePath == null) {
             return ApiResponse.createByErrorMsg("上传论文附件失败");
         }

@@ -26,7 +26,7 @@ public interface IAchievementService {
 
     ApiResponse<String> deletePatent(Integer patentId);
 
-    ApiResponse<String> uploadPatentFile(Integer patentId, MultipartFile multipartFile);
+    ApiResponse<String> uploadPatentFile(String userAccount, Integer patentId, MultipartFile multipartFile);
 
     ApiResponse<List<Patent>> getAllPatent();
 
@@ -34,7 +34,8 @@ public interface IAchievementService {
 
     ApiResponse<Integer> uploadSoftWareCopyright(SoftWareCopyright softWareCopyright);
 
-    ApiResponse<String> uploadSoftWareCopyrightFile(Integer softWareCopyrightId, MultipartFile file, Integer type);
+    ApiResponse<String> uploadSoftWareCopyrightFile(String userAccount, Integer softWareCopyrightId,
+                                                    MultipartFile file, Integer type);
 
     ApiResponse<String> modifySoftWareCopyright(SoftWareCopyright softWareCopyright);
 

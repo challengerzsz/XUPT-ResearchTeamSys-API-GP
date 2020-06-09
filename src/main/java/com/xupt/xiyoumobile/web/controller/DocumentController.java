@@ -75,12 +75,13 @@ public class DocumentController {
     @PreAuthorize(("hasAnyRole('TEACHER, STUDENT')"))
     @PostMapping("/uploadDocumentFile/{documentId}")
     public ApiResponse<String> uploadDocumentFile(@PathVariable("documentId") Integer documentId,
-                                                  @RequestParam("file") MultipartFile multipartFile) {
+                                                  @RequestParam("file") MultipartFile multipartFile,
+                                                  Principal principal) {
         if (multipartFile == null || multipartFile.isEmpty() || documentId == null) {
             log.error("uploadDocumentFile failed! ILLEGAL_FILE_ARGUMENT");
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "上传文件参数出错!");
         }
-        return documentService.uploadDocumentFile(documentId, multipartFile);
+        return documentService.uploadDocumentFile(principal.getName(), documentId, multipartFile);
     }
 
     @PreAuthorize(("hasAnyRole('TEACHER, STUDENT')"))

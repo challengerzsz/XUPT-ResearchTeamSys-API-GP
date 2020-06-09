@@ -32,10 +32,13 @@ public class WorkService implements IWorkService {
 
     private IUserMapper userMapper;
 
+    private FileUploadUtil fileUploadUtil;
+
     @Autowired
-    public WorkService(IWorkMapper workMapper, IUserMapper userMapper) {
+    public WorkService(IWorkMapper workMapper, IUserMapper userMapper, FileUploadUtil fileUploadUtil) {
         this.workMapper = workMapper;
         this.userMapper = userMapper;
+        this.fileUploadUtil = fileUploadUtil;
     }
 
 
@@ -78,7 +81,7 @@ public class WorkService implements IWorkService {
             return ApiResponse.createByErrorMsg("未查询到该报告基本信息，无法进行附件上传");
         }
 
-        String destFilePath = FileUploadUtil.uploadFile(multipartFile, WORK_REPORT_UPLOAD_PATH);
+        String destFilePath = fileUploadUtil.uploadFile(userAccount, multipartFile, WORK_REPORT_UPLOAD_PATH);
         if (destFilePath == null) {
             return ApiResponse.createByErrorMsg("上传文件失败!");
         }
@@ -124,7 +127,7 @@ public class WorkService implements IWorkService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
-        if (!FileUploadUtil.deleteFile(workReport.getReportUrl())) {
+        if (!fileUploadUtil.deleteFile(workReport.getReportUrl())) {
             log.error("Delete document pdf file failed!");
             return ApiResponse.createByErrorMsg("报告不存在或删除报告附件失败!");
         }

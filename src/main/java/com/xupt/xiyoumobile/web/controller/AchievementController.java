@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -83,14 +84,15 @@ public class AchievementController {
     @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/patent/uploadFile/{patentId}")
     public ApiResponse<String> uploadPatentFile(@PathVariable("patentId") Integer patentId,
-                                                MultipartFile multipartFile) {
+                                                Principal principal,
+                                                @RequestParam("file") MultipartFile multipartFile) {
 
         if (patentId == null || multipartFile == null || multipartFile.isEmpty()) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
                     "上传专利附件参数错误!");
         }
 
-        return achievementService.uploadPatentFile(patentId, multipartFile);
+        return achievementService.uploadPatentFile(principal.getName(), patentId, multipartFile);
     }
 
     @PreAuthorize("hasRole('TEACHER')")
@@ -138,14 +140,15 @@ public class AchievementController {
     @PostMapping("/softWareCopyright/uploadFile/{softWareCopyrightId}/{type}")
     public ApiResponse<String> uploadSoftWareCopyrightFile(@PathVariable("softWareCopyrightId") Integer softWareCopyrightId,
                                                            @RequestParam(value = "file") MultipartFile file,
-                                                           @PathVariable("type") Integer type) {
+                                                           @PathVariable("type") Integer type,
+                                                           Principal principal) {
 
         if (softWareCopyrightId == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
                     "上传软件著作权附件参数错误!");
         }
 
-        return achievementService.uploadSoftWareCopyrightFile(softWareCopyrightId, file, type);
+        return achievementService.uploadSoftWareCopyrightFile(principal.getName(), softWareCopyrightId, file, type);
     }
 
     @PreAuthorize("hasRole('TEACHER')")

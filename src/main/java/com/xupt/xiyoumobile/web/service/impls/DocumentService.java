@@ -39,9 +39,12 @@ public class DocumentService implements IDocumentService {
 
     private IDocumentMapper documentMapper;
 
+    private FileUploadUtil fileUploadUtil;
+
     @Autowired
-    public DocumentService(IDocumentMapper documentMapper) {
+    public DocumentService(IDocumentMapper documentMapper, FileUploadUtil fileUploadUtil) {
         this.documentMapper = documentMapper;
+        this.fileUploadUtil = fileUploadUtil;
     }
 
     @Override
@@ -141,7 +144,7 @@ public class DocumentService implements IDocumentService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
-        if (!FileUploadUtil.deleteFile(document.getPdfUrl())) {
+        if (!fileUploadUtil.deleteFile(document.getPdfUrl())) {
             log.error("Delete document pdf file failed!");
             return ApiResponse.createByErrorMsg("报告不存在或删除文献附件失败!");
         }
@@ -161,13 +164,13 @@ public class DocumentService implements IDocumentService {
     }
 
     @Override
-    public ApiResponse<String> uploadDocumentFile(Integer documentId, MultipartFile multipartFile) {
+    public ApiResponse<String> uploadDocumentFile(String userAccount, Integer documentId, MultipartFile multipartFile) {
         Document document = documentMapper.findByDocumentId(documentId);
         if (document == null) {
             return ApiResponse.createByErrorMsg("未查询到该文献基本信息，无法进行附件上传");
         }
 
-        String destFilePath = FileUploadUtil.uploadFile(multipartFile, DOCUMENT_UPLOAD_PATH);
+        String destFilePath = fileUploadUtil.uploadFile(userAccount, multipartFile, DOCUMENT_UPLOAD_PATH);
         if (destFilePath == null) {
             return ApiResponse.createByErrorMsg("上传文件失败!");
         }

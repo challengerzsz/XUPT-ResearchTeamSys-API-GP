@@ -43,11 +43,13 @@ public class AchievementService implements IAchievementService {
 
     private static final int CERTIFICATE_FILE = 2;
 
+    private FileUploadUtil fileUploadUtil;
 
     private IAchievementMapper achievementMapper;
 
     @Autowired
-    public AchievementService(IAchievementMapper achievementMapper) {
+    public AchievementService(FileUploadUtil fileUploadUtil, IAchievementMapper achievementMapper) {
+        this.fileUploadUtil = fileUploadUtil;
         this.achievementMapper = achievementMapper;
     }
 
@@ -122,9 +124,9 @@ public class AchievementService implements IAchievementService {
             return ApiResponse.createByErrorMsg("该专利信息不存在，删除专利失败");
         }
 
-//        if (!FileUploadUtil.deleteFile(patent.getFilePath())) {
-//            return ApiResponse.createByErrorMsg("该专利附件不存在或删除失败!");
-//        }
+        if (!fileUploadUtil.deleteFile(patent.getFilePath())) {
+            return ApiResponse.createByErrorMsg("该专利附件不存在或删除失败!");
+        }
 
         int deletePatentRes = achievementMapper.deletePatent(patentId);
         if (deletePatentRes == 0) {
@@ -136,14 +138,14 @@ public class AchievementService implements IAchievementService {
     }
 
     @Override
-    public ApiResponse<String> uploadPatentFile(Integer patentId, MultipartFile multipartFile) {
+    public ApiResponse<String> uploadPatentFile(String userAccount, Integer patentId, MultipartFile multipartFile) {
 
         Patent patent = achievementMapper.findPatentById(patentId);
         if (patent == null) {
             return ApiResponse.createByErrorMsg("该专利信息不存在，上传专利附件失败");
         }
 
-        String destPath = FileUploadUtil.uploadFile(multipartFile, PATENT_UPLOAD_PATH);
+        String destPath = fileUploadUtil.uploadFile(userAccount, multipartFile, PATENT_UPLOAD_PATH);
         if (destPath == null) {
             return ApiResponse.createByErrorMsg("上传附件失败!");
         }
@@ -192,8 +194,8 @@ public class AchievementService implements IAchievementService {
     }
 
     @Override
-    public ApiResponse<String> uploadSoftWareCopyrightFile(Integer softWareCopyrightId, MultipartFile file,
-                                                           Integer type) {
+    public ApiResponse<String> uploadSoftWareCopyrightFile(String userAccount, Integer softWareCopyrightId,
+                                                           MultipartFile file, Integer type) {
 
         SoftWareCopyright softWareCopyright = achievementMapper.findSoftWareCopyrightById(softWareCopyrightId);
         if (softWareCopyright == null) {
@@ -202,19 +204,19 @@ public class AchievementService implements IAchievementService {
         String destPath;
         switch (type) {
             case DOCUMENT_FILE:
-                destPath = FileUploadUtil.uploadFile(file, SOFTWARE_COPYRIGHT_DOCUMENT_PATH);
+                destPath = fileUploadUtil.uploadFile(userAccount, file, SOFTWARE_COPYRIGHT_DOCUMENT_PATH);
                 if (destPath != null) {
                     softWareCopyright.setDocumentPath(destPath);
                 }
                 break;
             case PROJECT_FILE:
-                destPath = FileUploadUtil.uploadFile(file, SOFTWARE_COPYRIGHT_PROJECT_PATH);
+                destPath = fileUploadUtil.uploadFile(userAccount, file, SOFTWARE_COPYRIGHT_PROJECT_PATH);
                 if (destPath != null) {
                     softWareCopyright.setProjectPath(destPath);
                 }
                 break;
             case CERTIFICATE_FILE:
-                destPath = FileUploadUtil.uploadFile(file, SOFTWARE_COPYRIGHT_CERTIFICATE_PATH);
+                destPath = fileUploadUtil.uploadFile(userAccount, file, SOFTWARE_COPYRIGHT_CERTIFICATE_PATH);
                 if (destPath != null) {
                     softWareCopyright.setCertificatePath(destPath);
                 }
