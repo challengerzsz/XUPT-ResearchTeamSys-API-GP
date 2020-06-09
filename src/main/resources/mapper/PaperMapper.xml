@@ -67,4 +67,11 @@
           AND type = #{type}
     </select>
 
+    <delete id="deleteSmallPaper">
+        DELETE
+        FROM xupt_research_team_paper_table
+        WHERE xupt_research_team_paper_table.id = #{paperId}
+          AND xupt_research_team_paper_table.type = #{type}
+    </delete>
+
 </mapper>

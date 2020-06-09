@@ -31,6 +31,9 @@
             <if test="userName != null">
                 user_name = #{userName},
             </if>
+            <if test="userPassword != null">
+                user_password = #{userPassword},
+            </if>
             <if test="classify != null">
                 classify = #{classify},
             </if>

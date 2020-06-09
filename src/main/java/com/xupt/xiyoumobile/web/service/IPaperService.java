@@ -24,4 +24,6 @@ public interface IPaperService {
     ApiResponse<String> modifyPaper(String userAccount, Paper paper);
 
     ApiResponse<List<Paper>> getMyStudentPapers(String userAccount, Integer type);
+
+    ApiResponse<String> deleteSmallPaper(Integer type, Integer paperId);
 }

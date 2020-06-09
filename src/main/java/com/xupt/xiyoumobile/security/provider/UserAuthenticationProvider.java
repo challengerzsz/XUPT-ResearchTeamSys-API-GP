@@ -59,8 +59,9 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             throw new UsernameNotFoundException("用户不存在");
         }
         // 校验密码
-        if (!passwordEncoder.matches(password, securityUserInfo.getPassword())) {
-            throw new BadCredentialsException("密码错误");
+        boolean res = passwordEncoder.matches(password, securityUserInfo.getUserPassword());
+        if (!res) {
+            throw new BadCredentialsException("Login password wrong ! " + userName);
         }
 
         // 角色集合

@@ -22,4 +22,6 @@ public interface IPaperMapper {
     List<Paper> findPaperByUserAccountAndType(@Param("userAccount") String userAccount, @Param("type") Integer type);
 
     List<Paper> getMyStudentPapers(@Param("userAccount") String userAccount, @Param("type") Integer type);
+
+    int deleteSmallPaper(@Param("paperId") Integer paperId, @Param("type") Integer type);
 }

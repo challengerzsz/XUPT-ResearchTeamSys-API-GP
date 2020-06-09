@@ -111,6 +111,18 @@ public class PaperService implements IPaperService {
 
     }
 
+    @Override
+    public ApiResponse<String> deleteSmallPaper(Integer type, Integer paperId) {
+
+        int deleteRes = paperMapper.deleteSmallPaper(paperId, type);
+        if (deleteRes == 0) {
+            log.error("DB Error! deleteSmallPaper failed!");
+            return ApiResponse.createByErrorMsg("DB Error! 删除小论文失败");
+        }
+
+        return ApiResponse.createBySuccessMsg("删除小论文成功");
+    }
+
     private ApiResponse<String> modifyPaperSelective(Paper paper) {
         int modifyPaperRes = paperMapper.modifyPaperSelective(paper);
         if (modifyPaperRes == 0) {

@@ -139,7 +139,6 @@ public class UserService implements IUserService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.USER_NOTFOUND.getCode(), "用户不存在");
         }
 
-        // TODO: 2020/6/7 fix resetPwd bug !!!
         if (passwordEncoder.matches(oldPwd, user.getUserPassword())) {
             user.setUserPassword(passwordEncoder.encode(newPwd));
             int update = userMapper.updateUserBySelective(user);
