@@ -178,11 +178,13 @@ public class UserService implements IUserService {
     @Override
     public ApiResponse<String> uploadUserImg(String userAccount, MultipartFile multipartFile) {
 
-        // TODO: 2020/6/6 删除旧头像 修改用户头像文件名
         User user = userMapper.findByUsername(userAccount);
         if (user == null) {
             return ApiResponse.createByErrorMsg("用户不存在,上传头像失败!");
         }
+//        if (!fileUploadUtil.deleteFile(user.getImg())) {
+//            return ApiResponse.createByErrorMsg("删除旧头像失败,上传头像失败!");
+//        }
         String destFilePath = fileUploadUtil.uploadFile(userAccount, multipartFile, USER_IMG_UPLOAD_PATH);
         if (destFilePath == null) {
             return ApiResponse.createByErrorMsg("上传用户头像失败");
