@@ -25,7 +25,7 @@ public class ApiAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse response, AccessDeniedException e) throws IOException {
         // 403 FORBIDDEN
-        log.warn("403 FORBIDDEN: " + e.getMessage());
+        log.warn("Access to api failed! 403 FORBIDDEN: " + e.getMessage());
         response.setStatus(403);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");

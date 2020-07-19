@@ -37,4 +37,10 @@ public interface IDailyWorkMapper {
 
     AdminClaimExpenseStatisticsVo getClaimExpenseStatisticsByTypeName(@Param("userAccount") String userAccount,
                                                                             @Param("typeName") String typeName);
+
+    Project findProjectById(Integer projectId);
+
+    List<Project> searchProjectsByName(String searchContent);
+
+    List<Project> searchProjectsByHost(String searchContent);
 }

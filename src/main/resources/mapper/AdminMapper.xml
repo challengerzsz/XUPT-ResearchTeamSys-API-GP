@@ -6,7 +6,7 @@
 
     <update id="arrangeTeamMember" parameterType="com.xupt.xiyoumobile.web.vo.ArrangeTeamVo">
         UPDATE xupt_research_team_user_table
-        SET team = #{teamId}, guide_teacher_account = #{guideTeacherAccount}, guide_teacher_name = #{guideTeacherAccount}
+        SET team = #{teamId}
         WHERE user_account IN
         <foreach collection="memberAccountList" item="userAccount" open="(" close=")" separator=",">
             #{userAccount}

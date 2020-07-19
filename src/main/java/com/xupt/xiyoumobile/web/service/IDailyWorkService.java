@@ -4,6 +4,7 @@ import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.ClaimExpense;
 import com.xupt.xiyoumobile.web.entity.Project;
 import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -31,4 +32,8 @@ public interface IDailyWorkService {
     ApiResponse<String> modifyProject(Project project);
 
     ApiResponse<AdminClaimExpenseStatisticsVo> getClaimExpenseStatistics(Integer type, String typeName, Principal principal);
+
+    ApiResponse<String> uploadProjectFile(String userAccount, Integer projectId, MultipartFile multipartFile);
+
+    ApiResponse<List<Project>> searchProject(Integer type, String searchContent);
 }

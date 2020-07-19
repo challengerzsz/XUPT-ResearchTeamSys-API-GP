@@ -12,7 +12,7 @@
     <select id="getAllWeeklyReportByUserAccount" resultType="com.xupt.xiyoumobile.web.entity.WeeklyReport">
         SELECT *
         FROM xupt_research_team_weekly_report_table
-        WHERE user_account = #{userAccount}
+        WHERE user_account = #{userAccount} ORDER BY create_time DESC
     </select>
 
     <select id="findWeeklyReportById" resultType="com.xupt.xiyoumobile.web.entity.WeeklyReport">

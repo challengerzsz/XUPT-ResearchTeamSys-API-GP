@@ -93,4 +93,15 @@ public class PaperController {
 
         return paperService.getMyStudentPapers(principal.getName(), type);
     }
+
+    @PreAuthorize("hasRole('STUDENT')")
+    @PostMapping("/deletePaper/{paperId}/{type}")
+    public ApiResponse<String> deleteSmallPaper(@PathVariable("type") Integer type, @PathVariable("paperId") Integer paperId) {
+        if (type == null || paperId == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
+                    "删除小论文参数错误");
+        }
+
+        return paperService.deleteSmallPaper(type, paperId);
+    }
 }

@@ -32,13 +32,16 @@ public class UserService implements IUserService {
 
     private PasswordEncoder passwordEncoder;
 
+    private FileUploadUtil fileUploadUtil;
+
     @Value("${upload.userImg}")
     private String USER_IMG_UPLOAD_PATH;
 
     @Autowired
-    public UserService(IUserMapper userMapper, @Lazy PasswordEncoder passwordEncoder) {
+    public UserService(IUserMapper userMapper, @Lazy PasswordEncoder passwordEncoder, FileUploadUtil fileUploadUtil) {
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+        this.fileUploadUtil = fileUploadUtil;
     }
 
     @Override
@@ -136,7 +139,6 @@ public class UserService implements IUserService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.USER_NOTFOUND.getCode(), "用户不存在");
         }
 
-        // TODO: 2020/6/7 fix resetPwd bug !!!
         if (passwordEncoder.matches(oldPwd, user.getUserPassword())) {
             user.setUserPassword(passwordEncoder.encode(newPwd));
             int update = userMapper.updateUserBySelective(user);
@@ -165,23 +167,25 @@ public class UserService implements IUserService {
     @Override
     public ApiResponse<List<SimpleUserInfoVo>> getAllNoTeamStudent() {
 
-        List<SimpleUserInfoVo> simpleUserInfoVoList = userMapper.getAllNoTeamStudent();
+        List<SimpleUserInfoVo> simpleUserInfoVoList = userMapper.getAllStudent();
         if (CollectionUtils.isEmpty(simpleUserInfoVoList)) {
-            return ApiResponse.createByErrorMsg("系统中无未分组的同学!");
+            return ApiResponse.createByErrorMsg("系统中无同学!");
         }
 
-        return ApiResponse.createBySuccess("查询未分组同学成功", simpleUserInfoVoList);
+        return ApiResponse.createBySuccess("查询成功", simpleUserInfoVoList);
     }
 
     @Override
     public ApiResponse<String> uploadUserImg(String userAccount, MultipartFile multipartFile) {
 
-        // TODO: 2020/6/6 删除旧头像 修改用户头像文件名
         User user = userMapper.findByUsername(userAccount);
         if (user == null) {
             return ApiResponse.createByErrorMsg("用户不存在,上传头像失败!");
         }
-        String destFilePath = FileUploadUtil.uploadFile(multipartFile, USER_IMG_UPLOAD_PATH);
+//        if (!fileUploadUtil.deleteFile(user.getImg())) {
+//            return ApiResponse.createByErrorMsg("删除旧头像失败,上传头像失败!");
+//        }
+        String destFilePath = fileUploadUtil.uploadFile(userAccount, multipartFile, USER_IMG_UPLOAD_PATH);
         if (destFilePath == null) {
             return ApiResponse.createByErrorMsg("上传用户头像失败");
         }

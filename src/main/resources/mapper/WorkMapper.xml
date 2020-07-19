@@ -4,10 +4,10 @@
 
 <mapper namespace="com.xupt.xiyoumobile.web.dao.IWorkMapper">
 
-    <insert id="insertOpeningReport" parameterType="com.xupt.xiyoumobile.web.entity.WorkReport">
+    <insert id="insertReport" parameterType="com.xupt.xiyoumobile.web.entity.WorkReport">
         INSERT INTO xupt_research_team_work_report_table
-            (paper_name, author, type)
-        VALUES (#{paperName}, #{author}, #{type})
+            (paper_name, author, author_name, type)
+        VALUES (#{paperName}, #{author}, #{authorName}, #{type})
     </insert>
 
     <select id="findReportByUserAccountAndType" resultType="com.xupt.xiyoumobile.web.entity.WorkReport">

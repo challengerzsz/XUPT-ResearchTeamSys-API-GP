@@ -97,6 +97,9 @@
             <if test="members != null">
                 members = #{members},
             </if>
+            <if test="filePath != null">
+                file_path = #{filePath},
+            </if>
             update_time = CURRENT_TIME
         </set>
         WHERE id = #{id}
@@ -107,5 +110,19 @@
         SELECT t.userAccount, count(*) count
         FROM xupt_research_team_claim_expense_table t
         WHERE userAccount = #{userAccount}
+    </select>
+
+    <select id="findProjectById" resultType="com.xupt.xiyoumobile.web.entity.Project">
+        SELECT * FROM xupt_research_team_project_table WHERE id = #{projectId}
+    </select>
+
+    <select id="searchProjectsByName" resultType="com.xupt.xiyoumobile.web.entity.Project">
+        SELECT * FROM xupt_research_team_project_table
+        WHERE project_name LIKE CONCAT('%', #{searchContent}, '%')
+    </select>
+
+    <select id="searchProjectsByHost" resultType="com.xupt.xiyoumobile.web.entity.Project">
+        SELECT * FROM xupt_research_team_project_table
+        WHERE host_name LIKE CONCAT('%', #{searchContent}, '%')
     </select>
 </mapper>

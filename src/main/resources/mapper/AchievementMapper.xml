@@ -46,6 +46,9 @@
             <if test="competitionTime != null">
                 competition_time = #{competitionTime},
             </if>
+            <if test="filePath != null">
+                file_path = #{filePath},
+            </if>
             update_time = CURRENT_TIME
         </set>
         WHERE id = #{id}

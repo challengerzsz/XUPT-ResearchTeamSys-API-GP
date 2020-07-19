@@ -1,8 +1,10 @@
 package com.xupt.xiyoumobile.web.entity;
 
+import com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author : zengshuaizhi
@@ -12,8 +14,7 @@ import java.sql.Timestamp;
 public class Team {
 
     private Integer id;
-    private String guideTeacherAccount;
-    private String guideTeacherName;
+    private List<SimpleUserInfoVo> guideTeachers;
     private String teamName;
     private String teamImg;
     private Integer studentCount;

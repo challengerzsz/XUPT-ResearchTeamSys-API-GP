@@ -38,7 +38,8 @@ public class WebSocketBrokerConfiguration implements WebSocketMessageBrokerConfi
     private WebSocketHandShakeHandler webSocketHandShakeHandler;
 
     @Autowired
-    public WebSocketBrokerConfiguration(WebSocketHandShakeInterceptor webSocketHandShakeInterceptor, WebSocketHandShakeHandler webSocketHandShakeHandler) {
+    public WebSocketBrokerConfiguration(WebSocketHandShakeInterceptor webSocketHandShakeInterceptor,
+                                        WebSocketHandShakeHandler webSocketHandShakeHandler) {
         this.webSocketHandShakeInterceptor = webSocketHandShakeInterceptor;
         this.webSocketHandShakeHandler = webSocketHandShakeHandler;
     }
