@@ -95,7 +95,7 @@ public class PaperController {
     }
 
     @PreAuthorize("hasRole('STUDENT')")
-    @PostMapping("/deleteSmallPaper/{paperId}/{type}")
+    @PostMapping("/deletePaper/{paperId}/{type}")
     public ApiResponse<String> deleteSmallPaper(@PathVariable("type") Integer type, @PathVariable("paperId") Integer paperId) {
         if (type == null || paperId == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),

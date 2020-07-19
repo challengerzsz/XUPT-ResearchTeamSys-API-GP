@@ -42,4 +42,6 @@ public interface IAchievementService {
     ApiResponse<List<SoftWareCopyright>> getAllSoftWareCopyright();
 
     ApiResponse<String> deleteSoftWareCopyright(Integer scId);
+
+    ApiResponse<String> uploadCompetitionFile(Integer competitionId, MultipartFile multipartFile, String userAccount);
 }

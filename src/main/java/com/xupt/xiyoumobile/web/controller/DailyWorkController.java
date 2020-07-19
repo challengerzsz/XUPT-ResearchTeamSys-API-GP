@@ -6,9 +6,11 @@ import com.xupt.xiyoumobile.web.entity.ClaimExpense;
 import com.xupt.xiyoumobile.web.entity.Project;
 import com.xupt.xiyoumobile.web.service.IDailyWorkService;
 import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -123,6 +125,24 @@ public class DailyWorkController {
         }
 
         return dailyWorkService.getClaimExpenseStatistics(type, typeName, principal);
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/project/uploadFile/{projectId}")
+    public ApiResponse<String> uploadProjectFile(@PathVariable("projectId") Integer projectId,
+                                                 @RequestParam("file") MultipartFile multipartFile,
+                                                 Principal principal) {
+        return dailyWorkService.uploadProjectFile(principal.getName(), projectId, multipartFile);
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
+    @GetMapping("/project/search/{type}/{}")
+    public ApiResponse<List<Project>> searchProject(@PathVariable("type") Integer type,
+                                                    @RequestParam String searchContent) {
+        if (StringUtils.isBlank(searchContent)) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "检索关键字不能为空!");
+        }
+        return dailyWorkService.searchProject(type, searchContent);
     }
 
 

@@ -28,7 +28,7 @@ public class TeamController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/createTeam")
-    public ApiResponse<String> createTeam(Team team) {
+    public ApiResponse<String> createTeam(@RequestBody Team team) {
         if (team == null) {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(),
                     "新建小组失败,参数错误!");

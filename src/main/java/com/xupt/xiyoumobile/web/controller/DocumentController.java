@@ -3,6 +3,7 @@ package com.xupt.xiyoumobile.web.controller;
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.web.entity.Document;
+import com.xupt.xiyoumobile.web.entity.DocumentComment;
 import com.xupt.xiyoumobile.web.service.IDocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -115,5 +116,22 @@ public class DocumentController {
     @GetMapping("/getAllDocument")
     public ApiResponse<List<Document>> getAllDocument() {
         return documentService.getAllDocument();
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
+    @GetMapping("/getComments/{documentId}")
+    public ApiResponse<List<DocumentComment>> getComments(@PathVariable("documentId") Integer documentId) {
+        if (documentId == null) {
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.ILLEGAL_ARGUMENT.getCode(), "获取文献评论参数错误");
+        }
+
+        return documentService.getComments(documentId);
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
+    @PostMapping("/commentOnDocument/{documentId}")
+    public ApiResponse<String> commentOnDocument(@PathVariable("documentId") Integer documentId,
+                                                 @RequestParam String content, Principal principal) {
+        return documentService.commentOnDocument(documentId, content, principal);
     }
 }

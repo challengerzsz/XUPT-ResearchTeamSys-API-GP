@@ -2,6 +2,7 @@ package com.xupt.xiyoumobile.web.service;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.web.entity.Document;
+import com.xupt.xiyoumobile.web.entity.DocumentComment;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
@@ -26,4 +27,8 @@ public interface IDocumentService {
     ApiResponse<String> deleteDocument(String userAccount, Integer documentId);
 
     ApiResponse<List<Document>> getAllDocument();
+
+    ApiResponse<List<DocumentComment>> getComments(Integer documentId);
+
+    ApiResponse<String> commentOnDocument(Integer documentId, String content, Principal principal);
 }

@@ -18,6 +18,7 @@ public class Project {
     private String level;
     private String hostName;
     private String members;
+    private String filePath;
     private Timestamp createTime;
     private Timestamp updateTime;
 }

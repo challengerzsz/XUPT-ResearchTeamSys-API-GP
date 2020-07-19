@@ -5,10 +5,12 @@ import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.core.websocket.config.WebSocketBrokerConfiguration;
 import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.dao.IWeeklyReportMapper;
+import com.xupt.xiyoumobile.web.entity.Team;
 import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.entity.WeeklyReport;
 import com.xupt.xiyoumobile.web.entity.WeeklyReportComment;
 import com.xupt.xiyoumobile.web.service.IWeeklyReportService;
+import com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo;
 import com.xupt.xiyoumobile.web.vo.WeeklyReportVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +58,12 @@ public class WeeklyReportService implements IWeeklyReportService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
 
-        String guideTeacherAccount = user.getGuideTeacherAccount();
-        simpMessagingTemplate.convertAndSendToUser(guideTeacherAccount, PRIVATE_TO_USER,
-                "已完成周报");
+
+        List<SimpleUserInfoVo> guideTeaches = userMapper.getUserGuideTeacherByUserAccount(userAccount);
+        for (SimpleUserInfoVo vo : guideTeaches) {
+            simpMessagingTemplate.convertAndSendToUser(vo.getUserAccount(), PRIVATE_TO_USER,
+                    "已完成周报");
+        }
 
         return ApiResponse.createBySuccessMsg("提交周报成功!");
     }

@@ -4,7 +4,10 @@ import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
 import com.xupt.xiyoumobile.security.util.FileUploadUtil;
 import com.xupt.xiyoumobile.web.dao.IDocumentMapper;
+import com.xupt.xiyoumobile.web.dao.IUserMapper;
 import com.xupt.xiyoumobile.web.entity.Document;
+import com.xupt.xiyoumobile.web.entity.DocumentComment;
+import com.xupt.xiyoumobile.web.entity.User;
 import com.xupt.xiyoumobile.web.service.IDocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +44,13 @@ public class DocumentService implements IDocumentService {
 
     private FileUploadUtil fileUploadUtil;
 
+    private IUserMapper userMapper;
+
     @Autowired
-    public DocumentService(IDocumentMapper documentMapper, FileUploadUtil fileUploadUtil) {
+    public DocumentService(IDocumentMapper documentMapper, FileUploadUtil fileUploadUtil, IUserMapper userMapper) {
         this.documentMapper = documentMapper;
         this.fileUploadUtil = fileUploadUtil;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -161,6 +167,29 @@ public class DocumentService implements IDocumentService {
         }
 
         return ApiResponse.createBySuccess("查询成功", documents);
+    }
+
+    @Override
+    public ApiResponse<List<DocumentComment>> getComments(Integer documentId) {
+
+        List<DocumentComment> documentComments = documentMapper.getCommentsByDocumentId(documentId);
+        if (CollectionUtils.isEmpty(documentComments)) {
+            return ApiResponse.createByErrorMsg("该文献无评论!");
+        }
+
+        return ApiResponse.createBySuccess("查询成果", documentComments);
+    }
+
+    @Override
+    public ApiResponse<String> commentOnDocument(Integer documentId, String content, Principal principal) {
+
+        User user = userMapper.findByUsername(principal.getName());
+        int insertRes = documentMapper.insertDocumentComment(documentId, content, user);
+        if (insertRes == 0) {
+            log.error("DB Error! uploadDocument failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
+        }
+        return ApiResponse.createBySuccessMsg("上传文献评论成功!");
     }
 
     @Override

@@ -152,6 +152,14 @@ public class AchievementController {
     }
 
     @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/competition/uploadFile/{competitionId}")
+    public ApiResponse<String> uploadCompetitionFile(@PathVariable("competitionId") Integer competitionId,
+                                                     @RequestParam("file") MultipartFile multipartFile,
+                                                     Principal principal) {
+        return achievementService.uploadCompetitionFile(competitionId, multipartFile, principal.getName());
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/softWareCopyright/modify")
     public ApiResponse<String> modifySoftWareCopyright(SoftWareCopyright softWareCopyright) {
 

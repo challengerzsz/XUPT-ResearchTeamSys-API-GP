@@ -29,10 +29,7 @@ public class IMPushController {
     @MessageMapping("/chat")
     @SendToUser("/private")
     public ApiResponse<String> chat(Principal principal, String msg) {
-        log.info(principal.getName());
-        log.info(msg);
-
-        simpMessagingTemplate.convertAndSendToUser("04163216", "/private", msg);
+        simpMessagingTemplate.convertAndSendToUser(principal.getName(), "/private", msg);
         return ApiResponse.createBySuccessMsg("发送成功");
     }
 }

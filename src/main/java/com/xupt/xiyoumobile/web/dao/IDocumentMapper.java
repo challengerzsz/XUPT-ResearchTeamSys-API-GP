@@ -1,6 +1,8 @@
 package com.xupt.xiyoumobile.web.dao;
 
 import com.xupt.xiyoumobile.web.entity.Document;
+import com.xupt.xiyoumobile.web.entity.DocumentComment;
+import com.xupt.xiyoumobile.web.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -39,4 +41,9 @@ public interface IDocumentMapper {
     List<Document> searchMyDocumentByDirection(@Param("userAccount") String userAccount, @Param("content") String content);
 
     List<Document> getAllDocument();
+
+    List<DocumentComment> getCommentsByDocumentId(Integer documentId);
+
+    int insertDocumentComment(@Param("documentId") Integer documentId, @Param("content") String content,
+                              @Param("user") User user);
 }

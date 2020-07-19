@@ -17,6 +17,7 @@ public class Competition {
     private String level;
     private String members;
     private String competitionTime;
+    private String filePath;
     private Timestamp createTime;
     private Timestamp updateTime;
 }

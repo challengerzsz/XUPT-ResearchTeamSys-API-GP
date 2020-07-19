@@ -90,18 +90,23 @@
 
     <select id="getUserSimpleInfo" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
         SELECT son.* FROM
-        (SELECT user.user_name, user.user_account
+        (SELECT user.id, user.user_name, user.user_account
         FROM xupt_research_team_user_role_table userRole
         JOIN xupt_research_team_user_table user
         ON userRole.user_id = user.id
         WHERE userRole.role_id = #{type}) son;
     </select>
 
-    <select id="getAllNoTeamStudent" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
+    <select id="getAllStudent" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
         SELECT * FROM xupt_research_team_user_role_table userRole
             JOIN xupt_research_team_user_table user
                 ON userRole.user_id = user.id
-        WHERE userRole.role_id = 3 AND user.team IS NULL
+        WHERE userRole.role_id = 3
+    </select>
+
+    <select id="getUserGuideTeacherByUserAccount" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
+        SELECT user_account, user_name FROM xupt_research_team_teacher_team_table
+        WHERE team_id = (SELECT team FROM xupt_research_team_user_table WHERE user_account = #{userAccount})
     </select>
 
 </mapper>

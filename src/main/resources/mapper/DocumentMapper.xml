@@ -99,4 +99,15 @@
     <select id="getAllDocument" resultType="com.xupt.xiyoumobile.web.entity.Document">
         SELECT * FROM xupt_research_team_document_table
     </select>
+
+    <select id="getCommentsByDocumentId" resultType="com.xupt.xiyoumobile.web.entity.DocumentComment">
+        SELECT * FROM xupt_research_team_document_comment_table
+        WHERE document_id = #{documentId} ORDER BY create_time
+    </select>
+
+    <insert id="insertDocumentComment">
+        INSERT INTO xupt_research_team_document_comment_table
+        (document_id, content, user_account, user_name)
+        VALUES (#{documentId}, #{content}, #{user.userAccount}, #{user.userName})
+    </insert>
 </mapper>

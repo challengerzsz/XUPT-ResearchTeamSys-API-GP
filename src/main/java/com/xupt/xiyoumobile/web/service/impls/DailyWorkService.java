@@ -2,6 +2,7 @@ package com.xupt.xiyoumobile.web.service.impls;
 
 import com.xupt.xiyoumobile.common.ApiResponse;
 import com.xupt.xiyoumobile.common.ApiRspCode;
+import com.xupt.xiyoumobile.security.util.FileUploadUtil;
 import com.xupt.xiyoumobile.web.dao.IDailyWorkMapper;
 import com.xupt.xiyoumobile.web.entity.ClaimExpense;
 import com.xupt.xiyoumobile.web.entity.Project;
@@ -11,8 +12,10 @@ import com.xupt.xiyoumobile.web.service.IUserService;
 import com.xupt.xiyoumobile.web.vo.AdminClaimExpenseStatisticsVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -25,14 +28,20 @@ import java.util.List;
 @Service
 public class DailyWorkService implements IDailyWorkService {
 
+    @Value("${upload.project}")
+    private String PROJECT_UPLOAD_PATH;
+
     private IUserService userService;
 
     private IDailyWorkMapper dailyWorkMapper;
 
+    private FileUploadUtil fileUploadUtil;
+
     @Autowired
-    public DailyWorkService(IUserService userService, IDailyWorkMapper dailyWorkMapper) {
+    public DailyWorkService(IUserService userService, IDailyWorkMapper dailyWorkMapper, FileUploadUtil fileUploadUtil) {
         this.userService = userService;
         this.dailyWorkMapper = dailyWorkMapper;
+        this.fileUploadUtil = fileUploadUtil;
     }
 
     @Override
@@ -183,5 +192,48 @@ public class DailyWorkService implements IDailyWorkService {
         }
 
         return ApiResponse.createBySuccess("查询成功", result);
+    }
+
+    @Override
+    public ApiResponse<String> uploadProjectFile(String userAccount, Integer projectId, MultipartFile multipartFile) {
+        Project project = dailyWorkMapper.findProjectById(projectId);
+        if (project == null) {
+            return ApiResponse.createByErrorMsg("该项目不存在，无法上传附件!");
+        }
+
+        String destFilePath = fileUploadUtil.uploadFile(userAccount, multipartFile, PROJECT_UPLOAD_PATH);
+        if (destFilePath == null) {
+            return ApiResponse.createByErrorMsg("上传文件失败!");
+        }
+
+        project.setFilePath(destFilePath);
+        int modifyProjectRes = dailyWorkMapper.modifyProject(project);
+        if (modifyProjectRes == 0) {
+            log.error("DB Error! uploadDocument failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
+        }
+
+        return ApiResponse.createBySuccessMsg("上传项目附件成功");
+    }
+
+    @Override
+    public ApiResponse<List<Project>> searchProject(Integer type, String searchContent) {
+
+        List<Project> projects = null;
+        switch (type) {
+            case 0:
+                projects = dailyWorkMapper.searchProjectsByName(searchContent);
+                break;
+            case 1:
+                projects = dailyWorkMapper.searchProjectsByHost(searchContent);
+                break;
+        }
+
+        if (CollectionUtils.isEmpty(projects)) {
+            return ApiResponse.createByErrorMsg("未查找到检索内容");
+        }
+
+
+        return ApiResponse.createBySuccess("检索成功", projects);
     }
 }

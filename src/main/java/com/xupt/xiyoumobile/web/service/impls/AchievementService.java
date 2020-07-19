@@ -25,6 +25,9 @@ import java.util.List;
 @Service
 public class AchievementService implements IAchievementService {
 
+    @Value("${upload.competition}")
+    private String COMPETITION_UPLOAD_PATH;
+
     @Value("${upload.patent}")
     private String PATENT_UPLOAD_PATH;
 
@@ -262,6 +265,30 @@ public class AchievementService implements IAchievementService {
         }
 
         return ApiResponse.createBySuccessMsg("删除软著信息成功");
+    }
+
+    @Override
+    public ApiResponse<String> uploadCompetitionFile(Integer competitionId, MultipartFile multipartFile,
+                                                     String userAccount) {
+
+        Competition competition = achievementMapper.findCompetitionById(competitionId);
+        if (competition == null) {
+            return ApiResponse.createByErrorMsg("该竞赛信息不存在，上传附件失败!");
+        }
+
+        String destFilePath = fileUploadUtil.uploadFile(userAccount, multipartFile, COMPETITION_UPLOAD_PATH);
+        if (destFilePath == null) {
+            return ApiResponse.createByErrorMsg("上传文件失败!");
+        }
+
+        competition.setFilePath(destFilePath);
+        int modifyCompetitionRes = achievementMapper.modifyCompetition(competition);
+        if (modifyCompetitionRes == 0) {
+            log.error("DB Error! uploadDocument failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
+        }
+
+        return ApiResponse.createBySuccessMsg("上传附件成功");
     }
 
     private Boolean commonModifySoftWareCopyright(SoftWareCopyright softWareCopyright) {

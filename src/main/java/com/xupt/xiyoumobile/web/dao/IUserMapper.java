@@ -35,6 +35,7 @@ public interface IUserMapper {
 
     List<SimpleUserInfoVo> getUserSimpleInfo(Integer type);
 
-    List<SimpleUserInfoVo> getAllNoTeamStudent();
+    List<SimpleUserInfoVo> getAllStudent();
 
+    List<SimpleUserInfoVo> getUserGuideTeacherByUserAccount(String userAccount);
 }

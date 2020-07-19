@@ -3,16 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.xupt.xiyoumobile.web.dao.ITeamMapper">
-    <insert id="insertTeam" parameterType="com.xupt.xiyoumobile.web.entity.Team">
+    <insert id="insertTeam" parameterType="com.xupt.xiyoumobile.web.entity.Team" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO xupt_research_team_team_table
-            (guide_teacher_account, guide_teacher_name, team_name, team_direction)
-        VALUES (#{guideTeacherAccount}, #{guideTeacherName}, #{teamName}, #{teamDirection})
+            (team_name, team_direction)
+        VALUES (#{teamName}, #{teamDirection})
     </insert>
 
     <select id="findTeamByTeacherName" resultType="com.xupt.xiyoumobile.web.entity.Team">
         SELECT *
         FROM xupt_research_team_team_table
-        WHERE guide_teacher_name = #{teacherName}
+        WHERE id = (SELECT team_id FROM xupt_research_team_teacher_team_table WHERE user_name = #{teacherName})
     </select>
 
     <delete id="deleteTeamById">
@@ -49,7 +49,8 @@
     <select id="getTeamInfoByTeacherAccount" resultType="com.xupt.xiyoumobile.web.entity.Team">
         SELECT *
         FROM xupt_research_team_team_table
-        WHERE guide_teacher_account = #{teacherAccount}
+        WHERE id IN (SELECT team_id FROM xupt_research_team_teacher_team_table
+        WHERE user_account = #{teacherAccount})
     </select>
 
     <update id="addTeamStudentCount">
@@ -66,6 +67,25 @@
 
     <select id="getMyTeams" resultType="com.xupt.xiyoumobile.web.entity.Team">
         SELECT * FROM xupt_research_team_team_table
-        WHERE guide_teacher_account = #{userAccount}
+        WHERE (SELECT team_id FROM xupt_research_team_teacher_team_table WHERE user_account = #{userAccount})
+    </select>
+
+    <insert id="insertTeacherTeamRelation" parameterType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
+        INSERT INTO xupt_research_team_sys_db.xupt_research_team_teacher_team_table
+        (user_account, user_name, team_id)
+        VALUES
+        <foreach collection ="guideTeachers" item="item" separator =",">
+            (#{item.userAccount}, #{item.userName}, #{teamId})
+        </foreach >
+    </insert>
+
+    <delete id="deleteTeacherTeamRelation">
+        DELETE FROM xupt_research_team_teacher_team_table
+        WHERE xupt_research_team_teacher_team_table.team_id = #{teamId}
+    </delete>
+
+    <select id="getTeamGuideTeachers" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
+        SELECT user_account, user_name FROM xupt_research_team_teacher_team_table
+        WHERE team_id = #{teamId}
     </select>
 </mapper>
