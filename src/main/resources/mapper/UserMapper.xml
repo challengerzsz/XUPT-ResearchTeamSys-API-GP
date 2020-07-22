@@ -40,12 +40,6 @@
             <if test="team != null">
                 team = #{team},
             </if>
-            <if test="guideTeacherAccount != null">
-                guide_teacher_account = #{guideTeacherAccount},
-            </if>
-            <if test="guideTeacherName != null">
-                guide_teacher_name = #{guideTeacherName},
-            </if>
             <if test="personalSignature != null">
                 personal_signature = #{personalSignature},
             </if>
