@@ -57,9 +57,8 @@
         SELECT *
         FROM xupt_research_team_work_report_table wrt
         WHERE wrt.author IN
-              (SELECT user.user_account
-               FROM xupt_research_team_user_table user
-               WHERE guide_teacher_account = #{userAccount})
-          AND wrt.type = #{type}
+        (SELECT user_account FROM xupt_research_team_user_table WHERE team IN
+        (SELECT team_id FROM xupt_research_team_teacher_team_table WHERE user_account = #{userAccount}))
+        AND wrt.type = #{type}
     </select>
 </mapper>

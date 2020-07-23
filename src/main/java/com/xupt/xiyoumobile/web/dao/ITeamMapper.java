@@ -38,4 +38,6 @@ public interface ITeamMapper {
     int deleteTeacherTeamRelation(Integer teamId);
 
     List<SimpleUserInfoVo> getTeamGuideTeachers(Integer teamId);
+
+    List<SimpleUserInfoVo> getStudentsByTeamId(Integer id);
 }

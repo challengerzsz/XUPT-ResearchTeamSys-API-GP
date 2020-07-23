@@ -67,7 +67,7 @@
 
     <select id="getMyTeams" resultType="com.xupt.xiyoumobile.web.entity.Team">
         SELECT * FROM xupt_research_team_team_table
-        WHERE (SELECT team_id FROM xupt_research_team_teacher_team_table WHERE user_account = #{userAccount})
+        WHERE id IN (SELECT team_id FROM xupt_research_team_teacher_team_table WHERE user_account = #{userAccount})
     </select>
 
     <insert id="insertTeacherTeamRelation" parameterType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
@@ -87,5 +87,10 @@
     <select id="getTeamGuideTeachers" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
         SELECT user_account, user_name FROM xupt_research_team_teacher_team_table
         WHERE team_id = #{teamId}
+    </select>
+
+    <select id="getStudentsByTeamId" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
+        SELECT user_account, user_name FROM xupt_research_team_user_table
+        WHERE team = #{teamId}
     </select>
 </mapper>

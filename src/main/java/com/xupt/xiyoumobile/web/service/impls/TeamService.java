@@ -168,6 +168,11 @@ public class TeamService implements ITeamService {
             return ApiResponse.createByErrorMsg("您目前还未担任指导老师职责,请联系管理员!");
         }
 
+        for (Team team : teams) {
+            team.setGuideTeachers(teamMapper.getTeamGuideTeachers(team.getId()));
+            team.setStudents(teamMapper.getStudentsByTeamId(team.getId()));
+        }
+
         return ApiResponse.createBySuccess("查询成功", teams);
     }
 }
