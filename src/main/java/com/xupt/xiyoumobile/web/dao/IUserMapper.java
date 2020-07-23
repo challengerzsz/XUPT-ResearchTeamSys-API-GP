@@ -38,4 +38,6 @@ public interface IUserMapper {
     List<SimpleUserInfoVo> getAllStudent();
 
     List<SimpleUserInfoVo> getUserGuideTeacherByUserAccount(String userAccount);
+
+    Integer findUserRoleByUserId(Long id);
 }

@@ -29,5 +29,6 @@ public class User implements Serializable {
     private String researchDirection;
     private Integer sex;
     private Integer ban;
+    private Integer role;
 
 }

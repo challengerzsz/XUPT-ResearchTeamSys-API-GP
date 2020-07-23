@@ -100,6 +100,8 @@ public class UserService implements IUserService {
             return ApiResponse.createByErrorMsg("无该用户账号信息");
         }
 
+        user.setRole(userMapper.findUserRoleByUserId(user.getId()));
+
         return ApiResponse.createBySuccess("查询成功", user);
     }
 

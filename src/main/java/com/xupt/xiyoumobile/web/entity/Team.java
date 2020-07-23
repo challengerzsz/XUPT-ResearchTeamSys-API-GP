@@ -15,6 +15,7 @@ public class Team {
 
     private Integer id;
     private List<SimpleUserInfoVo> guideTeachers;
+    private List<SimpleUserInfoVo> students;
     private String teamName;
     private String teamImg;
     private Integer studentCount;

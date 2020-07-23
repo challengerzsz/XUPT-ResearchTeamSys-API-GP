@@ -103,4 +103,9 @@
         WHERE team_id = (SELECT team FROM xupt_research_team_user_table WHERE user_account = #{userAccount})
     </select>
 
+    <select id="findUserRoleByUserId" resultType="java.lang.Integer">
+        SELECT role_id FROM xupt_research_team_user_role_table
+        WHERE user_id = #{userId}
+    </select>
+
 </mapper>

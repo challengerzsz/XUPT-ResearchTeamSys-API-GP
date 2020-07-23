@@ -88,4 +88,9 @@
         SELECT user_account, user_name FROM xupt_research_team_teacher_team_table
         WHERE team_id = #{teamId}
     </select>
+
+    <select id="getStudentsByTeamId" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
+        SELECT user_account, user_name FROM xupt_research_team_user_table
+        WHERE team = #{teamId}
+    </select>
 </mapper>

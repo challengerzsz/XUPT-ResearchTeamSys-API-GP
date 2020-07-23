@@ -170,6 +170,7 @@ public class TeamService implements ITeamService {
 
         for (Team team : teams) {
             team.setGuideTeachers(teamMapper.getTeamGuideTeachers(team.getId()));
+            team.setStudents(teamMapper.getStudentsByTeamId(team.getId()));
         }
 
         return ApiResponse.createBySuccess("查询成功", teams);
