@@ -31,4 +31,6 @@ public interface IDocumentService {
     ApiResponse<List<DocumentComment>> getComments(Integer documentId);
 
     ApiResponse<String> commentOnDocument(Integer documentId, String content, Principal principal);
+
+    ApiResponse<List<Document>> getAllMyDocuments(String userAccount);
 }

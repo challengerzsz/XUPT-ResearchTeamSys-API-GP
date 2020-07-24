@@ -10,11 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -107,6 +105,12 @@ public class UserController {
         }
 
         return userService.uploadUserImg(principal.getName(), multipartFile);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/delete/{userId}")
+    public ApiResponse<String> deleteUser(@PathVariable("userId") Integer userId) {
+        return userService.deleteUser(userId);
     }
 
 }

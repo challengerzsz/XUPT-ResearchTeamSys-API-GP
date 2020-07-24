@@ -43,6 +43,7 @@ public class FileUploadUtil {
     }
 
     public boolean deleteFile(String path) {
+        if (path == null || path.trim().length() == 0) return true;
         File delFile = new File(path);
         if (delFile.exists()) {
             if (!delFile.delete()) {

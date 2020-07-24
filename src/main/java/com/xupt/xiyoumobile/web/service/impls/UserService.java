@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -169,7 +170,7 @@ public class UserService implements IUserService {
     @Override
     public ApiResponse<List<SimpleUserInfoVo>> getAllNoTeamStudent() {
 
-        List<SimpleUserInfoVo> simpleUserInfoVoList = userMapper.getAllStudent();
+        List<SimpleUserInfoVo> simpleUserInfoVoList = userMapper.getAllNoTeamStudents();
         if (CollectionUtils.isEmpty(simpleUserInfoVoList)) {
             return ApiResponse.createByErrorMsg("系统中无同学!");
         }
@@ -199,6 +200,25 @@ public class UserService implements IUserService {
         }
 
         return ApiResponse.createBySuccessMsg("上传用户头像成功");
+    }
+
+    @Override
+    @Transactional
+    public ApiResponse<String> deleteUser(Integer userId) {
+
+        int deleteUserRes = userMapper.deleteUserById(userId);
+        if (deleteUserRes == 0) {
+            log.error("db error! delete user failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB error");
+        }
+        
+        int deleteUserRoleRes = userMapper.deleteUserRoleByUserId(userId);
+        if (deleteUserRoleRes == 0) {
+            log.error("db error! delete user role relation failed!");
+            return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB error");
+        }
+
+        return ApiResponse.createBySuccessMsg("删除用户成功");
     }
 
 

@@ -57,7 +57,7 @@
     </update>
 
     <select id="getAllUsersByRoleId" resultType="com.xupt.xiyoumobile.web.entity.User">
-        SELECT * FROM xupt_research_team_user_role_table userRole
+        SELECT user.*, userRole.role_id as role FROM xupt_research_team_user_role_table userRole
         LEFT JOIN xupt_research_team_user_table user
         ON userRole.user_id = user.id
         WHERE userRole.role_id = #{roleId};
@@ -92,7 +92,7 @@
     </select>
 
     <select id="getAllStudent" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
-        SELECT * FROM xupt_research_team_user_role_table userRole
+        SELECT user.* FROM xupt_research_team_user_role_table userRole
             JOIN xupt_research_team_user_table user
                 ON userRole.user_id = user.id
         WHERE userRole.role_id = 3
@@ -106,6 +106,21 @@
     <select id="findUserRoleByUserId" resultType="java.lang.Integer">
         SELECT role_id FROM xupt_research_team_user_role_table
         WHERE user_id = #{userId}
+    </select>
+
+    <delete id="deleteUserById">
+        DELETE FROM xupt_research_team_user_table
+        WHERE id = #{userId}
+    </delete>
+
+    <delete id="deleteUserRoleByUserId">
+        DELETE FROM xupt_research_team_user_role_table
+        WHERE user_id = #{userId}
+    </delete>
+
+    <select id="getAllNoTeamStudents" resultType="com.xupt.xiyoumobile.web.entity.User">
+        SELECT * FROM xupt_research_team_user_table
+        WHERE team IS NULL
     </select>
 
 </mapper>

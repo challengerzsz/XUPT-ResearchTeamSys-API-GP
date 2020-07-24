@@ -117,6 +117,8 @@ public class TeamService implements ITeamService {
                 return ApiResponse.createByErrorMsg("查询所有小组信息失败!");
             }
             team.setGuideTeachers(guideTeachers);
+
+            team.setStudents(teamMapper.getStudentsByTeamId(team.getId()));
         }
 
         return ApiResponse.createBySuccess("查询成功", teams);
