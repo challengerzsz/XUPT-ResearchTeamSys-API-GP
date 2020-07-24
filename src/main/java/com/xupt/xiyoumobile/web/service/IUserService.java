@@ -38,4 +38,6 @@ public interface IUserService {
     ApiResponse<List<SimpleUserInfoVo>> getAllNoTeamStudent();
 
     ApiResponse<String> uploadUserImg(String userAccount, MultipartFile multipartFile);
+
+    ApiResponse<String> deleteUser(Integer userId);
 }

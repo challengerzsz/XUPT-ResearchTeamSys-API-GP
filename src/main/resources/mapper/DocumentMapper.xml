@@ -110,4 +110,9 @@
         (document_id, content, user_account, user_name)
         VALUES (#{documentId}, #{content}, #{user.userAccount}, #{user.userName})
     </insert>
+
+    <select id="getAllMyDocuments" resultType="com.xupt.xiyoumobile.web.entity.Document">
+        SELECT * FROM xupt_research_team_document_table
+        WHERE uploader = #{userAccount}
+    </select>
 </mapper>

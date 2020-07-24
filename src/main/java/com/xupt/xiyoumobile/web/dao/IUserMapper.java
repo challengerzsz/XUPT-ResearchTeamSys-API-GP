@@ -40,4 +40,11 @@ public interface IUserMapper {
     List<SimpleUserInfoVo> getUserGuideTeacherByUserAccount(String userAccount);
 
     Integer findUserRoleByUserId(Long id);
+
+    int deleteUserById(Integer userId);
+
+    int deleteUserRoleByUserId(Integer userId);
+
+    List<SimpleUserInfoVo> getAllNoTeamStudents();
+
 }

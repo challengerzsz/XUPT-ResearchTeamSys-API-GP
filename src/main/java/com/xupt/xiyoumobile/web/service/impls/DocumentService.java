@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -135,6 +136,7 @@ public class DocumentService implements IDocumentService {
     }
 
     @Override
+    @Transactional
     public ApiResponse<String> deleteDocument(String userAccount, Integer documentId) {
         Document document = documentMapper.findByDocumentId(documentId);
         if (document == null) {
@@ -190,6 +192,17 @@ public class DocumentService implements IDocumentService {
             return ApiResponse.createByErrorCodeMsg(ApiRspCode.DB_ERROR.getCode(), "DB Error!");
         }
         return ApiResponse.createBySuccessMsg("上传文献评论成功!");
+    }
+
+    @Override
+    public ApiResponse<List<Document>> getAllMyDocuments(String userAccount) {
+
+        List<Document> documents = documentMapper.getAllMyDocuments(userAccount);
+        if (CollectionUtils.isEmpty(documents)) {
+            return ApiResponse.createByErrorMsg("您还未上传过文献!");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", documents);
     }
 
     @Override

@@ -46,4 +46,6 @@ public interface IDocumentMapper {
 
     int insertDocumentComment(@Param("documentId") Integer documentId, @Param("content") String content,
                               @Param("user") User user);
+
+    List<Document> getAllMyDocuments(String userAccount);
 }

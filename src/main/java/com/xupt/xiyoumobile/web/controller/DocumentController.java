@@ -97,7 +97,7 @@ public class DocumentController {
 
 
     @PreAuthorize(("hasAnyRole('TEACHER, STUDENT')"))
-    @PostMapping("/deleteDocument/{documentId}")
+    @GetMapping("/deleteDocument/{documentId}")
     public ApiResponse<String> deleteDocument(@PathVariable Integer documentId, Principal principal) {
 
         if (principal == null) {
@@ -133,5 +133,12 @@ public class DocumentController {
     public ApiResponse<String> commentOnDocument(@PathVariable("documentId") Integer documentId,
                                                  @RequestParam String content, Principal principal) {
         return documentService.commentOnDocument(documentId, content, principal);
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
+    @GetMapping("/getAllMyDocuments")
+    public ApiResponse<List<Document>> getAllMyDocuments(Principal principal) {
+
+        return documentService.getAllMyDocuments(principal.getName());
     }
 }
