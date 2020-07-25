@@ -136,7 +136,7 @@ public class DailyWorkController {
     }
 
     @PreAuthorize("hasAnyRole('TEACHER, STUDENT')")
-    @GetMapping("/project/search/{type}/{}")
+    @GetMapping("/project/search/{type}")
     public ApiResponse<List<Project>> searchProject(@PathVariable("type") Integer type,
                                                     @RequestParam String searchContent) {
         if (StringUtils.isBlank(searchContent)) {
