@@ -47,4 +47,6 @@ public interface IUserMapper {
 
     List<SimpleUserInfoVo> getAllNoTeamStudents();
 
+    List<SimpleUserInfoVo> getAllHaveTeamStudents();
+
 }

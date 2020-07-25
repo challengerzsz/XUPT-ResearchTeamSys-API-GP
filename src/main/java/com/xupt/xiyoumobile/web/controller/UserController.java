@@ -113,4 +113,10 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getAllHaveTeamStudents")
+    public ApiResponse<List<SimpleUserInfoVo>> getAllHaveTeamStudents() {
+        return userService.getAllHaveTeamStudents();
+    }
+
 }

@@ -58,7 +58,8 @@
     </select>
 
     <select id="countMember" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM xupt_research_team_user_table
+        SELECT COUNT(*) FROM xupt_research_team_user_role_table
+        WHERE role_id = 2 OR role_id = 3
     </select>
 
     <select id="countPaper" resultType="java.lang.Integer">
