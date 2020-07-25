@@ -221,5 +221,16 @@ public class UserService implements IUserService {
         return ApiResponse.createBySuccessMsg("删除用户成功");
     }
 
+    @Override
+    public ApiResponse<List<SimpleUserInfoVo>> getAllHaveTeamStudents() {
+
+        List<SimpleUserInfoVo> haveTeamStudents = userMapper.getAllHaveTeamStudents();
+        if (CollectionUtils.isEmpty(haveTeamStudents)) {
+            return ApiResponse.createByErrorMsg("不存在已有小组的学生");
+        }
+
+        return ApiResponse.createBySuccess("查询成功", haveTeamStudents);
+    }
+
 
 }

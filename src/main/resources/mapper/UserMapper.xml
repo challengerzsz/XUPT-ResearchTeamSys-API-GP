@@ -123,4 +123,9 @@
         WHERE team IS NULL
     </select>
 
+    <select id="getAllHaveTeamStudents" resultType="com.xupt.xiyoumobile.web.vo.SimpleUserInfoVo">
+        SELECT * FROM xupt_research_team_user_table
+        WHERE team IS NOT NULL
+    </select>
+
 </mapper>
